@@ -10,14 +10,14 @@ package
 	
 	public class Level extends World
 	{
-		public var ball:Ball;
-		
 		public var renderTarget:BitmapData;
 		
 		public var bounds:Rectangle;
 		public var colorTransform:ColorTransform;
 		
 		public var parent:Block;
+		
+		public var paddle:Paddle;
 		
 		public function Level (_parent:Block = null)
 		{
@@ -32,15 +32,8 @@ package
 			
 			colorTransform = new ColorTransform(1, 1, 1, 0.8);
 			
-			if (! parent) {
-				var speed:Number = 3;
-				
-				ball = new Ball(w*0.5, h*0.9, -speed, speed);
-				
-				add(ball);
-				
-				FP.randomSeed = 1237574645;
-			}
+			paddle = new Paddle(this);
+			add(paddle);
 			
 			var bw:int = parent ? 6 : 60;
 			var bh:int = parent ? 4 : 40;
@@ -53,7 +46,19 @@ package
 		
 		public override function update (): void
 		{
+			paddle.update();
 			super.update();
+			
+			if (! parent && classCount(Ball) == 0) {
+				respawn();
+			}
+		}
+		
+		public function respawn ():void
+		{
+			var speed:Number = 3;
+			
+			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, -speed, -speed));
 		}
 		
 		public override function render (): void

@@ -35,6 +35,8 @@ package
 			} else {
 				size = 3;
 			}
+			
+			setHitbox(size*2, size*2, size, size);
 		}
 		
 		public override function update (): void
@@ -82,6 +84,13 @@ package
 				}
 			}
 			
+			var paddle:Paddle = collide("paddle", x, y) as Paddle;
+			if (paddle) {
+				if (vy > 0) vy = -vy;
+				y = paddle.y - size;
+				bounced = true;
+			}
+			
 			if (x < 0) {
 				vx *= -1;
 				x = 0;
@@ -97,9 +106,8 @@ package
 				y = 0;
 				bounced = true;
 			} else if (y > h) {
-				vy *= -1;
-				y = h;
-				bounced = true;
+				world.remove(this);
+				return;
 			}
 			
 			var dx:int = (vx < 0) ? -1 : 1;
