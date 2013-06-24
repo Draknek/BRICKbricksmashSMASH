@@ -39,8 +39,12 @@ package
 			add(ball);
 			
 			if (! parent) {
-				var block:Block = new Block(0, 0, 60, 40);
-				add(block);
+				FP.randomSeed = 12345;
+				
+				for (var i:int = 0; i < 10; i++) {
+					var block:Block = new Block(FP.rand(w-60), FP.rand(h-40), 60, 40);
+					add(block);
+				}
 			}
 		}
 		
