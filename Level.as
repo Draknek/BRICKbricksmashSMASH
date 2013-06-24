@@ -21,7 +21,8 @@ package
 		
 		public var hasStarted:Boolean;
 		
-		public var finished:Boolean;
+		public var won:Boolean;
+		public var lost:Boolean;
 		
 		public function Level (_parent:Block = null)
 		{
@@ -58,11 +59,34 @@ package
 		
 		public override function update (): void
 		{
-			if (finished) return;
-			
 			paddle.update();
 			
 			super.update();
+			
+			if (won || lost) return;
+			
+			if (! parent && classCount(Block) == 0) {
+				won = true;
+				
+				doWon();
+			}
+			
+			if (hasStarted && ! parent && classCount(Ball) == 0) {
+				var blocks:Array = [];
+				
+				getType("block", blocks);
+				
+				lost = true;
+				
+				for each (var b:Block in blocks) {
+					if (b.subgame.classCount(Ball) != 0) {
+						lost = false;
+						break;
+					}
+				}
+				
+				if (lost) doLost();
+			}
 			
 			if (! hasStarted) {
 				if (Input.mousePressed) {
@@ -72,10 +96,20 @@ package
 					return;
 				}
 			}
+		}
+		
+		public function doWon ():void
+		{
 			
-			if (! parent && classCount(Block) == 0) {
-				//finished = true;
-			}
+		}
+		
+		public function doLost ():void
+		{
+			var text:Text = new Text(":(", 0, 0, {size: 48});
+			
+			text.centerOO();
+			
+			addGraphic(text, 0, FP.width*0.5, FP.height*0.65);
 		}
 		
 		public function respawn ():void
@@ -87,12 +121,6 @@ package
 		
 		public override function render (): void
 		{
-			if (finished) {
-				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
-				paddle.render();
-				return;
-			}
-			
 			var oldBuffer:BitmapData = FP.buffer;
 			
 			FP.buffer = renderTarget;
