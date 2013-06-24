@@ -12,6 +12,8 @@ package
 	{
 		public var subgame:Level;
 		
+		public var border:int = 2;
+		
 		public function Block (_x:Number, _y:Number, _w:Number, _h:Number)
 		{
 			x = _x;
@@ -30,14 +32,21 @@ package
 		
 		public function hit (ball:Ball):void
 		{
-			//world.remove(this);
+			var newX:Number = ball.x;
+			var newY:Number = ball.y;
+			
+			newX -= x + border;
+			newY -= y + border;
+			
+			var newBall:Ball = new Ball(newX, newY, ball.vx*0.2, ball.vy*0.2, subgame);
+			
+			subgame.add(newBall);
+			subgame.updateLists();
 		}
 		
 		public override function update (): void
 		{
-			subgame.updateLists();
 			subgame.update();
-			subgame.updateLists();
 		}
 		
 		public override function render (): void

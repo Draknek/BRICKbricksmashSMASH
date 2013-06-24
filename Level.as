@@ -23,8 +23,8 @@ package
 		{
 			parent = _parent;
 			
-			var w:int = parent ? parent.width - 12 : FP.width;
-			var h:int = parent ? parent.height - 8: FP.height;
+			var w:int = parent ? parent.width - parent.border*2 : FP.width;
+			var h:int = parent ? parent.height - parent.border*2 : FP.height;
 			
 			bounds = new Rectangle(0, 0, w, h);
 			
@@ -32,14 +32,14 @@ package
 			
 			colorTransform = new ColorTransform(1, 1, 1, 0.8);
 			
-			var speed:Number = parent ? 0.5 : 5;
-			
-			ball = new Ball(w*0.5, h*0.9, -speed, speed, this);
-			
-			add(ball);
-			
 			if (! parent) {
-				FP.randomSeed = 12345;
+				var speed:Number = 5;
+				
+				ball = new Ball(w*0.5, h*0.9, -speed, speed, this);
+				
+				add(ball);
+				
+				FP.randomSeed = 1237574645;
 				
 				for (var i:int = 0; i < 10; i++) {
 					var block:Block = new Block(FP.rand(w-60), FP.rand(h-40), 60, 40);
