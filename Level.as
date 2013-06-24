@@ -36,10 +36,16 @@ package
 			add(paddle);
 			
 			var bw:int = parent ? 6 : 60;
-			var bh:int = parent ? 4 : 40;
+			var bh:int = parent ? 3 : 30;
+			
+			var spaceX:Number = (w - bw*5)/6;
 			
 			for (var i:int = 0; i < 10; i++) {
-				var block:Block = new Block(FP.rand(w-bw), FP.rand(h*0.5-bh), bw, bh);
+				
+				var block:Block = new Block(
+					int(i%5)*(spaceX+bw) + spaceX,
+					int(i/5)*(spaceX+bh) + spaceX,
+					bw, bh);
 				add(block);
 			}
 		}
