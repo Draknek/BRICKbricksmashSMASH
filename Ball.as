@@ -16,7 +16,9 @@ package
 		public var vx:Number = 0;
 		public var vy:Number = 0;
 		
-		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number)
+		public var size:Number = 0;
+		
+		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _parent:Level)
 		{
 			x = oldX = _x;
 			y = oldY = _y;
@@ -24,11 +26,11 @@ package
 			vx = _vx;
 			vy = _vy;
 			
-			var img:Image = Image.createCircle(5, 0xFFFFFF);
-			
-			img.centerOO();
-			
-			graphic = img;
+			if (_parent.parent) {
+				size = 0.5;
+			} else {
+				size = 3;
+			}
 		}
 		
 		public override function update (): void
@@ -58,6 +60,32 @@ package
 				vy *= -1;
 				y = h;
 			}
+			
+			var dx:int = (vx < 0) ? -1 : 1;
+			var dy:int = (vy < 0) ? -1 : 1;
+			
+			var block1:Block = world.collidePoint("block", x+dx*size, y+dy*size) as Block;
+			var block2:Block = world.collidePoint("block", x-dx*size, y+dy*size) as Block;
+			var block3:Block = world.collidePoint("block", x+dx*size, y-dy*size) as Block;
+			
+			if (block2) {
+				block2.hit(this);
+				vy *= -1;
+			}
+			
+			if (block3) {
+				block3.hit(this);
+				vx *= -1;
+			}
+			
+			if (block1 && ! (block2 && block3)) {
+				block1.hit(this);
+				
+				if (! block2 && ! block3) {
+					vx *= -1;
+					vy *= -1;
+				}
+			}
 		}
 		
 		public override function render (): void
@@ -72,22 +100,20 @@ package
 			
 			var color:uint = 0xFFFFFFFF;
 			
-			var level:Level = world as Level;
-			
-			if (level.parent) {
+			if (size < 1) {
 				Draw.line(x1, y1, x2, y2, color);
 				return;
 			}
 			
 			var rect:Rectangle = FP.rect;
 			
-			x1 -= 3;
-			y1 -= 3;
-			x2 -= 3;
-			y2 -= 3;
+			x1 -= size;
+			y1 -= size;
+			x2 -= size;
+			y2 -= size;
 			
-			rect.width = 6;
-			rect.height = 6;
+			rect.width = size*2;
+			rect.height = size*2;
 			
 			// get the drawing difference
 			var screen:BitmapData = FP.buffer,

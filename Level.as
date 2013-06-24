@@ -34,7 +34,7 @@ package
 			
 			var speed:Number = parent ? 0.5 : 5;
 			
-			ball = new Ball(w*0.5, h*0.9, -speed, speed);
+			ball = new Ball(w*0.5, h*0.9, -speed, speed, this);
 			
 			add(ball);
 			

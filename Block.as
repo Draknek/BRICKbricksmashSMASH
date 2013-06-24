@@ -22,8 +22,15 @@ package
 			
 			layer = -5;
 			
+			type = "block";
+			
 			subgame = new Level(this);
 			subgame.updateLists();
+		}
+		
+		public function hit (ball:Ball):void
+		{
+			//world.remove(this);
 		}
 		
 		public override function update (): void
