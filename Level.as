@@ -46,7 +46,7 @@ package
 			var bh:int = parent ? 4 : 40;
 			
 			for (var i:int = 0; i < 10; i++) {
-				var block:Block = new Block(FP.rand(w-bw), FP.rand(h-bh), bw, bh);
+				var block:Block = new Block(FP.rand(w-bw), FP.rand(h*0.5-bh), bw, bh);
 				add(block);
 			}
 		}

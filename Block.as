@@ -27,6 +27,16 @@ package
 			type = "block";
 		}
 		
+		public override function added ():void
+		{
+			var level:Level = world as Level;
+			
+			if (! level.parent) {
+				subgame = new Level(this);
+				subgame.updateLists();
+			}
+		}
+		
 		public function hit (ball:Ball):void
 		{
 			var level:Level = world as Level;
@@ -34,11 +44,6 @@ package
 			if (level.parent) {
 				world.remove(this);
 				return;
-			}
-			
-			if (! subgame) {
-				subgame = new Level(this);
-				subgame.updateLists();
 			}
 			
 			if (subgame.typeCount("block") == 0) return;
@@ -61,7 +66,7 @@ package
 				subgame.update();
 				subgame.updateLists();
 				
-				if (subgame.classCount(Ball) == 0) {
+				if (subgame.classCount(Ball) == 0 && subgame.typeCount("block") == 0) {
 					world.remove(this);
 				}
 			}
