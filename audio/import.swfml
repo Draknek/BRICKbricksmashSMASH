@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Usage: swfmill simple sfx.swfml sfx.swf -->
+
+<movie width="320" height="240" framerate="12">
+	<background color="#ffffff" />
+	<frame>
+		<library>
+			<sound id="low1" import="src/low1.wav" />
+			<sound id="low2" import="src/low2.wav" />
+			<sound id="low3" import="src/low3.wav" />
+			<sound id="low4" import="src/low4.wav" />
+			<sound id="low5" import="src/low5.wav" />
+			
+			<sound id="high1" import="src/high1.wav" />
+			<sound id="high2" import="src/high2.wav" />
+			<sound id="high3" import="src/high3.wav" />
+			<sound id="high4" import="src/high4.wav" />
+			<sound id="high5" import="src/high5.wav" />
+
+
+		</library>
+	</frame>
+</movie>

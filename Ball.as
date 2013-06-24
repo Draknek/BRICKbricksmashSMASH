@@ -146,6 +146,12 @@ package
 				bounceX = x;
 				bounceY = y;
 				showBounce = true;
+				
+				Audio.play("low");
+			}
+			
+			if (bounced) {
+				//Audio.play(level.parent ? "low" : "low");
 			}
 		}
 		
