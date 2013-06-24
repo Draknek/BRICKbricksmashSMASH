@@ -22,7 +22,7 @@ package
 		public var bounceY:Number;
 		public var showBounce:Boolean = false;
 		
-		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _parent:Level)
+		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)
 		{
 			x = oldX = _x;
 			y = oldY = _y;
@@ -30,7 +30,7 @@ package
 			vx = _vx;
 			vy = _vy;
 			
-			if (_parent.parent) {
+			if (_block) {
 				size = 0.5;
 			} else {
 				size = 3;
@@ -50,6 +50,37 @@ package
 			var h:Number = level.bounds.height;
 			
 			var bounced:Boolean = false;
+			
+			if (level.parent && level.typeCount("block") == 0) {
+				if (x < 0) {
+					x = 0;
+					bounced = true;
+				} else if (x > w) {
+					x = w;
+					bounced = true;
+				}
+				
+				if (y < 0) {
+					y = 0;
+					bounced = true;
+				} else if (y > h) {
+					y = h;
+					bounced = true;
+				}
+				
+				if (bounced) {
+					var blockWeAreIn:Block = level.parent;
+					var newBall:Ball = new Ball(
+						x + blockWeAreIn.x + blockWeAreIn.border,
+						y + blockWeAreIn.y + blockWeAreIn.border,
+						vx*5, vy*5
+					);
+					blockWeAreIn.world.add(newBall);
+					world.remove(this);
+					
+					return;
+				}
+			}
 			
 			if (x < 0) {
 				vx *= -1;
@@ -77,6 +108,9 @@ package
 			var block1:Block = world.collidePoint("block", x+dx*size, y+dy*size) as Block;
 			var block2:Block = world.collidePoint("block", x-dx*size, y+dy*size) as Block;
 			var block3:Block = world.collidePoint("block", x+dx*size, y-dy*size) as Block;
+			
+			if (block1 == block2) block1 = null;
+			if (block1 == block3) block1 = null;
 			
 			if (block2) {
 				block2.hit(this);

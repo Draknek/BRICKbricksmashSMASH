@@ -33,9 +33,9 @@ package
 			colorTransform = new ColorTransform(1, 1, 1, 0.8);
 			
 			if (! parent) {
-				var speed:Number = 5;
+				var speed:Number = 3;
 				
-				ball = new Ball(w*0.5, h*0.9, -speed, speed, this);
+				ball = new Ball(w*0.5, h*0.9, -speed, speed);
 				
 				add(ball);
 				

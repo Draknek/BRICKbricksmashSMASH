@@ -41,13 +41,15 @@ package
 				subgame.updateLists();
 			}
 			
+			if (subgame.typeCount("block") == 0) return;
+			
 			var newX:Number = ball.x;
 			var newY:Number = ball.y;
 			
 			newX -= x + border;
 			newY -= y + border;
 			
-			var newBall:Ball = new Ball(newX, newY, ball.vx*0.2, ball.vy*0.2, subgame);
+			var newBall:Ball = new Ball(newX, newY, ball.vx*0.2, ball.vy*0.2, this);
 			
 			subgame.add(newBall);
 			subgame.updateLists();
@@ -58,6 +60,10 @@ package
 			if (subgame) {
 				subgame.update();
 				subgame.updateLists();
+				
+				if (subgame.classCount(Ball) == 0) {
+					world.remove(this);
+				}
 			}
 		}
 		
