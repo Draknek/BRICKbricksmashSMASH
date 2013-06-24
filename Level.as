@@ -89,6 +89,7 @@ package
 		{
 			if (finished) {
 				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
+				paddle.render();
 				return;
 			}
 			
@@ -106,6 +107,7 @@ package
 			
 			if (! parent) {
 				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
+				paddle.render();
 			}
 		}
 	}

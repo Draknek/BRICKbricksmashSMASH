@@ -23,6 +23,8 @@ package
 			type = "paddle";
 			
 			active = false;
+			
+			if (! _level.parent) visible = false;
 		}
 		
 		public override function added ():void
