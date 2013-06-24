@@ -18,6 +18,10 @@ package
 		
 		public var size:Number = 0;
 		
+		public var bounceX:Number;
+		public var bounceY:Number;
+		public var showBounce:Boolean = false;
+		
 		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _parent:Level)
 		{
 			x = oldX = _x;
@@ -45,20 +49,26 @@ package
 			var w:Number = level.bounds.width;
 			var h:Number = level.bounds.height;
 			
+			var bounced:Boolean = false;
+			
 			if (x < 0) {
 				vx *= -1;
 				x = 0;
+				bounced = true;
 			} else if (x > w) {
 				vx *= -1;
 				x = w;
+				bounced = true;
 			}
 			
 			if (y < 0) {
 				vy *= -1;
 				y = 0;
+				bounced = true;
 			} else if (y > h) {
 				vy *= -1;
 				y = h;
+				bounced = true;
 			}
 			
 			var dx:int = (vx < 0) ? -1 : 1;
@@ -71,11 +81,13 @@ package
 			if (block2) {
 				block2.hit(this);
 				vy *= -1;
+				bounced = true;
 			}
 			
 			if (block3) {
 				block3.hit(this);
 				vx *= -1;
+				bounced = true;
 			}
 			
 			if (block1 && ! (block2 && block3)) {
@@ -84,12 +96,33 @@ package
 				if (! block2 && ! block3) {
 					vx *= -1;
 					vy *= -1;
+					bounced = true;
 				}
+			}
+			
+			if (bounced && size >= 1) {
+				bounceX = x;
+				bounceY = y;
+				showBounce = true;
 			}
 		}
 		
 		public override function render (): void
 		{
+			if (showBounce) {
+				showBounce = false;
+				
+				var tmpX:Number = x;
+				var tmpY:Number = y;
+				x = bounceX;
+				y = bounceY;
+				render();
+				x = tmpX;
+				y = tmpY;
+				oldX = bounceX;
+				oldY = bounceY;
+			}
+			
 			var x1:int = x;
 			var y1:int = y;
 			var x2:int = oldX;
