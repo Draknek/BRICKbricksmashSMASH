@@ -44,6 +44,17 @@ package
 			FP.rect.height = height;
 			
 			FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
+			
+			var level:Level = world as Level;
+			
+			if (! level.hasStarted) {
+				FP.rect.x = x + width*0.5 - 3;
+				FP.rect.y = y - 6;
+				FP.rect.width = 6;
+				FP.rect.height = 6;
+				
+				FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
+			}
 		}
 	}
 }

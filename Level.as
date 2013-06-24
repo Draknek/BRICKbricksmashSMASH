@@ -19,9 +19,15 @@ package
 		
 		public var paddle:Paddle;
 		
+		public var hasStarted:Boolean;
+		
+		public var finished:Boolean;
+		
 		public function Level (_parent:Block = null)
 		{
 			parent = _parent;
+			
+			if (parent) hasStarted = true;
 			
 			var w:int = parent ? parent.width - parent.border*2 : FP.width;
 			var h:int = parent ? parent.height - parent.border*2 : FP.height;
@@ -52,11 +58,23 @@ package
 		
 		public override function update (): void
 		{
+			if (finished) return;
+			
 			paddle.update();
+			
 			super.update();
 			
-			if (! parent && classCount(Ball) == 0) {
-				respawn();
+			if (! hasStarted) {
+				if (Input.mousePressed) {
+					respawn();
+					hasStarted = true;
+				} else {
+					return;
+				}
+			}
+			
+			if (! parent && classCount(Block) == 0) {
+				//finished = true;
 			}
 		}
 		
@@ -69,6 +87,11 @@ package
 		
 		public override function render (): void
 		{
+			if (finished) {
+				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
+				return;
+			}
+			
 			var oldBuffer:BitmapData = FP.buffer;
 			
 			FP.buffer = renderTarget;
