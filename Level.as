@@ -17,17 +17,31 @@ package
 		public var bounds:Rectangle;
 		public var colorTransform:ColorTransform;
 		
-		public function Level ()
+		public var parent:Block;
+		
+		public function Level (_parent:Block = null)
 		{
-			bounds = new Rectangle(0, 0, FP.width, FP.height);
+			parent = _parent;
+			
+			var w:int = parent ? parent.width - 12 : FP.width;
+			var h:int = parent ? parent.height - 8: FP.height;
+			
+			bounds = new Rectangle(0, 0, w, h);
 			
 			renderTarget = new BitmapData(bounds.width, bounds.height, false, 0);
 			
 			colorTransform = new ColorTransform(1, 1, 1, 0.8);
 			
-			ball = new Ball(FP.width*0.5, FP.height - 10, -5, 5);
+			var speed:Number = parent ? 0.5 : 5;
+			
+			ball = new Ball(w*0.5, h*0.9, -speed, speed);
 			
 			add(ball);
+			
+			if (! parent) {
+				var block:Block = new Block(0, 0, 60, 40);
+				add(block);
+			}
 		}
 		
 		public override function update (): void
@@ -41,13 +55,17 @@ package
 			
 			FP.buffer = renderTarget;
 			
+			Draw.setTarget(renderTarget, camera);
+			
 			renderTarget.colorTransform(bounds, colorTransform);
 			
 			super.render();
 			
 			FP.buffer = oldBuffer;
 			
-			FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
+			if (! parent) {
+				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
+			}
 		}
 	}
 }

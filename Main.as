@@ -8,7 +8,7 @@ package
 	{
 		public function Main () 
 		{
-			super(640, 480, 60, true);
+			super(480, 320, 60, true);
 			FP.world = new Level();
 		}
 		

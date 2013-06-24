@@ -62,15 +62,22 @@ package
 		
 		public override function render (): void
 		{
-			var x1:int = Math.round(x);
-			var y1:int = Math.round(y);
-			var x2:int = Math.round(oldX);
-			var y2:int = Math.round(oldY);
+			var x1:int = x;
+			var y1:int = y;
+			var x2:int = oldX;
+			var y2:int = oldY;
 			
 			oldX = x;
 			oldY = y;
 			
 			var color:uint = 0xFFFFFFFF;
+			
+			var level:Level = world as Level;
+			
+			if (level.parent) {
+				Draw.line(x1, y1, x2, y2, color);
+				return;
+			}
 			
 			var rect:Rectangle = FP.rect;
 			
