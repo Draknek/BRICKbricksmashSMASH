@@ -25,13 +25,22 @@ package
 			layer = -5;
 			
 			type = "block";
-			
-			subgame = new Level(this);
-			subgame.updateLists();
 		}
 		
 		public function hit (ball:Ball):void
 		{
+			var level:Level = world as Level;
+			
+			if (level.parent) {
+				world.remove(this);
+				return;
+			}
+			
+			if (! subgame) {
+				subgame = new Level(this);
+				subgame.updateLists();
+			}
+			
 			var newX:Number = ball.x;
 			var newY:Number = ball.y;
 			
@@ -46,22 +55,27 @@ package
 		
 		public override function update (): void
 		{
-			subgame.update();
+			if (subgame) {
+				subgame.update();
+				subgame.updateLists();
+			}
 		}
 		
 		public override function render (): void
 		{
-			subgame.render();
-			
-			FP.point.x = x + (width - subgame.bounds.width)*0.5;
-			FP.point.y = y + (height - subgame.bounds.height)*0.5;
-			
 			FP.rect.x = x;
 			FP.rect.y = y;
 			FP.rect.width = width;
 			FP.rect.height = height;
 			
 			FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
+			
+			if (! subgame) return;
+			
+			subgame.render();
+			
+			FP.point.x = x + (width - subgame.bounds.width)*0.5;
+			FP.point.y = y + (height - subgame.bounds.height)*0.5;
 			
 			FP.buffer.copyPixels(subgame.renderTarget, subgame.bounds, FP.point);
 		}

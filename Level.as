@@ -40,11 +40,14 @@ package
 				add(ball);
 				
 				FP.randomSeed = 1237574645;
-				
-				for (var i:int = 0; i < 10; i++) {
-					var block:Block = new Block(FP.rand(w-60), FP.rand(h-40), 60, 40);
-					add(block);
-				}
+			}
+			
+			var bw:int = parent ? 6 : 60;
+			var bh:int = parent ? 4 : 40;
+			
+			for (var i:int = 0; i < 10; i++) {
+				var block:Block = new Block(FP.rand(w-bw), FP.rand(h-bh), bw, bh);
+				add(block);
 			}
 		}
 		
