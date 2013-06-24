@@ -91,21 +91,21 @@ package
 				bounced = true;
 			}
 			
-			if (x < 0) {
+			if (x < 0 && vx < 0) {
 				vx *= -1;
 				x = 0;
 				bounced = true;
-			} else if (x > w) {
+			} else if (x > w && vx > 0) {
 				vx *= -1;
 				x = w;
 				bounced = true;
 			}
 			
-			if (y < 0) {
+			if (y < 0 && vy < 0) {
 				vy *= -1;
 				y = 0;
 				bounced = true;
-			} else if (y > h) {
+			} else if (y > h && vy > 0) {
 				world.remove(this);
 				return;
 			}
