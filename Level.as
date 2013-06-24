@@ -24,6 +24,9 @@ package
 		public var won:Boolean;
 		public var lost:Boolean;
 		
+		public var t:int = 0;
+		public var lerp:Number = 0;
+		
 		public function Level (_parent:Block = null)
 		{
 			parent = _parent;
@@ -59,6 +62,8 @@ package
 		
 		public override function update (): void
 		{
+			t++;
+			
 			paddle.update();
 			
 			super.update();
@@ -66,6 +71,8 @@ package
 			if (won || lost) return;
 			
 			if (! parent && classCount(Block) == 0) {
+				updateLists();
+				
 				won = true;
 				
 				doWon();
@@ -100,7 +107,20 @@ package
 		
 		public function doWon ():void
 		{
+			var balls:Array = [];
 			
+			getType("ball", balls);
+			
+			var i:int = 0;
+			
+			for each (var b:Ball in balls) {
+				b.bounceX = b.x;
+				b.bounceY = b.y;
+				b.showBounce = false;
+				b.id = i++;
+			}
+			
+			FP.tween(this, {lerp: 1}, 120);
 		}
 		
 		public function doLost ():void

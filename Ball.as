@@ -22,6 +22,8 @@ package
 		public var bounceY:Number;
 		public var showBounce:Boolean = false;
 		
+		public var id:int;
+		
 		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)
 		{
 			x = oldX = _x;
@@ -36,6 +38,8 @@ package
 				size = 3;
 			}
 			
+			type = "ball";
+			
 			setHitbox(size*2, size*2, size, size);
 		}
 		
@@ -44,6 +48,19 @@ package
 			var level:Level = world as Level;
 			
 			if (! level) return;
+			
+			if (level.won) {
+				var angle:Number = level.t*0.01 + Math.PI*2*id/level.typeCount("ball");
+				x = FP.width*0.5 + Math.sin(angle)*FP.height*0.3;
+				y = FP.height*0.5 + Math.cos(angle)*FP.height*0.3;
+				
+				if (level.lerp < 1) {
+					x = FP.lerp(bounceX, x, level.lerp);
+					y = FP.lerp(bounceY, y, level.lerp);
+				}
+				
+				return;
+			}
 			
 			x += vx;
 			y += vy;
