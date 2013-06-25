@@ -134,9 +134,14 @@ package
 		
 		public function respawn ():void
 		{
-			var speed:Number = 3;
+			var vx:Number = 1.5 + Math.random()*0.5;
+			var vy:Number = -1.5 - Math.random()*0.5;
 			
-			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, -speed, -speed));
+			if (paddle.x + paddle.width*0.5 < bounds.width*0.5) {
+				vx *= -1;
+			}
+			
+			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, vx, vy));
 		}
 		
 		public override function render (): void
