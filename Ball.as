@@ -24,6 +24,8 @@ package
 		
 		public var id:int;
 		
+		public static var lostCount:int;
+		
 		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)
 		{
 			x = oldX = _x;
@@ -135,6 +137,7 @@ package
 				y = 0;
 				bounced = true;
 			} else if (y > h && vy > 0) {
+				lostCount++;
 				world.remove(this);
 				return;
 			}

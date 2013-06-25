@@ -31,7 +31,11 @@ package
 		{
 			parent = _parent;
 			
-			if (parent) hasStarted = true;
+			if (parent) {
+				hasStarted = true;
+			} else {
+				Ball.lostCount = 0;
+			}
 			
 			var w:int = parent ? parent.width - parent.border*2 : FP.width;
 			var h:int = parent ? parent.height - parent.border*2 : FP.height;
@@ -127,6 +131,22 @@ package
 			FP.tween(this, {lerp: 1}, 120);
 			
 			FP.tween(paddle, {y: FP.height + 1}, 120, {tweener: FP.tweener});
+			
+			var time:String = "";
+			
+			time += int(t / (60*60));
+			time += ":";
+			
+			var seconds:int = int(t/60) % 60;
+			
+			if (seconds < 10) time += "0";
+			time += seconds;
+			
+			var text:Text = new Text(time + "\n" + balls.length + "\n-" + Ball.lostCount, 0, 0, {size: 48, align: "center"});
+			
+			text.centerOO();
+			
+			addGraphic(text, 0, FP.width*0.5, FP.height*0.5);
 		}
 		
 		public function doLost ():void
@@ -140,6 +160,8 @@ package
 		
 		public function respawn ():void
 		{
+			t = 0;
+			
 			var vx:Number = 1.5 + Math.random()*0.5;
 			var vy:Number = -1.5 - Math.random()*0.5;
 			
