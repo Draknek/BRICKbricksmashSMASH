@@ -72,10 +72,14 @@ package
 			
 			if (won || lost) return;
 			
-			if (! parent && classCount(Block) == 0) {
-				won = true;
-				
-				doWon();
+			if (classCount(Block) == 0) {
+				if (! parent) {
+					won = true;
+					
+					doWon();
+				} else {
+					paddle.y += 0.1;
+				}
 			}
 			
 			if (hasStarted && ! parent && classCount(Ball) == 0) {
