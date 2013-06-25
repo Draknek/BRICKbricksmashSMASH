@@ -53,8 +53,8 @@ package
 			
 			if (level.won) {
 				var angle:Number = level.t*0.01 + Math.PI*2*id/level.typeCount("ball");
-				x = FP.width*0.5 + Math.sin(angle)*FP.height*0.3;
-				y = FP.height*0.5 + Math.cos(angle)*FP.height*0.3;
+				x = FP.width*0.5 + Math.sin(angle)*FP.height*0.35;
+				y = FP.height*0.5 + Math.cos(angle)*FP.height*0.35;
 				
 				if (level.lerp < 1) {
 					x = FP.lerp(bounceX, x, level.lerp);

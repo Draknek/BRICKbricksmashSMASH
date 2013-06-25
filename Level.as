@@ -148,7 +148,7 @@ package
 			if (seconds < 10) time += "0";
 			time += seconds;
 			
-			var text:Text = new Text(time + "\n" + balls.length + "\n-" + Ball.lostCount, 0, 0, {size: 48, align: "center"});
+			var text:Text = new Text(time + "\n" + balls.length + "\n-" + Ball.lostCount, 0, 0, {size: 50, align: "center"});
 			
 			text.centerOO();
 			
@@ -157,7 +157,7 @@ package
 		
 		public function doLost ():void
 		{
-			var text:Text = new Text(":(", 0, 0, {size: 48});
+			var text:Text = new Text(":(", 0, 0, {size: 50});
 			
 			text.centerOO();
 			
