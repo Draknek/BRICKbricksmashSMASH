@@ -24,6 +24,8 @@ package
 		
 		public var id:int;
 		
+		public var sortValue:Number;
+		
 		public static var lostCount:int;
 		
 		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)

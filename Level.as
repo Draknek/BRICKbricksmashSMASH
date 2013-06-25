@@ -82,6 +82,12 @@ package
 				return;
 			}
 			
+			if (! parent && Input.pressed(Key.ANY))
+			{
+				won = true;
+				doWon();
+			}
+			
 			if (classCount(Block) == 0) {
 				if (! parent) {
 					won = true;
@@ -126,17 +132,24 @@ package
 			getType("ball", balls);
 			
 			var i:int = 0;
+			var b:Ball;
 			
-			for each (var b:Ball in balls) {
+			for each (b in balls) {
+				b.sortValue = -Math.atan2(b.y - bounds.height*0.5, b.x - bounds.width*0.5);
+			}
+			
+			balls.sortOn("sortValue");
+			
+			for each (b in balls) {
 				b.bounceX = b.x;
 				b.bounceY = b.y;
 				b.showBounce = false;
 				b.id = i++;
 			}
 			
-			FP.tween(this, {lerp: 1}, 120);
+			FP.tween(this, {lerp: 1}, 90);
 			
-			FP.tween(paddle, {y: FP.height + 1}, 120, {tweener: FP.tweener});
+			FP.tween(paddle, {y: FP.height + 1}, 90, {tweener: FP.tweener});
 			
 			var time:String = "";
 			
@@ -153,6 +166,10 @@ package
 			text.centerOO();
 			
 			addGraphic(text, 0, FP.width*0.5, FP.height*0.5);
+			
+			t = 0;
+			
+			FP.tween(this, {t: 0}, 120);
 		}
 		
 		public function doLost ():void
