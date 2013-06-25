@@ -163,7 +163,7 @@ package
 			
 			t = 0;
 			
-			FP.tween(this, {t: 0}, 120);
+			FP.tween(this, {t: 0}, 90);
 		}
 		
 		public function doLost ():void
