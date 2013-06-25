@@ -92,7 +92,7 @@ package
 					var newBall:Ball = new Ball(
 						x + blockWeAreIn.x + blockWeAreIn.border,
 						y + blockWeAreIn.y + blockWeAreIn.border,
-						vx*5, vy*5
+						vx*4, vy*4
 					);
 					blockWeAreIn.world.add(newBall);
 					world.remove(this);
@@ -102,12 +102,22 @@ package
 			}
 			
 			var paddle:Paddle = collide("paddle", x, y) as Paddle;
-			if (paddle) {
-				if (vy > 0) {
-					vy = -vy;
-					y = paddle.y - size;
-					bounced = true;
+			if (paddle && vy > 0) {
+				var offset:Number = x - (paddle.x + paddle.width*0.5);
+				offset /= paddle.width;
+				
+				vx = offset * Math.abs(vy) * 3;
+				vy = -vy;
+				vy -= 0.05*size;
+				
+				var minX:Number = 1.0;
+				
+				if (size > 1 && vx < minX && vx > -minX) {
+					vx = (vx < 0) ? -minX : minX;
 				}
+				
+				y = paddle.y - size;
+				bounced = true;
 			}
 			
 			if (x < 0 && vx < 0) {
@@ -155,8 +165,11 @@ package
 				block1.hit(this);
 				
 				if (! block2 && ! block3) {
-					vx *= -1;
-					vy *= -1;
+					if (Math.abs(vx) > Math.abs(vy)) {
+						vy *= -1;
+					} else {
+						vx *= -1;
+					}
 					bounced = true;
 				}
 			}
