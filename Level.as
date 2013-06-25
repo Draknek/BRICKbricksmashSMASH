@@ -68,11 +68,11 @@ package
 			
 			super.update();
 			
+			updateLists();
+			
 			if (won || lost) return;
 			
 			if (! parent && classCount(Block) == 0) {
-				updateLists();
-				
 				won = true;
 				
 				doWon();
