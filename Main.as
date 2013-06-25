@@ -12,6 +12,8 @@ package
 		
 		public function Main () 
 		{
+			G.init();
+			
 			super(480, 320, 60, true);
 			
 			Text.font = 'orbitron';

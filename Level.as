@@ -141,6 +141,24 @@ package
 				b.id = i++;
 			}
 			
+			if (! G.so.data.games) {
+				G.so.data.besttime = t;
+				G.so.data.bestballsleft = balls.length;
+				G.so.data.bestballslost = Ball.lostCount;
+			}
+			
+			G.so.data.games++;
+			
+			if (t < G.so.data.besttime) G.so.data.besttime = t;
+			if (balls.length > G.so.data.bestballsleft) G.so.data.bestballsleft = balls.length;
+			if (Ball.lostCount < G.so.data.bestballslost) G.so.data.bestballslost = Ball.lostCount;
+			
+			G.so.data.totaltime += t;
+			G.so.data.totalballsleft += balls.length;
+			G.so.data.totalballslost += Ball.lostCount;
+			
+			G.so.flush();
+			
 			FP.tween(this, {lerp: 1}, 90);
 			
 			FP.tween(paddle, {y: FP.height + 1}, 90, {tweener: FP.tweener});

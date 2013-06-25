@@ -30,12 +30,24 @@ package
 			
 			addGraphic(by);
 			
-			var best:Text = new Text("Best:   0:45   22   -67", 0, 0, {size: 18});
+			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
 			
-			best.x = (FP.width - best.width)*0.5;
-			best.y = FP.height - best.height - title.y*0.25;
-			
-			if (true) {
+			if (G.so.data.games) {
+				var time:String = "";
+				
+				time += int(G.so.data.besttime / (60*60));
+				time += ":";
+				
+				var seconds:int = int(G.so.data.besttime/60) % 60;
+				
+				if (seconds < 10) time += "0";
+				time += seconds;
+				
+				best.text += time + "   " + G.so.data.bestballsleft + "   -" + G.so.data.bestballslost;
+				
+				best.x = (FP.width - best.width)*0.5;
+				best.y = FP.height - best.height - title.y*0.25;
+				
 				addGraphic(best);
 			} else {
 				best.y = FP.height;
