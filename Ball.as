@@ -103,9 +103,11 @@ package
 			
 			var paddle:Paddle = collide("paddle", x, y) as Paddle;
 			if (paddle) {
-				if (vy > 0) vy = -vy;
-				y = paddle.y - size;
-				bounced = true;
+				if (vy > 0) {
+					vy = -vy;
+					y = paddle.y - size;
+					bounced = true;
+				}
 			}
 			
 			if (x < 0 && vx < 0) {
