@@ -74,7 +74,13 @@ package
 			
 			updateLists();
 			
-			if (won || lost) return;
+			if (won || lost) {
+				if (! parent && Input.pressed(Key.ANY)) {
+					FP.world = new Level;
+				}
+				
+				return;
+			}
 			
 			if (classCount(Block) == 0) {
 				if (! parent) {
