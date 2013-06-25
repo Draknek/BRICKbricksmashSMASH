@@ -13,9 +13,12 @@ package
 		public function Main () 
 		{
 			super(480, 320, 60, true);
-			FP.world = new Level();
 			
-			Text.font = 'orbitron'
+			Text.font = 'orbitron';
+			
+			FP.world = new Menu();
+			
+			FP.screen.color = 0x0;
 		}
 		
 		public override function init (): void
