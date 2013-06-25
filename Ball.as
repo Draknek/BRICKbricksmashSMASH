@@ -156,22 +156,51 @@ package
 				block2.hit(this);
 				vy *= -1;
 				bounced = true;
+				
+				if (Math.abs(y - block2.y) < Math.abs(y - block2.y - block2.height)) {
+					y = block2.y - size;
+				} else {
+					y = block2.y + block2.height + size;
+				}
 			}
 			
 			if (block3) {
 				block3.hit(this);
 				vx *= -1;
 				bounced = true;
+				
+				if (Math.abs(x - block3.x) < Math.abs(x - block3.x - block3.width)) {
+					x = block3.x - size;
+				} else {
+					x = block3.x + block3.width + size;
+				}
 			}
 			
 			if (block1 && ! (block2 && block3)) {
 				block1.hit(this);
 				
 				if (! block2 && ! block3) {
-					if (Math.abs(vx) > Math.abs(vy)) {
+					var overlapX1:Number = Math.abs(x - block1.x);
+					var overlapY1:Number = Math.abs(y - block1.y);
+					var overlapX2:Number = Math.abs(x - block1.x - block1.width);
+					var overlapY2:Number = Math.abs(y - block1.y - block1.height);
+			
+					if (Math.min(overlapX1, overlapX2) > Math.min(overlapY1, overlapY2)) {
 						vy *= -1;
+				
+						if (overlapY1 < overlapY2) {
+							y = block1.y - size;
+						} else {
+							y = block1.y + block1.height + size;
+						}
 					} else {
 						vx *= -1;
+						
+						if (overlapX1 < overlapX2) {
+							x = block1.x - size;
+						} else {
+							x = block1.x + block1.width + size;
+						}
 					}
 					bounced = true;
 				}
