@@ -121,6 +121,8 @@ package
 			}
 			
 			FP.tween(this, {lerp: 1}, 120);
+			
+			FP.tween(paddle, {y: FP.height + 1}, 120, {tweener: FP.tweener});
 		}
 		
 		public function doLost ():void
