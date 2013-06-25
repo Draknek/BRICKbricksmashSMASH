@@ -75,17 +75,11 @@ package
 			updateLists();
 			
 			if (won || lost) {
-				if (! parent && Input.pressed(Key.ANY)) {
+				if (! parent && (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER) || Input.pressed(Key.R))) {
 					FP.world = new Level;
 				}
 				
 				return;
-			}
-			
-			if (! parent && Input.pressed(Key.ANY))
-			{
-				won = true;
-				doWon();
 			}
 			
 			if (classCount(Block) == 0) {
