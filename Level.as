@@ -174,7 +174,7 @@ package
 		
 		public function doLost ():void
 		{
-			var text:Text = new Text(":(", 0, 0, {size: 50});
+			var text:Text = new Text("LOST", 0, 0, {size: 50});
 			
 			text.centerOO();
 			
