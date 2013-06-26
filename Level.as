@@ -76,6 +76,11 @@ package
 			
 			updateLists();
 			
+			if (! parent && Input.pressed(Key.ESCAPE)) {
+				FP.world = new Menu;
+				return;
+			}
+			
 			if (won || lost) {
 				if (! parent && (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER) || Input.pressed(Key.R))) {
 					newGame();
