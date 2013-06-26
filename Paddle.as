@@ -35,7 +35,10 @@ package
 		public override function update (): void
 		{
 			var level:Level = world as Level;
-			x = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width - width);
+			
+			var toX:Number = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
+			
+			x += (toX - x)*0.4;
 		}
 		
 		public override function render (): void
