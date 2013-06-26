@@ -44,7 +44,7 @@ package
 			
 			renderTarget = new BitmapData(bounds.width, bounds.height, false, 0);
 			
-			colorTransform = new ColorTransform(1, 1, 1, 0.8);
+			colorTransform = new ColorTransform(1, 1, 1, parent ? 0.9 : 0.85);
 			
 			paddle = new Paddle(this);
 			add(paddle);
