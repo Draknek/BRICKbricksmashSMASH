@@ -22,7 +22,7 @@ package
 			width = _w;
 			height = _h;
 			
-			layer = -5;
+			layer = 5;
 			
 			type = "block";
 		}
@@ -66,7 +66,14 @@ package
 				subgame.update();
 				subgame.updateLists();
 				
-				if (subgame.classCount(Ball) == 0 && subgame.typeCount("block") == 0) {
+				if (subgame.typeCount("block") == 0) {
+					var balls:Array = [];
+					subgame.getType("ball", balls);
+					
+					for each (var ball:Ball in balls) {
+						ball.moveToOuter();
+					}
+					
 					world.remove(this);
 					Main.tint = 1.0;
 				}

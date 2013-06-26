@@ -92,14 +92,7 @@ package
 				}
 				
 				if (bounced) {
-					var blockWeAreIn:Block = level.parent;
-					var newBall:Ball = new Ball(
-						x + blockWeAreIn.x + blockWeAreIn.border,
-						y + blockWeAreIn.y + blockWeAreIn.border,
-						vx*4, vy*4
-					);
-					blockWeAreIn.world.add(newBall);
-					world.remove(this);
+					moveToOuter();
 					
 					return;
 				}
@@ -219,6 +212,19 @@ package
 			if (bounced) {
 				//Audio.play(level.parent ? "low" : "low");
 			}
+		}
+		
+		public function moveToOuter ():void
+		{
+			var level:Level = world as Level;
+			var blockWeAreIn:Block = level.parent;
+			var newBall:Ball = new Ball(
+				x + blockWeAreIn.x + blockWeAreIn.border,
+				y + blockWeAreIn.y + blockWeAreIn.border,
+				vx*4, vy*4
+			);
+			blockWeAreIn.world.add(newBall);
+			world.remove(this);
 		}
 		
 		public override function render (): void
