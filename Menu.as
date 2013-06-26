@@ -44,7 +44,7 @@ package
 				if (seconds < 10) time += "0";
 				time += seconds;
 				
-				best.text += time + "   " + G.so.data.bestballsleft + "   -" + G.so.data.bestballslost;
+				best.text += time + "   " + G.so.data.bestballsleft;
 				
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
@@ -79,18 +79,6 @@ package
 			
 			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
 				play();
-			}
-		}
-		
-		public override function render ():void
-		{
-			super.render();
-			
-			if (Main.tint > 0.0) {
-				var ct:ColorTransform = Main.tintTransform
-				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -Main.tint;
-				ct.redOffset = ct.greenOffset = ct.blueOffset = Main.tint*255;
-				FP.buffer.colorTransform(FP.bounds, Main.tintTransform);
 			}
 		}
 	}

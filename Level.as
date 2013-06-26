@@ -27,6 +27,8 @@ package
 		public var t:int = 0;
 		public var lerp:Number = 0;
 		
+		public var extraRender:World;
+		
 		public function Level (_parent:Block = null)
 		{
 			parent = _parent;
@@ -92,6 +94,11 @@ package
 				}
 			}
 			
+			/*if (! parent && (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER) || Input.pressed(Key.R))) {
+				won = true;
+					doWon();
+				}*/
+			
 			if (hasStarted && ! parent && classCount(Ball) == 0) {
 				var blocks:Array = [];
 				
@@ -121,6 +128,8 @@ package
 		
 		public function doWon ():void
 		{
+			extraRender = new World;
+			
 			var balls:Array = [];
 			
 			getType("ball", balls);
@@ -173,16 +182,24 @@ package
 			if (seconds < 10) time += "0";
 			time += seconds;
 			
-			var text:Text = new Text(time + "\n" + balls.length + "\n-" + Ball.lostCount, 0, 0, {size: 50, align: "center"});
+			var text:Text;
 			
-			text.centerOO();
+			var textOffset:Number = FP.height*0.02;
 			
-			addGraphic(text, 0, FP.width*0.5, FP.height*0.5);
+			text = new Text(time, 0, 0, {size: 50});
+			text.x = textOffset;
+			text.y = textOffset;
+			extraRender.addGraphic(text);
 			
-			var restart:Button = new Button("AGAIN", 20, newGame);
+			text = new Text("" + balls.length, 0, 0, {size: 50});
+			text.x = FP.width - textOffset - text.width;
+			text.y = textOffset;
+			extraRender.addGraphic(text);
+			
+			var restart:Button = new Button("AGAIN", 50, newGame);
 			
 			restart.x = FP.width*0.5 - restart.width*0.5;
-			restart.y = FP.height*0.925 - restart.height*0.5;
+			restart.y = FP.height*0.5 - restart.height*0.5;
 			
 			add(restart);
 			
@@ -191,8 +208,6 @@ package
 			FP.tween(this, {t: 0}, 90);
 			
 			if (G.so.data.games > 1) {
-				var best:Text = new Text("Best:   ", 0, 0, {size: 18});
-				
 				time = "";
 				
 				time += int(G.so.data.besttime / (60*60));
@@ -203,14 +218,20 @@ package
 				if (seconds < 10) time += "0";
 				time += seconds;
 				
-				best.text += time + "   " + G.so.data.bestballsleft + "   -" + G.so.data.bestballslost;
+				var bestY:Number = text.y + text.height;
 				
-				best.centerOO();
-				best.x = FP.width*0.5;
-				best.y = FP.height*0.075;
+				text = new Text("Best: " + time, 0, 0, {size: 18});
+				text.x = textOffset;
+				text.y = bestY;
+				extraRender.addGraphic(text);
 				
-				addGraphic(best);
+				text = new Text("Best: " + G.so.data.bestballsleft, 0, 0, {size: 18});
+				text.x = FP.width - textOffset - text.width;
+				text.y = bestY;
+				extraRender.addGraphic(text);
 			}
+			
+			extraRender.updateLists();
 		}
 		
 		public function newGame ():void
@@ -260,6 +281,8 @@ package
 				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
 				paddle.render();
 			}
+			
+			if (extraRender) extraRender.render();
 			
 			if (! parent && Main.tint > 0.0) {
 				var ct:ColorTransform = Main.tintTransform
