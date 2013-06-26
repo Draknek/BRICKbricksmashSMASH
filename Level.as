@@ -182,6 +182,28 @@ package
 			t = 0;
 			
 			FP.tween(this, {t: 0}, 90);
+			
+			if (G.so.data.games > 1) {
+				var best:Text = new Text("Best:   ", 0, 0, {size: 18});
+				
+				time = "";
+				
+				time += int(G.so.data.besttime / (60*60));
+				time += ":";
+				
+				seconds = int(G.so.data.besttime/60) % 60;
+				
+				if (seconds < 10) time += "0";
+				time += seconds;
+				
+				best.text += time + "   " + G.so.data.bestballsleft + "   -" + G.so.data.bestballslost;
+				
+				best.centerOO();
+				best.x = FP.width*0.5;
+				best.y = FP.height*0.925;
+				
+				addGraphic(best);
+			}
 		}
 		
 		public function doLost ():void
