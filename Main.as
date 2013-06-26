@@ -36,6 +36,8 @@ package
 		
 		public override function update (): void
 		{
+			Input.mouseCursor = "auto";
+			
 			if (Input.pressed(FP.console.toggleKey)) {
 				// Doesn't matter if it's called when already enabled
 				FP.console.enable();

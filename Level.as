@@ -76,7 +76,7 @@ package
 			
 			if (won || lost) {
 				if (! parent && (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER) || Input.pressed(Key.R))) {
-					FP.world = new Level;
+					newGame();
 				}
 				
 				return;
@@ -179,6 +179,13 @@ package
 			
 			addGraphic(text, 0, FP.width*0.5, FP.height*0.5);
 			
+			var restart:Button = new Button("AGAIN", 20, newGame);
+			
+			restart.x = FP.width*0.5 - restart.width*0.5;
+			restart.y = FP.height*0.925 - restart.height*0.5;
+			
+			add(restart);
+			
 			t = 0;
 			
 			FP.tween(this, {t: 0}, 90);
@@ -200,19 +207,25 @@ package
 				
 				best.centerOO();
 				best.x = FP.width*0.5;
-				best.y = FP.height*0.925;
+				best.y = FP.height*0.075;
 				
 				addGraphic(best);
 			}
 		}
 		
+		public function newGame ():void
+		{
+			FP.world = new Level;
+		}
+		
 		public function doLost ():void
 		{
-			var text:Text = new Text("LOST", 0, 0, {size: 50});
+			var restart:Button = new Button("AGAIN", 50, newGame);
 			
-			text.centerOO();
+			restart.x = FP.width*0.5 - restart.width*0.5;
+			restart.y = FP.height*0.65 - restart.height*0.5;
 			
-			addGraphic(text, 0, FP.width*0.5, FP.height*0.65);
+			add(restart);
 		}
 		
 		public function respawn ():void
@@ -235,9 +248,9 @@ package
 			
 			FP.buffer = renderTarget;
 			
-			Draw.setTarget(renderTarget, camera);
-			
 			renderTarget.colorTransform(bounds, colorTransform);
+			
+			Draw.setTarget(renderTarget, FP.zero);
 			
 			super.render();
 			

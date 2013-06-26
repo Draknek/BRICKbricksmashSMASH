@@ -7,6 +7,7 @@ package
 	
 	import flash.display.*;
 	import flash.geom.*;
+	import flash.net.*;
 	
 	public class Menu extends World
 	{
@@ -23,12 +24,12 @@ package
 			
 			addGraphic(title);
 			
-			var by:Text = new Text("By Alan Hazelden", 0, 0, {size: 18});
+			var by:Button = new Button("By Alan Hazelden", 18, gotoWebsite);
 			
 			by.x = (FP.width - by.width)*0.5;
 			by.y = title.y + title.height + title.y*0.25;
 			
-			addGraphic(by);
+			add(by);
 			
 			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
 			
@@ -53,18 +54,31 @@ package
 				best.y = FP.height;
 			}
 			
-			var play:Text = new Text("PLAY", 0, 0, {size: 50});
+			var play:Button = new Button("PLAY", 50, play);
 			
 			play.x = (FP.width - play.width)*0.5;
 			play.y = by.y + by.height + (best.y - by.y - by.height - play.height)*0.5;
 			
-			addGraphic(play);
+			add(play);
+		}
+		
+		public function play ():void
+		{
+			FP.world = new Level;
+		}
+		
+		public function gotoWebsite ():void
+		{
+			var request:URLRequest = new URLRequest("http://www.draknek.org/");
+			navigateToURL(request, "_blank");
 		}
 		
 		public override function update ():void
 		{
+			super.update();
+			
 			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
-				FP.world = new Level;
+				play();
 			}
 		}
 		
