@@ -5,10 +5,16 @@ package
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.utils.*;
 	
+	import flash.geom.*;
+	
 	public class Main extends Engine
 	{
 		[Embed(source = 'fonts/orbitron-medium.ttf', embedAsCFF="false", fontFamily = 'orbitron')]
 		public static const FONT:Class;
+		
+		public static var tint:Number = 0.0;
+		
+		public static var tintTransform:ColorTransform = new ColorTransform();
 		
 		public function Main () 
 		{

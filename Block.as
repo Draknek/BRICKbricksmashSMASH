@@ -68,6 +68,7 @@ package
 				
 				if (subgame.classCount(Ball) == 0 && subgame.typeCount("block") == 0) {
 					world.remove(this);
+					Main.tint = 1.0;
 				}
 			}
 		}

@@ -247,6 +247,15 @@ package
 				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
 				paddle.render();
 			}
+			
+			if (! parent && Main.tint > 0.0) {
+				var ct:ColorTransform = Main.tintTransform
+				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -Main.tint*2 + 1;
+				ct.redOffset = ct.greenOffset = ct.blueOffset = Main.tint*255;
+				FP.buffer.colorTransform(FP.bounds, Main.tintTransform);
+				
+				Main.tint -= 0.1;
+			}
 		}
 	}
 }

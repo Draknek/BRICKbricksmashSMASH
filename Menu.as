@@ -67,5 +67,17 @@ package
 				FP.world = new Level;
 			}
 		}
+		
+		public override function render ():void
+		{
+			super.render();
+			
+			if (Main.tint > 0.0) {
+				var ct:ColorTransform = Main.tintTransform
+				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -Main.tint;
+				ct.redOffset = ct.greenOffset = ct.blueOffset = Main.tint*255;
+				FP.buffer.colorTransform(FP.bounds, Main.tintTransform);
+			}
+		}
 	}
 }
