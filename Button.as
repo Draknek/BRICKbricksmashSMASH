@@ -28,7 +28,7 @@ package
 		
 		public override function update (): void
 		{
-			if (!world || !collidable) return;
+			if (!world || !collidable || image.alpha == 0) return;
 			
 			var over:Boolean = collidePoint(x, y, world.mouseX, world.mouseY);
 			

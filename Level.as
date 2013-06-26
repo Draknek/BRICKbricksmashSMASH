@@ -130,6 +130,8 @@ package
 		{
 			extraRender = new World;
 			
+			var tweenTime:int = 90;
+			
 			var balls:Array = [];
 			
 			getType("ball", balls);
@@ -168,9 +170,9 @@ package
 			
 			G.so.flush();
 			
-			FP.tween(this, {lerp: 1}, 90);
+			FP.tween(this, {lerp: 1}, tweenTime);
 			
-			FP.tween(paddle, {y: FP.height + 1}, 90, {tweener: FP.tweener});
+			FP.tween(paddle, {y: FP.height + 1}, tweenTime, {tweener: FP.tweener});
 			
 			var time:String = "";
 			
@@ -189,23 +191,29 @@ package
 			text = new Text(time, 0, 0, {size: 50});
 			text.x = textOffset;
 			text.y = textOffset;
+			text.alpha = 0;
 			extraRender.addGraphic(text);
+			FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 			
 			text = new Text("" + balls.length, 0, 0, {size: 50});
 			text.x = FP.width - textOffset - text.width;
 			text.y = textOffset;
+			text.alpha = 0;
 			extraRender.addGraphic(text);
+			FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 			
 			var restart:Button = new Button("AGAIN", 50, newGame);
 			
 			restart.x = FP.width*0.5 - restart.width*0.5;
 			restart.y = FP.height*0.5 - restart.height*0.5;
+			restart.image.alpha = 0;
+			FP.tween(restart.image, {alpha:1}, 30, {delay:tweenTime});
 			
 			add(restart);
 			
 			t = 0;
 			
-			FP.tween(this, {t: 0}, 90);
+			FP.tween(this, {t: 0}, tweenTime);
 			
 			if (G.so.data.games > 1) {
 				time = "";
@@ -223,12 +231,16 @@ package
 				text = new Text("Best: " + time, 0, 0, {size: 18});
 				text.x = textOffset;
 				text.y = bestY;
+				text.alpha = 0;
 				extraRender.addGraphic(text);
+				FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 				
 				text = new Text("Best: " + G.so.data.bestballsleft, 0, 0, {size: 18});
 				text.x = FP.width - textOffset - text.width;
 				text.y = bestY;
+				text.alpha = 0;
 				extraRender.addGraphic(text);
+				FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 			}
 			
 			extraRender.updateLists();
