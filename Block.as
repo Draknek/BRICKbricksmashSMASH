@@ -12,7 +12,7 @@ package
 	{
 		public var subgame:Level;
 		
-		public var border:int = 3;
+		public var border:int = G.invertSubGame ? 1 : 3;
 		
 		public function Block (_x:Number, _y:Number, _w:Number, _h:Number)
 		{
@@ -83,19 +83,21 @@ package
 		
 		public override function render (): void
 		{
-			FP.rect.x = x;
-			FP.rect.y = y;
-			FP.rect.width = width;
-			FP.rect.height = height;
-			
-			if (subgame) {
-				FP.rect.x += 1;
-				FP.rect.y += 1;
-				FP.rect.width -= 2;
-				FP.rect.height -= 2;
+			if (! subgame || ! G.invertSubGame) {
+				FP.rect.x = x;
+				FP.rect.y = y;
+				FP.rect.width = width;
+				FP.rect.height = height;
+				
+				if (subgame) {
+					FP.rect.x += 1;
+					FP.rect.y += 1;
+					FP.rect.width -= 2;
+					FP.rect.height -= 2;
+				}
+				
+				FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
 			}
-			
-			FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
 			
 			if (! subgame) return;
 			
@@ -105,6 +107,18 @@ package
 			FP.point.y = y + (height - subgame.bounds.height)*0.5;
 			
 			FP.buffer.copyPixels(subgame.renderTarget, subgame.bounds, FP.point);
+			
+			if (G.invertSubGame) {
+				FP.rect.x = FP.point.x;
+				FP.rect.y = FP.point.y;
+				FP.rect.width = subgame.bounds.width;
+				FP.rect.height = subgame.bounds.height;
+				
+				var ct:ColorTransform = Main.tintTransform
+				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -1*2 + 1;
+				ct.redOffset = ct.greenOffset = ct.blueOffset = 255;
+				FP.buffer.colorTransform(FP.rect, Main.tintTransform);
+			}
 		}
 	}
 }
