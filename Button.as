@@ -48,9 +48,12 @@ package
 		
 		public override function render (): void
 		{
+			Draw.setTarget(FP.buffer, FP.zero);
+			
 			if (image.color != 0xFFFFFF) {
-				Draw.setTarget(FP.buffer, FP.zero);
 				Draw.rectPlus(x, y, width, height, 0xFFFFFF, 1, true, 0, height*0.4);
+			} else {
+				Draw.rect(x-2, y-2, width+4, height+4, 0x0);
 			}
 			
 			super.render();
