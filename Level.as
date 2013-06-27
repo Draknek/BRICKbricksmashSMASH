@@ -274,8 +274,16 @@ package
 			var vx:Number = 1.5 + Math.random()*0.5;
 			var vy:Number = -1.5 - Math.random()*0.5;
 			
-			if (paddle.x + paddle.width*0.5 < bounds.width*0.5) {
+			if (paddle.vx < -0.5) {
 				vx *= -1;
+			} else if (paddle.vx < 0.5) {
+				if (paddle.x + paddle.width*0.5 < bounds.width*0.4) {
+					vx *= -1;
+				} else if (paddle.x + paddle.width*0.5 < bounds.width*0.6) {
+					if (Math.random() < 0.5) {
+						vx *= -1;
+					}
+				}
 			}
 			
 			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, vx, vy));
