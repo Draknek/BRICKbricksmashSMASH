@@ -145,16 +145,17 @@ package
 			var b:Ball;
 			
 			for each (b in balls) {
-				b.sortValue = -Math.atan2(b.y - bounds.height*0.5, b.x - bounds.width*0.5);
+				b.sortValue = Math.atan2(b.y - bounds.height*0.5, b.x - bounds.width*0.5);
 			}
 			
-			balls.sortOn("sortValue");
+			FP.sortBy(balls, "sortValue");
 			
-			for each (b in balls) {
+			for (i = 0; i < balls.length; i++) {
+				b = balls[i];
 				b.bounceX = b.x;
 				b.bounceY = b.y;
 				b.showBounce = false;
-				b.id = i++;
+				b.id = i;
 			}
 			
 			if (! G.so.data.games) {
