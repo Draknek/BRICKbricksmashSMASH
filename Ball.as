@@ -103,7 +103,7 @@ package
 				var offset:Number = x - (paddle.x + paddle.width*0.5);
 				offset /= paddle.width;
 				
-				vx = offset * Math.abs(vy) * 3;
+				vx = offset * Math.abs(vy) * 2 + FP.clamp(paddle.vx, -2*size, 2*size)*0.25;
 				vy = -vy;
 				vy -= 0.05*size;
 				
