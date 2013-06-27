@@ -6,6 +6,8 @@ package
 	{
 		public static const so:SharedObject = SharedObject.getLocal("brickbricksmashsmash", "/");
 		
+		public static var mouseInput:Boolean = false;
+		
 		public static function init ():void
 		{
 			if (! so.data.games) {

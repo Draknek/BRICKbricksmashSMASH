@@ -122,7 +122,7 @@ package
 			}
 			
 			if (! hasStarted) {
-				if (Input.mousePressed) {
+				if (G.mouseInput ? Input.mousePressed : (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER))) {
 					respawn();
 					hasStarted = true;
 				} else {
