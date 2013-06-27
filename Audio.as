@@ -28,6 +28,8 @@ package
 		
 		public static function play (soundID:String):void
 		{
+			if (G.so.data.mute) return;
+			
 			soundID += (FP.rand(5)+1);
 			
 			var embed:Class = Audio["Sfx_" + soundID];

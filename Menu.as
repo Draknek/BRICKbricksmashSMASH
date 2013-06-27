@@ -13,6 +13,7 @@ package
 	{
 		public var mouseButton:Button;
 		public var keyboardButton:Button;
+		public var muteButton:Button;
 		
 		public function Menu ()
 		{
@@ -81,6 +82,18 @@ package
 			
 			add(mouse);
 			add(keyboard);
+			
+			muteButton = new Button("Muted", 12, toggleMute);
+			
+			Text(muteButton.image).align = "center";
+			if (! G.so.data.mute) {
+				Text(muteButton.image).text = "Mute";
+			}
+			
+			muteButton.x = FP.width - muteButton.width - title.y*0.25;
+			muteButton.y = FP.height - muteButton.height - title.y*0.25;
+			
+			add(muteButton);
 		}
 		
 		public function useMouse ():void
@@ -109,6 +122,14 @@ package
 			
 			G.so.data.control = "keyboard";
 			G.so.flush();
+		}
+		
+		public function toggleMute ():void
+		{
+			G.so.data.mute = G.so.data.mute ? false : true;
+			G.so.flush();
+			
+			Text(muteButton.image).text = G.so.data.mute ? "Muted" : "Mute";
 		}
 		
 		public function startGame ():void
