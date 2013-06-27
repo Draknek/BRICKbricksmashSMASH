@@ -11,6 +11,9 @@ package
 	
 	public class Menu extends World
 	{
+		public var mouseButton:Button;
+		public var keyboardButton:Button;
+		
 		public function Menu ()
 		{
 			var title:Text = new Text("", 0, 0, {size: 40});
@@ -54,15 +57,61 @@ package
 				best.y = FP.height;
 			}
 			
-			var play:Button = new Button("PLAY", 50, play);
+			var play:Button = new Button("PLAY", 50, startGame);
 			
 			play.x = (FP.width - play.width)*0.5;
 			play.y = by.y + by.height + (best.y - by.y - by.height - play.height)*0.5;
 			
 			add(play);
+			
+			var mouse:Button = mouseButton = new Button("Mouse", 12, useMouse);
+			var keyboard:Button = keyboardButton = new Button("Keyboard", 12, useKeyboard);
+			
+			keyboard.x = title.y*0.25;
+			keyboard.y = FP.height - keyboard.height - title.y*0.25;
+			
+			mouse.x = keyboard.x;
+			mouse.y = keyboard.y - mouse.height;
+			
+			if (G.so.data.control == "mouse") {
+				useMouse();
+			} else {
+				useKeyboard();
+			}
+			
+			add(mouse);
+			add(keyboard);
 		}
 		
-		public function play ():void
+		public function useMouse ():void
+		{
+			Text(mouseButton.image).setTextProperty("underline", true);
+			mouseButton.collidable = false;
+			
+			Text(keyboardButton.image).setTextProperty("underline", false);
+			keyboardButton.collidable = true;
+			
+			G.mouseInput = true;
+			
+			G.so.data.control = "mouse";
+			G.so.flush();
+		}
+		
+		public function useKeyboard ():void
+		{
+			Text(mouseButton.image).setTextProperty("underline", false);
+			mouseButton.collidable = true;
+			
+			Text(keyboardButton.image).setTextProperty("underline", true);
+			keyboardButton.collidable = false;
+			
+			G.mouseInput = false;
+			
+			G.so.data.control = "keyboard";
+			G.so.flush();
+		}
+		
+		public function startGame ():void
 		{
 			FP.world = new Level;
 		}
@@ -78,7 +127,7 @@ package
 			super.update();
 			
 			if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
-				play();
+				startGame();
 			}
 		}
 	}

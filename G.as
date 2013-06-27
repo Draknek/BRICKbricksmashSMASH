@@ -10,6 +10,9 @@ package
 		
 		public static function init ():void
 		{
+			if (! so.data.control) {
+				so.data.control = "mouse";
+			}
 			if (! so.data.games) {
 				so.data.games = 0;
 				so.data.besttime = 0;

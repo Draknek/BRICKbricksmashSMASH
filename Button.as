@@ -28,7 +28,10 @@ package
 		
 		public override function update (): void
 		{
-			if (!world || !collidable || image.alpha == 0) return;
+			if (!world || !collidable || image.alpha == 0) {
+				image.color = 0xFFFFFF;
+				return;
+			}
 			
 			var over:Boolean = collidePoint(x, y, world.mouseX, world.mouseY);
 			
@@ -45,11 +48,9 @@ package
 		
 		public override function render (): void
 		{
-			Draw.setTarget(FP.buffer, FP.zero);
 			if (image.color != 0xFFFFFF) {
+				Draw.setTarget(FP.buffer, FP.zero);
 				Draw.rectPlus(x, y, width, height, 0xFFFFFF, 1, true, 0, height*0.4);
-			} else {
-				Draw.rect(x-2, y-2, width+4, height+4, 0x0);
 			}
 			
 			super.render();
