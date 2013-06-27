@@ -34,7 +34,10 @@ package
 		private var sw:int;
 		private var sh:int;
 		
-		[Embed(source = 'net/flashpunk/graphics/04B_03__.TTF', fontFamily = 'default')]
+		private var testLoad:Boolean = true;
+		private var testLoadAmount:Number = 0;
+		
+		[Embed(source = 'fonts/orbitron-medium.ttf', embedAsCFF="false", fontFamily = 'orbitron')]
 		private static const FONT:Class;
 		
 		public function Preloader ()
@@ -50,6 +53,8 @@ package
 			px = (sw - w) * 0.5;
 			py = (sh - h) * 0.5;
 			
+			sitelock(["draknek.org"]);
+			
 			graphics.beginFill(BG_COLOR);
 			graphics.drawRect(0, 0, sw, sh);
 			graphics.endFill();
@@ -62,21 +67,11 @@ package
 			
 			addChild(progressBar);
 			
-			text = new TextField();
-			
-			text.textColor = FG_COLOR;
-			text.selectable = false;
-			text.mouseEnabled = false;
-			text.defaultTextFormat = new TextFormat("default", 16);
-			text.embedFonts = true;
-			text.autoSize = "left";
-			text.text = "0%";
+			text = makeText("O%", 16, "orbitron", FG_COLOR);
 			text.x = (sw - text.width) * 0.5;
 			text.y = sh * 0.5 + h;
 			
 			addChild(text);
-			
-			sitelock(["draknek.org"]);
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
@@ -105,7 +100,14 @@ package
 					text.y = (sh - text.height) * 0.5;
 				}
 			} else {
-				var p:Number = (loaderInfo.bytesLoaded / loaderInfo.bytesTotal);
+				var p:Number;
+				
+				if (testLoad) {
+					p = testLoadAmount;
+					testLoadAmount += 0.005;
+				} else {
+					p = (loaderInfo.bytesLoaded / loaderInfo.bytesTotal);
+				}
 				
 				progressBar.graphics.clear();
 				progressBar.graphics.beginFill(BG_COLOR);
@@ -127,6 +129,7 @@ package
 		}
 		
 		private function hasLoaded (): Boolean {
+			if (testLoad) return testLoadAmount >= 1;
 			return (loaderInfo.bytesLoaded >= loaderInfo.bytesTotal);
 		}
 		
@@ -156,12 +159,48 @@ package
 				if (host.substr(-d.length, d.length) == d) return true;
 			}
 			
-			text.text = "Error: game is sitelocked";
-			text.x = (sw - text.width) * 0.5;
+			text = makeText('This game is not authorised\nto play on this website.\n\n<a href="http://www.draknek.org/">Go to my site</a>', 24, 'orbitron', 0xFFFFFF, "a {text-decoration:underline;} a:hover {text-decoration:none;}");
+			
+			text.x = sw*0.5 - text.width*0.5;
+			text.y = sh*0.5 - text.height*0.5;
+			addChild(text);
 			
 			throw new Error("Error: this game is sitelocked");
 			
 			return false;
+		}
+		
+		public static function makeText (text:String, size:Number, font:String, color:uint, css:String = null): TextField
+		{
+			var textField:TextField = new TextField;
+			
+			textField.selectable = false;
+			
+			textField.embedFonts = true;
+			
+			textField.multiline = true;
+			
+			textField.autoSize = "center";
+			
+			textField.textColor = color;
+			
+			var format:TextFormat = new TextFormat(font, size);
+			format.align = "center";
+			
+			textField.defaultTextFormat = format;
+			
+			if (css) {
+				var ss:StyleSheet = new StyleSheet();
+				ss.parseCSS(css);
+				textField.htmlText = text;
+				textField.styleSheet = ss;
+				textField.mouseEnabled = true;
+			} else {
+				textField.text = text;
+				textField.mouseEnabled = false;
+			}
+			
+			return textField;
 		}
 	}
 }
