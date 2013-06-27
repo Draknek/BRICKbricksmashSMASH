@@ -65,6 +65,19 @@ package
 			
 			add(play);
 			
+			if (false) {
+				var moreGames:Button = new Button("MORE GAMES", 25, gotoWebsite);
+				
+				var space:int = (best.y - by.y - by.height - play.height - moreGames.height)*3/7;
+				
+				play.y = by.y + by.height + space;
+				
+				moreGames.x = (FP.width - moreGames.width)*0.5;
+				moreGames.y = play.y + play.height + space;
+				
+				add(moreGames);
+			}
+			
 			mouseButton = new Button("Mouse", 12, useKeyboard);
 			keyboardButton = new Button("Keyboard", 12, useMouse);
 			
