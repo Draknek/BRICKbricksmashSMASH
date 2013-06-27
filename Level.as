@@ -311,9 +311,11 @@ package
 			if (extraRender) extraRender.render();
 			
 			if (! parent && Main.tint > 0.0) {
+				var t:Number = Main.tint;
+				if (t > 1) t = 1;
 				var ct:ColorTransform = Main.tintTransform
-				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -Main.tint*2 + 1;
-				ct.redOffset = ct.greenOffset = ct.blueOffset = Main.tint*255;
+				ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = -t*2 + 1;
+				ct.redOffset = ct.greenOffset = ct.blueOffset = t*255;
 				FP.buffer.colorTransform(FP.bounds, Main.tintTransform);
 				
 				Main.tint -= 0.1;

@@ -75,7 +75,7 @@ package
 					}
 					
 					world.remove(this);
-					Main.tint = 1.0;
+					Main.tint = 1.5;
 					Audio.play("high");
 				}
 			}
