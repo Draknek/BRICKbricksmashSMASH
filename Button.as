@@ -37,6 +37,8 @@ package
 			
 			if (over) {
 				Input.mouseCursor = "button";
+			} else if (Input.mouseCursor == "hide") {
+				Input.mouseCursor = "auto";
 			}
 			
 			image.color = over ? 0x000000 : 0xFFFFFF;

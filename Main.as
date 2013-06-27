@@ -36,7 +36,7 @@ package
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
+			Input.mouseCursor = G.mouseInput ? "auto" : "hide";
 			
 			if (Input.pressed(FP.console.toggleKey)) {
 				// Doesn't matter if it's called when already enabled
