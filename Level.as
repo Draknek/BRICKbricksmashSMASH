@@ -52,15 +52,22 @@ package
 			add(paddle);
 			
 			var bw:int = parent ? 6 : 60;
-			var bh:int = parent ? 3 : 30;
+			var bh:int = parent ? 3 : 32;
 			
-			var spaceX:Number = (w - bw*5)/6;
+			var blocksWide:int = parent ? 5 : 8;
+			var blocksHigh:int = parent ? 2 : 2;
 			
-			for (var i:int = 0; i < 10; i++) {
-				
+			var spaceX:int = (w - bw*blocksWide)/(blocksWide+1);
+			
+			var spaceY:int = parent ? spaceX : 0;
+			
+			var startX:int = (w - bw*blocksWide - spaceX*(blocksWide+1))*0.5 + spaceX;
+			var startY:int = parent ? spaceY : bh*1.5;
+			
+			for (var i:int = 0; i < blocksWide*blocksHigh; i++) {
 				var block:Block = new Block(
-					int(i%5)*(spaceX+bw) + spaceX,
-					int(i/5)*(spaceX+bh) + spaceX,
+					int(i%blocksWide)*(spaceX+bw) + startX,
+					int(i/blocksWide)*(spaceY+bh) + startY,
 					bw, bh);
 				add(block);
 			}

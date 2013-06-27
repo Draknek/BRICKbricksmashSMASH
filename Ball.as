@@ -105,7 +105,7 @@ package
 				
 				vx = offset * Math.abs(vy) * 2 + FP.clamp(paddle.vx, -2*size, 2*size)*0.25;
 				vy = -vy;
-				vy -= 0.05*size;
+				vy -= 0.02*size;
 				
 				var minX:Number = 1.0;
 				
@@ -117,21 +117,21 @@ package
 				bounced = true;
 			}
 			
-			if (x < 0 && vx < 0) {
+			if (x < size && vx < 0) {
 				vx *= -1;
-				x = 0;
+				x = size;
 				bounced = true;
-			} else if (x > w && vx > 0) {
+			} else if (x > w-size && vx > 0) {
 				vx *= -1;
-				x = w;
+				x = w-size;
 				bounced = true;
 			}
 			
-			if (y < 0 && vy < 0) {
+			if (y < size && vy < 0) {
 				vy *= -1;
-				y = 0;
+				y = size;
 				bounced = true;
-			} else if (y > h && vy > 0) {
+			} else if (y > h+size && vy > 0) {
 				lostCount++;
 				world.remove(this);
 				return;

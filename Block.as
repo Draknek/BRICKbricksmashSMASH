@@ -12,12 +12,12 @@ package
 	{
 		public var subgame:Level;
 		
-		public var border:int = 2;
+		public var border:int = 3;
 		
 		public function Block (_x:Number, _y:Number, _w:Number, _h:Number)
 		{
-			x = _x;
-			y = _y;
+			x = int(_x);
+			y = int(_y);
 			
 			width = _w;
 			height = _h;
@@ -87,6 +87,13 @@ package
 			FP.rect.y = y;
 			FP.rect.width = width;
 			FP.rect.height = height;
+			
+			if (subgame) {
+				FP.rect.x += 1;
+				FP.rect.y += 1;
+				FP.rect.width -= 2;
+				FP.rect.height -= 2;
+			}
 			
 			FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
 			
