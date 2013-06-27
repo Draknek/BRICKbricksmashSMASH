@@ -51,7 +51,7 @@ package
 			if (G.mouseInput) {
 				toX = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
 				
-				vx = (toX - x)*0.4;
+				vx = (toX - x)*0.2;
 				
 			} else {
 				if (! level.parent) {
