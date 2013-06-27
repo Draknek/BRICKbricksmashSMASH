@@ -65,23 +65,20 @@ package
 			
 			add(play);
 			
-			var mouse:Button = mouseButton = new Button("Mouse", 12, useMouse);
-			var keyboard:Button = keyboardButton = new Button("Keyboard", 12, useKeyboard);
+			mouseButton = new Button("Mouse", 12, useKeyboard);
+			keyboardButton = new Button("Keyboard", 12, useMouse);
 			
-			keyboard.x = title.y*0.25;
-			keyboard.y = FP.height - keyboard.height - title.y*0.25;
+			keyboardButton.x = title.y*0.25;
+			keyboardButton.y = FP.height - keyboardButton.height - title.y*0.25;
 			
-			mouse.x = keyboard.x;
-			mouse.y = keyboard.y - mouse.height;
+			mouseButton.x = keyboardButton.x;
+			mouseButton.y = keyboardButton.y;
 			
 			if (G.so.data.control == "mouse") {
 				useMouse();
 			} else {
 				useKeyboard();
 			}
-			
-			add(mouse);
-			add(keyboard);
 			
 			muteButton = new Button("Muted", 12, toggleMute);
 			
@@ -98,11 +95,8 @@ package
 		
 		public function useMouse ():void
 		{
-			Text(mouseButton.image).setTextProperty("underline", true);
-			mouseButton.collidable = false;
-			
-			Text(keyboardButton.image).setTextProperty("underline", false);
-			keyboardButton.collidable = true;
+			add(mouseButton);
+			remove(keyboardButton);
 			
 			G.mouseInput = true;
 			
@@ -112,11 +106,8 @@ package
 		
 		public function useKeyboard ():void
 		{
-			Text(mouseButton.image).setTextProperty("underline", false);
-			mouseButton.collidable = true;
-			
-			Text(keyboardButton.image).setTextProperty("underline", true);
-			keyboardButton.collidable = false;
+			add(keyboardButton);
+			remove(mouseButton);
 			
 			G.mouseInput = false;
 			

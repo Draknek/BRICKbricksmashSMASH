@@ -28,7 +28,7 @@ package
 		
 		public override function update (): void
 		{
-			if (!world || !collidable || image.alpha == 0) {
+			if (!world || !collidable || !visible || image.alpha == 0) {
 				image.color = 0xFFFFFF;
 				return;
 			}
