@@ -294,6 +294,8 @@ package
 			}
 			
 			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, vx, vy));
+			
+			Audio.play("high", 0.5);
 		}
 		
 		public override function render (): void

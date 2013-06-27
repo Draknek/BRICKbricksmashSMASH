@@ -43,6 +43,7 @@ package
 			
 			if (over && Input.mousePressed && callback != null) {
 				callback();
+				Audio.play("high", 0.25);
 			}
 		}
 		

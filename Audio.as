@@ -26,7 +26,7 @@ package
 			inited = true;
 		}
 		
-		public static function play (soundID:String):void
+		public static function play (soundID:String, volume:Number = 1.0):void
 		{
 			if (G.so.data.mute) return;
 			
@@ -38,7 +38,7 @@ package
 			
 			var sound:Sfx = new Sfx(embed);
 			
-			var volume:Number = 0.5;
+			volume *= 0.5;
 			
 			sound.play(volume);
 		}
