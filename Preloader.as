@@ -34,8 +34,10 @@ package
 		private var sw:int;
 		private var sh:int;
 		
-		private var testLoad:Boolean = true;
+		private var testLoad:Boolean = false;
 		private var testLoadAmount:Number = 0;
+		
+		private var title:TextField;
 		
 		[Embed(source = 'fonts/orbitron-medium.ttf', embedAsCFF="false", fontFamily = 'orbitron')]
 		private static const FONT:Class;
@@ -50,8 +52,14 @@ package
 			w = stage.stageWidth * 0.8;
 			h = 20;
 			
+			title = makeText('BRICK<span class="small">[bricksmash]</span>SMASH', 40, "orbitron", 0xFFFFFF, ".small {font-size: 12}");
+			title.x = (sw - title.width)*0.5;
+			title.y = title.x;
+			
+			addChild(title);
+			
 			px = (sw - w) * 0.5;
-			py = (sh - h) * 0.5;
+			py = title.y + title.height + (sh - h - title.y - title.height) * 0.5;
 			
 			sitelock(["draknek.org"]);
 			
@@ -67,9 +75,15 @@ package
 			
 			addChild(progressBar);
 			
-			text = makeText("O%", 16, "orbitron", FG_COLOR);
+			text = makeText("LOADING", 30, "orbitron", FG_COLOR);
 			text.x = (sw - text.width) * 0.5;
-			text.y = sh * 0.5 + h;
+			text.y = py - h*0.5 - text.height;
+			
+			addChild(text);
+			
+			text = makeText("O%", 30, "orbitron", FG_COLOR);
+			text.x = (sw - text.width) * 0.5;
+			text.y = py + h*1.5;
 			
 			addChild(text);
 			
@@ -162,7 +176,7 @@ package
 			text = makeText('This game is not authorised\nto play on this website.\n\n<a href="http://www.draknek.org/">Go to my site</a>', 24, 'orbitron', 0xFFFFFF, "a {text-decoration:underline;} a:hover {text-decoration:none;}");
 			
 			text.x = sw*0.5 - text.width*0.5;
-			text.y = sh*0.5 - text.height*0.5;
+			text.y = title.y + title.height + (sh - text.height - title.y - title.height) * 0.5;
 			addChild(text);
 			
 			throw new Error("Error: this game is sitelocked");
@@ -192,8 +206,8 @@ package
 			if (css) {
 				var ss:StyleSheet = new StyleSheet();
 				ss.parseCSS(css);
-				textField.htmlText = text;
 				textField.styleSheet = ss;
+				textField.htmlText = text;
 				textField.mouseEnabled = true;
 			} else {
 				textField.text = text;
