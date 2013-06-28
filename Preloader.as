@@ -22,6 +22,8 @@ package
 		
 		public static var stage:Stage;
 		
+		public static var hostedOn:String;
+		
 		
 		
 		private var progressBar: Shape;
@@ -61,7 +63,7 @@ package
 			px = (sw - w) * 0.5;
 			py = title.y + title.height + (sh - h - title.y - title.height) * 0.5;
 			
-			sitelock(["draknek.org"]);
+			sitelock(["draknek.org", "flashgamelicense.com"]);
 			
 			graphics.beginFill(BG_COLOR);
 			graphics.drawRect(0, 0, sw, sh);
@@ -170,7 +172,10 @@ package
 			
 			for each (var d:String in allowed)
 			{
-				if (host.substr(-d.length, d.length) == d) return true;
+				if (host.substr(-d.length, d.length) == d) {
+					hostedOn = d;
+					return true;
+				}
 			}
 			
 			text = makeText('This game is not authorised\nto play on this website.\n\n<a href="http://www.draknek.org/">Go to my site</a>', 24, 'orbitron', 0xFFFFFF, "a {text-decoration:underline;} a:hover {text-decoration:none;}");

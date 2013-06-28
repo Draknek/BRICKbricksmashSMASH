@@ -65,7 +65,7 @@ package
 			
 			add(play);
 			
-			if (false) {
+			if (Preloader.hostedOn == "flashgamelicense.com") {
 				var moreGames:Button = new Button("MORE GAMES", 25, gotoWebsite);
 				
 				var space:int = (best.y - by.y - by.height - play.height - moreGames.height)*3/7;
