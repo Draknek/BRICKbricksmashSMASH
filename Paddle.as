@@ -86,14 +86,16 @@ package
 		
 		public override function render (): void
 		{
+			var level:Level = world as Level;
+			
+			var c:uint = level.parent ? 0xFF000000 : 0xFFFFFFFF
+			
 			FP.rect.x = x;
 			FP.rect.y = y;
 			FP.rect.width = width;
 			FP.rect.height = height;
 			
-			FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
-			
-			var level:Level = world as Level;
+			FP.buffer.fillRect(FP.rect, c);
 			
 			if (! level.hasStarted) {
 				FP.rect.x = x + width*0.5 - 3;
@@ -101,7 +103,7 @@ package
 				FP.rect.width = 6;
 				FP.rect.height = 6;
 				
-				FP.buffer.fillRect(FP.rect, 0xFFFFFFFF);
+				FP.buffer.fillRect(FP.rect, c);
 			}
 		}
 	}

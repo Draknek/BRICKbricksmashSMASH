@@ -26,6 +26,8 @@ package
 		
 		public var sortValue:Number;
 		
+		public var color:uint;
+		
 		public static var lostCount:int;
 		
 		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)
@@ -41,6 +43,8 @@ package
 			} else {
 				size = 3;
 			}
+			
+			color = _block ? 0xFF000000 : 0xFFFFFFFF;
 			
 			type = "ball";
 			
@@ -223,6 +227,7 @@ package
 				y + blockWeAreIn.y + blockWeAreIn.border,
 				vx*4, vy*4
 			);
+			newBall.color = blockWeAreIn.color;
 			blockWeAreIn.world.add(newBall);
 			world.remove(this);
 		}
@@ -250,8 +255,6 @@ package
 			
 			oldX = x;
 			oldY = y;
-			
-			var color:uint = 0xFFFFFFFF;
 			
 			if (size < 1) {
 				Draw.line(x1, y1, x2, y2, color);

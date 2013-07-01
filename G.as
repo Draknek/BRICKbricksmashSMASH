@@ -9,6 +9,7 @@ package
 		public static var mouseInput:Boolean = true;
 		
 		public static var invertSubGame:Boolean = true;
+		public static var colors:Boolean = true;
 		
 		public static function init ():void
 		{
