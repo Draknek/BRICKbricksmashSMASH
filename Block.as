@@ -34,6 +34,9 @@ package
 			
 			type = "block";
 			
+			ix = _ix;
+			iy = _iy;
+			
 			if (_hasSubgame) {
 				if (G.colors && ! G.fadeColors) {
 					color = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
