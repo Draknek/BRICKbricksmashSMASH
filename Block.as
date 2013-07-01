@@ -4,6 +4,7 @@ package
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
+	import net.flashpunk.tweens.misc.*;
 	
 	import flash.display.*;
 	import flash.geom.*;
@@ -16,7 +17,12 @@ package
 		
 		public var color:uint;
 		
-		public function Block (_x:Number, _y:Number, _w:Number, _h:Number, _c:uint)
+		public var colorTween:ColorTween;
+		
+		public var ix:int;
+		public var iy:int;
+		
+		public function Block (_x:Number, _y:Number, _w:Number, _h:Number, _ix:int, _iy:int, _hasSubgame:Boolean)
 		{
 			x = int(_x);
 			y = int(_y);
@@ -28,14 +34,19 @@ package
 			
 			type = "block";
 			
-			color = _c | 0xFF000000;
-		}
-		
-		public override function added ():void
-		{
-			var level:Level = world as Level;
+			if (_hasSubgame) {
+				if (G.colors && ! G.fadeColors) {
+					color = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
+				} else {
+					color = 0xFFFFFF;
+				}
+			} else {
+				color = G.fadeColors ? 0xFFFFFF : 0x0;
+			}
+				
+			color = color | 0xFF000000;
 			
-			if (! level.parent) {
+			if (_hasSubgame && ! G.fadeColors) {
 				subgame = new Level(this);
 				subgame.updateLists();
 			}
@@ -48,6 +59,14 @@ package
 			if (level.parent) {
 				world.remove(this);
 				return;
+			}
+			
+			if (! subgame) {
+				colorTween = new ColorTween();
+				colorTween.tween(60, color, FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8));
+				addTween(colorTween);
+				subgame = new Level(this);
+				subgame.updateLists();
 			}
 			
 			if (subgame.typeCount("block") == 0) return;
@@ -66,6 +85,9 @@ package
 		
 		public override function update (): void
 		{
+			if (colorTween) {
+				color = colorTween.color;
+			}
 			if (subgame) {
 				subgame.update();
 				subgame.updateLists();
@@ -87,12 +109,14 @@ package
 		
 		public override function render (): void
 		{
+			var level:Level = world as Level;
+			
 			FP.rect.x = x;
 			FP.rect.y = y;
 			FP.rect.width = width;
 			FP.rect.height = height;
 			
-			if (subgame) {
+			if (! level.parent) {
 				FP.rect.x += 1;
 				FP.rect.y += 1;
 				FP.rect.width -= 2;

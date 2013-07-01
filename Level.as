@@ -65,20 +65,10 @@ package
 			var startY:int = parent ? spaceY : bh*1.5;
 			
 			for (var i:int = 0; i < blocksWide*blocksHigh; i++) {
-				var c:uint = 0x0;
-				
-				if (! parent) {
-					if (G.colors) {
-						c = FP.getColorHSV(int(i%blocksWide) / blocksWide, int(i/blocksWide) ? 0.8 : 0.5, 0.8);
-					} else {
-						c = 0xFFFFFF;
-					}
-				}
-				
 				var block:Block = new Block(
 					int(i%blocksWide)*(spaceX+bw) + startX,
 					int(i/blocksWide)*(spaceY+bh) + startY,
-					bw, bh, c);
+					bw, bh, i%blocksWide, i/blocksWide, parent ? false : true);
 				add(block);
 			}
 		}

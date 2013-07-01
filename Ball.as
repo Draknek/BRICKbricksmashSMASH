@@ -44,7 +44,7 @@ package
 				size = 3;
 			}
 			
-			color = _block ? 0xFF000000 : 0xFFFFFFFF;
+			color = _block && ! G.fadeColors ? 0xFF000000 : 0xFFFFFFFF;
 			
 			type = "ball";
 			

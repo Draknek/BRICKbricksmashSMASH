@@ -88,7 +88,7 @@ package
 		{
 			var level:Level = world as Level;
 			
-			var c:uint = level.parent ? 0xFF000000 : 0xFFFFFFFF
+			var c:uint = (level.parent && ! G.fadeColors) ? 0xFF000000 : 0xFFFFFFFF
 			
 			FP.rect.x = x;
 			FP.rect.y = y;
