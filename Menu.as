@@ -37,25 +37,27 @@ package
 			
 			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
 			
-			if (G.so.data.games) {
+			var mode:String = G.hardMode ? "_hard" : "";
+			
+			if (G.so.data["games"+mode]) {
 				var time:String = "";
 				
-				time += int(G.so.data.besttime / (60*60));
+				time += int(G.so.data["besttime"+mode] / (60*60));
 				time += ":";
 				
-				var seconds:int = int(G.so.data.besttime/60) % 60;
+				var seconds:int = int(G.so.data["besttime"+mode]/60) % 60;
 				
 				if (seconds < 10) time += "0";
 				time += seconds;
 				
-				best.text += time + "   " + G.so.data.bestballsleft;
+				best.text += time + "   " + G.so.data["bestballsleft"+mode];
 				
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
 				
 				addGraphic(best);
-			} else if (G.so.data.gameslost){
-				best.text += G.so.data.bestblocksremoved + " / 16";
+			} else if (G.so.data["gameslost"+mode]){
+				best.text += G.so.data["bestblocksremoved"+mode] + " / 16";
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
 				
@@ -64,7 +66,7 @@ package
 				best.y = FP.height;
 			}
 			
-			var play:Button = new Button("PLAY", 50, startGame);
+			var play:Button = new Button(G.hardMode ? "PLAY HARD" : "PLAY", 50, startGame);
 			
 			play.x = (FP.width - play.width)*0.5;
 			play.y = by.y + by.height + (best.y - by.y - by.height - play.height)*0.5;

@@ -32,6 +32,21 @@ package
 				so.data.totalballsleft = 0;
 				so.data.totalballslost = 0;
 			}
+			
+			if (! so.data.gameslost_hard) {
+				so.data.gameslost_hard = 0;
+				so.data.bestblocksremoved_hard = 0;
+			}
+			
+			if (! so.data.games_hard) {
+				so.data.games_hard = 0;
+				so.data.besttime_hard = 0;
+				so.data.bestballsleft_hard = 0;
+				so.data.bestballslost_hard = 0;
+				so.data.totaltime_hard = 0;
+				so.data.totalballsleft_hard = 0;
+				so.data.totalballslost_hard = 0;
+			}
 		}
 	}
 }

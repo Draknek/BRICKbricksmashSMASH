@@ -165,21 +165,23 @@ package
 				b.id = i;
 			}
 			
-			if (! G.so.data.games) {
-				G.so.data.besttime = t;
-				G.so.data.bestballsleft = balls.length;
-				G.so.data.bestballslost = Ball.lostCount;
+			var mode:String = G.hardMode ? "_hard" : "";
+			
+			if (! G.so.data["games"+mode]) {
+				G.so.data["besttime"+mode] = t;
+				G.so.data["bestballsleft"+mode] = balls.length;
+				G.so.data["bestballslost"+mode] = Ball.lostCount;
 			}
 			
-			G.so.data.games++;
+			G.so.data["games"+mode]++;
 			
-			if (t < G.so.data.besttime) G.so.data.besttime = t;
-			if (balls.length > G.so.data.bestballsleft) G.so.data.bestballsleft = balls.length;
-			if (Ball.lostCount < G.so.data.bestballslost) G.so.data.bestballslost = Ball.lostCount;
+			if (t < G.so.data["besttime"+mode]) G.so.data["besttime"+mode] = t;
+			if (balls.length > G.so.data["bestballsleft"+mode]) G.so.data["bestballsleft"+mode] = balls.length;
+			if (Ball.lostCount < G.so.data["bestballslost"+mode]) G.so.data["bestballslost"+mode] = Ball.lostCount;
 			
-			G.so.data.totaltime += t;
-			G.so.data.totalballsleft += balls.length;
-			G.so.data.totalballslost += Ball.lostCount;
+			G.so.data["totaltime"+mode] += t;
+			G.so.data["totalballsleft"+mode] += balls.length;
+			G.so.data["totalballslost"+mode] += Ball.lostCount;
 			
 			G.so.flush();
 			
@@ -228,13 +230,13 @@ package
 			
 			FP.tween(this, {t: 0}, tweenTime);
 			
-			if (G.so.data.games > 1) {
+			if (G.so.data["games"+mode] > 1) {
 				time = "";
 				
-				time += int(G.so.data.besttime / (60*60));
+				time += int(G.so.data["besttime"+mode] / (60*60));
 				time += ":";
 				
-				seconds = int(G.so.data.besttime/60) % 60;
+				seconds = int(G.so.data["besttime"+mode]/60) % 60;
 				
 				if (seconds < 10) time += "0";
 				time += seconds;
@@ -248,7 +250,7 @@ package
 				extraRender.addGraphic(text);
 				FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 				
-				text = new Text("Best: " + G.so.data.bestballsleft, 0, 0, {size: 18});
+				text = new Text("Best: " + G.so.data["bestballsleft"+mode], 0, 0, {size: 18});
 				text.x = FP.width - textOffset - text.width;
 				text.y = bestY;
 				text.alpha = 0;
@@ -273,12 +275,14 @@ package
 			
 			add(restart);
 			
-			G.so.data.gameslost += 1;
+			var mode:String = G.hardMode ? "_hard" : "";
+			
+			G.so.data["gameslost"+mode] += 1;
 			
 			var blocksRemoved:int = 16 - classCount(Block);
 			
-			if (G.so.data.bestblocksremoved < blocksRemoved) {
-				G.so.data.bestblocksremoved = blocksRemoved;
+			if (G.so.data["bestblocksremoved"+mode] < blocksRemoved) {
+				G.so.data["bestblocksremoved"+mode] = blocksRemoved;
 			}
 			
 			G.so.flush();
