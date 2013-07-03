@@ -82,6 +82,8 @@ package
 			
 			if (subgame.typeCount("block") == 0) return;
 			
+			if (G.oneBallPerWorld && subgame.typeCount("ball") != 0) return;
+			
 			var newX:Number = ball.x;
 			var newY:Number = ball.y;
 			

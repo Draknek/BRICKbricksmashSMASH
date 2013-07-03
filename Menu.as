@@ -66,7 +66,15 @@ package
 				best.y = FP.height;
 			}
 			
-			var play:Button = new Button("PLAY", 50, startGame);
+			var startText:String = "PLAY";
+			if (G.hardMode) {
+				startText += " HARD";
+			}
+			if (G.oneBallPerWorld) {
+				startText += "+";
+			}
+			
+			var play:Button = new Button(startText, 50, startGame);
 			
 			play.x = (FP.width - play.width)*0.5;
 			play.y = by.y + by.height + (best.y - by.y - by.height - play.height)*0.5;
