@@ -51,6 +51,8 @@ package
 		
 		public override function render (): void
 		{
+			if (image.alpha == 0) return;
+			
 			Draw.setTarget(FP.buffer, FP.zero);
 			
 			if (image.color != 0xFFFFFF) {
