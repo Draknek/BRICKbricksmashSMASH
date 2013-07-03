@@ -40,18 +40,18 @@ package
 			iy = _iy;
 			
 			if (_hasSubgame) {
-				if (G.colors && ! G.fadeColors) {
+				if (G.colors && ! G.hardMode) {
 					color = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
 				} else {
 					color = 0xFFFFFF;
 				}
 			} else {
-				color = G.fadeColors ? 0xFFFFFF : 0x0;
+				color = G.hardMode ? 0xFFFFFF : 0x0;
 			}
 				
 			color = color & 0xFFFFFF;
 			
-			if (_hasSubgame && ! G.fadeColors) {
+			if (_hasSubgame && ! G.hardMode) {
 				subgame = new Level(this);
 				subgame.updateLists();
 			}
@@ -71,7 +71,7 @@ package
 				subgame.updateLists();
 			}
 			
-			if (G.fadeColors) {
+			if (G.hardMode) {
 				if (! colorTween) {
 					colorTween = new ColorTween(null, Tween.PERSIST);
 					addTween(colorTween);
@@ -126,7 +126,7 @@ package
 					Audio.play("high");
 				}
 				
-				if (G.fadeColors && ! fadingOut && subgame.typeCount("ball") == 0) {
+				if (G.hardMode && ! fadingOut && subgame.typeCount("ball") == 0) {
 					colorTween.tween(120, color, 0xFFFFFF);
 					fadingOut = true;
 				}

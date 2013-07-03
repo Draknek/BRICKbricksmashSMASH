@@ -18,7 +18,7 @@ package
 		{
 			var wSize:Number = 0.25;
 			
-			if (G.fadeColors && _level.parent) wSize = 0.4;
+			if (G.hardMode && _level.parent) wSize = 0.4;
 			
 			width = _level.bounds.width * wSize;
 			height = width*0.1;
@@ -92,7 +92,7 @@ package
 		{
 			var level:Level = world as Level;
 			
-			var c:uint = (level.parent && ! G.fadeColors) ? 0xFF000000 : 0xFFFFFFFF
+			var c:uint = (level.parent && ! G.hardMode) ? 0xFF000000 : 0xFFFFFFFF
 			
 			FP.rect.x = x;
 			FP.rect.y = y;

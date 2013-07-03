@@ -10,7 +10,7 @@ package
 		
 		public static var invertSubGame:Boolean = true;
 		public static var colors:Boolean = true;
-		public static var fadeColors:Boolean = false;
+		public static var hardMode:Boolean = false;
 		
 		public static function init ():void
 		{
