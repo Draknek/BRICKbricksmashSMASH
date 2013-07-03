@@ -16,7 +16,11 @@ package
 		
 		public function Paddle (_level:Level)
 		{
-			width = _level.bounds.width * 0.25;
+			var wSize:Number = 0.25;
+			
+			if (G.fadeColors && _level.parent) wSize = 0.4;
+			
+			width = _level.bounds.width * wSize;
 			height = width*0.1;
 			
 			width = Math.round(width);
