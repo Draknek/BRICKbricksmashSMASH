@@ -119,7 +119,7 @@ package
 				lost = true;
 				
 				for each (var b:Block in blocks) {
-					if (b.subgame.classCount(Ball) != 0) {
+					if (b.subgame && b.subgame.classCount(Ball) != 0) {
 						lost = false;
 						break;
 					}
