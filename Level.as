@@ -281,8 +281,32 @@ package
 			
 			var blocksRemoved:int = 16 - classCount(Block);
 			
+			var isNewBest:Boolean = false;
+			
 			if (scoreData.bestblocksremoved < blocksRemoved) {
 				scoreData.bestblocksremoved = blocksRemoved;
+				isNewBest = true;
+			}
+			
+			if (! scoreData.games) {
+				var best:Text = new Text("", 0, 0, {size: 18});
+				
+				if (scoreData.gameslost == 1) {
+					best.text = blocksRemoved + " / 16";
+				} else if (isNewBest) {
+					best.text = "New best: " + blocksRemoved + " / 16";
+				} else {
+					best.text = blocksRemoved + " / 16 (Best: " + scoreData.bestblocksremoved + " / 16)";
+				}
+				
+				restart.y = FP.height*0.6 - restart.height*0.5;
+				
+				best.x = FP.width*0.5 - best.width*0.5;
+				best.y = restart.y + restart.height + (paddle.y - restart.y - restart.height)*0.5 - best.height*0.5;
+				
+				extraRender = new World;
+				extraRender.addGraphic(best);
+				extraRender.updateLists();
 			}
 			
 			G.so.flush();
