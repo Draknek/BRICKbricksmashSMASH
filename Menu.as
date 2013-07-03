@@ -37,25 +37,27 @@ package
 			
 			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
 			
-			if (G.so.data.games) {
+			var scoreData:Object = G.so.data.modes[G.mode];
+			
+			if (scoreData.games) {
 				var time:String = "";
 				
-				time += int(G.so.data.besttime / (60*60));
+				time += int(scoreData.besttime / (60*60));
 				time += ":";
 				
-				var seconds:int = int(G.so.data.besttime/60) % 60;
+				var seconds:int = int(scoreData.besttime/60) % 60;
 				
 				if (seconds < 10) time += "0";
 				time += seconds;
 				
-				best.text += time + "   " + G.so.data.bestballsleft;
+				best.text += time + "   " + scoreData.bestballsleft;
 				
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
 				
 				addGraphic(best);
-			} else if (G.so.data.gameslost){
-				best.text += G.so.data.bestblocksremoved + " / 16";
+			} else if (scoreData.gameslost){
+				best.text += scoreData.bestblocksremoved + " / 16";
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
 				

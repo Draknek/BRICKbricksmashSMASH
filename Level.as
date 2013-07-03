@@ -165,21 +165,23 @@ package
 				b.id = i;
 			}
 			
-			if (! G.so.data.games) {
-				G.so.data.besttime = t;
-				G.so.data.bestballsleft = balls.length;
-				G.so.data.bestballslost = Ball.lostCount;
+			var scoreData:Object = G.so.data.modes[G.mode];
+			
+			if (! scoreData.games) {
+				scoreData.besttime = t;
+				scoreData.bestballsleft = balls.length;
+				scoreData.bestballslost = Ball.lostCount;
 			}
 			
-			G.so.data.games++;
+			scoreData.games++;
 			
-			if (t < G.so.data.besttime) G.so.data.besttime = t;
-			if (balls.length > G.so.data.bestballsleft) G.so.data.bestballsleft = balls.length;
-			if (Ball.lostCount < G.so.data.bestballslost) G.so.data.bestballslost = Ball.lostCount;
+			if (t < scoreData.besttime) scoreData.besttime = t;
+			if (balls.length > scoreData.bestballsleft) scoreData.bestballsleft = balls.length;
+			if (Ball.lostCount < scoreData.bestballslost) scoreData.bestballslost = Ball.lostCount;
 			
-			G.so.data.totaltime += t;
-			G.so.data.totalballsleft += balls.length;
-			G.so.data.totalballslost += Ball.lostCount;
+			scoreData.totaltime += t;
+			scoreData.totalballsleft += balls.length;
+			scoreData.totalballslost += Ball.lostCount;
 			
 			G.so.flush();
 			
@@ -228,13 +230,13 @@ package
 			
 			FP.tween(this, {t: 0}, tweenTime);
 			
-			if (G.so.data.games > 1) {
+			if (scoreData.games > 1) {
 				time = "";
 				
-				time += int(G.so.data.besttime / (60*60));
+				time += int(scoreData.besttime / (60*60));
 				time += ":";
 				
-				seconds = int(G.so.data.besttime/60) % 60;
+				seconds = int(scoreData.besttime/60) % 60;
 				
 				if (seconds < 10) time += "0";
 				time += seconds;
@@ -248,7 +250,7 @@ package
 				extraRender.addGraphic(text);
 				FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 				
-				text = new Text("Best: " + G.so.data.bestballsleft, 0, 0, {size: 18});
+				text = new Text("Best: " + scoreData.bestballsleft, 0, 0, {size: 18});
 				text.x = FP.width - textOffset - text.width;
 				text.y = bestY;
 				text.alpha = 0;
@@ -273,12 +275,14 @@ package
 			
 			add(restart);
 			
-			G.so.data.gameslost += 1;
+			var scoreData:Object = G.so.data.modes[G.mode];
+			
+			scoreData.gameslost += 1;
 			
 			var blocksRemoved:int = 16 - classCount(Block);
 			
-			if (G.so.data.bestblocksremoved < blocksRemoved) {
-				G.so.data.bestblocksremoved = blocksRemoved;
+			if (scoreData.bestblocksremoved < blocksRemoved) {
+				scoreData.bestblocksremoved = blocksRemoved;
 			}
 			
 			G.so.flush();
