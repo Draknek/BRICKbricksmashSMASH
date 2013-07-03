@@ -17,6 +17,12 @@ package
 			if (! so.data.control) {
 				so.data.control = "mouse";
 			}
+			
+			if (! so.data.gameslost) {
+				so.data.gameslost = 0;
+				so.data.bestblocksremoved = 0;
+			}
+			
 			if (! so.data.games) {
 				so.data.games = 0;
 				so.data.besttime = 0;

@@ -54,6 +54,12 @@ package
 				best.y = FP.height - best.height - title.y*0.25;
 				
 				addGraphic(best);
+			} else if (G.so.data.gameslost){
+				best.text += G.so.data.bestblocksremoved + " / 16";
+				best.x = (FP.width - best.width)*0.5;
+				best.y = FP.height - best.height - title.y*0.25;
+				
+				addGraphic(best);
 			} else {
 				best.y = FP.height;
 			}

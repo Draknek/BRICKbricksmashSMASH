@@ -272,6 +272,16 @@ package
 			restart.y = FP.height*0.65 - restart.height*0.5;
 			
 			add(restart);
+			
+			G.so.data.gameslost += 1;
+			
+			var blocksRemoved:int = 16 - classCount(Block);
+			
+			if (G.so.data.bestblocksremoved < blocksRemoved) {
+				G.so.data.bestblocksremoved = blocksRemoved;
+			}
+			
+			G.so.flush();
 		}
 		
 		public function respawn ():void
