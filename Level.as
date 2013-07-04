@@ -132,19 +132,10 @@ package
 				return;
 			}
 			
-			if (classCount(Block) == 0) {
-				if (! parent) {
-					won = true;
-					
-					doWon();
-				} else {
-					if (paddle) {
-						paddle.y += 0.1;
-					} else {
-						paddleLeft.x -= 0.1;
-						paddleRight.x += 0.1;
-					}
-				}
+			if (classCount(Block) == 0 && ! G.multiplayer && ! parent) {
+				won = true;
+				
+				doWon();
 			}
 			
 			/*if (! parent && (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER) || Input.pressed(Key.R))) {
@@ -152,21 +143,8 @@ package
 					doWon();
 				}*/
 			
-			if (hasStarted && ! parent && classCount(Ball) == 0) {
-				var blocks:Array = [];
-				
-				getType("block", blocks);
-				
-				lost = true;
-				
-				for each (var b:Block in blocks) {
-					if (b.subgame && b.subgame.classCount(Ball) != 0) {
-						lost = false;
-						break;
-					}
-				}
-				
-				if (lost) doLost();
+			if (hasStarted && ! parent) {
+				checkLost();
 			}
 			
 			if (! hasStarted) {
@@ -176,6 +154,80 @@ package
 				} else {
 					return;
 				}
+			}
+		}
+		
+		public function checkLost ():void
+		{
+			var b:Block;
+			var blocks:Array = [];
+			
+			getType("block", blocks);
+			
+			if (G.multiplayer) {
+				var leftLost:Boolean = (typeCount("ball_left") == 0);
+				var rightLost:Boolean = (typeCount("ball_right") == 0);
+				
+				if (leftLost) {
+					for each (b in blocks) {
+						if (! b.subgame) continue;
+						if (b.subgame.typeCount("ball_left") != 0) {
+							leftLost = false;
+							break;
+						}
+					}
+				}
+				
+				if (rightLost) {
+					for each (b in blocks) {
+						if (! b.subgame) continue;
+						if (b.subgame.typeCount("ball_right") != 0) {
+							rightLost = false;
+							break;
+						}
+					}
+				}
+				
+				if (leftLost) {
+					paddleLeft.lost = true;
+					lost = true;
+					
+					for each (b in blocks) {
+						if (b.subgame) {
+							b.subgame.paddleLeft.lost = true;
+						}
+					}
+				}
+				
+				if (rightLost) {
+					paddleRight.lost = true;
+					lost = true;
+					
+					for each (b in blocks) {
+						if (b.subgame) {
+							b.subgame.paddleRight.lost = true;
+						}
+					}
+				}
+				
+				if (lost) {
+					for each (b in blocks) {
+						if (b.subgame) {
+							b.subgame.lost = true;
+						}
+					}
+				}
+			} else if (classCount(Ball) == 0) {
+				lost = true;
+				
+				for each (b in blocks) {
+					if (b.subgame && b.subgame.classCount(Ball) != 0) {
+						lost = false;
+						break;
+					}
+				}
+				
+				if (lost) doLost();
 			}
 		}
 		
@@ -392,7 +444,7 @@ package
 			
 			FP.buffer = renderTarget;
 			
-			renderTarget.colorTransform(bounds, colorTransform);
+			if (! lost) renderTarget.colorTransform(bounds, colorTransform);
 			
 			Draw.setTarget(renderTarget, FP.zero);
 			

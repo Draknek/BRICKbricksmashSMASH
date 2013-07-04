@@ -52,6 +52,8 @@ package
 			
 			if (playerDX) {
 				color = (playerDX > 0) ? 0xFF000000 : 0xFFFFFFFF;
+				
+				type = (playerDX > 0) ? "ball_left" : "ball_right";
 			}
 			
 			setHitbox(size*2, size*2, size, size);
@@ -62,6 +64,8 @@ package
 			var level:Level = world as Level;
 			
 			if (! level) return;
+			
+			if (level.lost) return;
 			
 			if (level.won) {
 				var angle:Number = level.t*0.01 + Math.PI*2*id/level.classCount(Ball);

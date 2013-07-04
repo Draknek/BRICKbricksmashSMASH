@@ -19,6 +19,8 @@ package
 		
 		public var dx:int;
 		
+		public var lost:Boolean;
+		
 		public function Paddle (_level:Level, _dx:int = 0)
 		{
 			var wSize:Number = 0.25;
@@ -74,6 +76,8 @@ package
 		
 		public override function update (): void
 		{
+			if (lost) return;
+			
 			var level:Level = world as Level;
 			
 			if (sideways) {
