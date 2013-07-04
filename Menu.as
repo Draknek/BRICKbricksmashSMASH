@@ -96,19 +96,21 @@ package
 				startText += "+";
 			}
 			
-			mouseButton = new Button("Mouse", 12, useKeyboard);
-			keyboardButton = new Button("Keyboard", 12, useMouse);
-			
-			keyboardButton.x = title.y*0.25;
-			keyboardButton.y = FP.height - keyboardButton.height - title.y*0.25;
-			
-			mouseButton.x = keyboardButton.x;
-			mouseButton.y = keyboardButton.y;
-			
-			if (G.so.data.control == "mouse") {
-				useMouse();
-			} else {
-				useKeyboard();
+			if (! G.multiplayer) {
+				mouseButton = new Button("Mouse", 12, useKeyboard);
+				keyboardButton = new Button("Keyboard", 12, useMouse);
+				
+				keyboardButton.x = title.y*0.25;
+				keyboardButton.y = FP.height - keyboardButton.height - title.y*0.25;
+				
+				mouseButton.x = keyboardButton.x;
+				mouseButton.y = keyboardButton.y;
+				
+				if (G.so.data.control == "mouse") {
+					useMouse();
+				} else {
+					useKeyboard();
+				}
 			}
 			
 			muteButton = new Button("Muted", 12, toggleMute);

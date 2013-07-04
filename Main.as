@@ -24,7 +24,7 @@ package
 			
 			Text.font = 'orbitron';
 			
-			FP.world = new Level();
+			FP.world = new Menu();
 			
 			FP.screen.color = 0x0;
 		}
