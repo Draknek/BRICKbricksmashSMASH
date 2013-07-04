@@ -32,6 +32,7 @@ package
 			
 			width = Math.round(width);
 			height = Math.floor(height);
+			if (height == 0) height = 1;
 			
 			y = _level.bounds.height - height*2;
 			
@@ -44,6 +45,7 @@ package
 				
 				width = Math.floor(width);
 				height = Math.round(height);
+				if (width == 0) width = 1;
 				
 				var offset:int = _level.parent ? width : width*3;
 				
