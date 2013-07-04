@@ -48,7 +48,7 @@ package
 			
 			renderTarget = new BitmapData(bounds.width, bounds.height, (parent || G.multiplayer) ? true : false, 0);
 			
-			colorTransform = new ColorTransform(1, 1, 1, parent ? 0.9 : 0.85);
+			colorTransform = new ColorTransform(1, 1, 1, (parent && ! G.multiplayer) ? 0.9 : 0.85);
 			
 			if (G.multiplayer) {
 				add(paddleLeft = new Paddle(this, 1));
