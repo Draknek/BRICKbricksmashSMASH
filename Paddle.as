@@ -14,6 +14,8 @@ package
 		public var vy:Number = 0;
 		
 		public static var globalPos:Number = 0;
+		public static var globalPosLeft:Number = 0;
+		public static var globalPosRight:Number = 0;
 		
 		public var sideways:Boolean;
 		
@@ -68,7 +70,7 @@ package
 			var level:Level = world as Level;
 			
 			if (sideways) {
-				y = FP.clamp(Input.mouseY / FP.height, 0, 1) * (level.bounds.height) - height*0.5;
+				y = FP.height*0.5 - height*0.5;
 			} else if (G.mouseInput) {
 				x = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
 			} else {
@@ -84,12 +86,52 @@ package
 			
 			if (sideways) {
 				var toY:Number;
-				toY = FP.clamp(Input.mouseY / FP.height, 0, 1) * (level.bounds.height) - height*0.5;
+				if (! level.parent) {
+					var inputY:int;
+					
+					if (dx > 0) {
+						inputY = int(Input.check(Key.S)) - int(Input.check(Key.W));
+					} else {
+						inputY = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
+					}
+					
+					vy *= 0.8;
+					
+					vy += inputY*1.5;
+				} else {
+					toY = (dx > 0) ? globalPosLeft : globalPosRight;
+					toY *= (level.bounds.height - height);
+					
+					vy = toY - y;
+				}
 				
-				vx = 0;
+				y += vy;
 				
-				y += (toY - y)*0.2;
-				
+				if (! level.parent) {
+					if (y <= 0) {
+						if (dx > 0) {
+							globalPosLeft = 0;
+						} else {
+							globalPosRight = 0;
+						}
+						vy = 0;
+						y = 0;
+					} else if (y >= level.bounds.height - height) {
+						if (dx > 0) {
+							globalPosLeft = 1;
+						} else {
+							globalPosRight = 1;
+						}
+						vy = 0;
+						y = level.bounds.height - height;
+					} else {
+						if (dx > 0) {
+							globalPosLeft = y / (level.bounds.height - height);
+						} else {
+							globalPosRight = y / (level.bounds.height - height);
+						}
+					}
+				}
 				return;
 			}
 			

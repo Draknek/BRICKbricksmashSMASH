@@ -148,7 +148,7 @@ package
 			}
 			
 			if (! hasStarted) {
-				if (G.mouseInput ? Input.mousePressed : (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER))) {
+				if ((G.mouseInput && ! G.multiplayer) ? Input.mousePressed : (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER))) {
 					respawn();
 					hasStarted = true;
 				} else {
