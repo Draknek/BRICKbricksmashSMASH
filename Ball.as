@@ -112,6 +112,12 @@ package
 					x = paddle.x - size;
 				}
 				
+				if (! level.parent && G.changeColor) {
+					playerDX = paddle.dx;
+					color = (playerDX > 0) ? 0xFF000000 : 0xFFFFFFFF;
+					type = (playerDX > 0) ? "ball_left" : "ball_right";
+				}
+				
 				bounced = true;
 			} else if (paddle && ! paddle.dx && vy > 0) {
 				offset = x - (paddle.x + paddle.width*0.5);

@@ -209,7 +209,7 @@ package
 					}
 				}
 				
-				if (! leftLost && ! rightLost) {
+				if (! leftLost && ! rightLost && ! G.changeColor) {
 					// Check if either side has lost all their balls
 					leftLost = ! hasBallsOfType("ball_left", blocks);
 					rightLost = ! hasBallsOfType("ball_right", blocks);
