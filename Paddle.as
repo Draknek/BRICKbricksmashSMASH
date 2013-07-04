@@ -47,7 +47,7 @@ package
 				height = Math.round(height);
 				if (width == 0) width = 1;
 				
-				var offset:int = _level.parent ? width : width*3;
+				var offset:int = _level.parent ? width : width*5;
 				
 				if (dx > 0) {
 					x = offset;
