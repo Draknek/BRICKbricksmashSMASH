@@ -138,7 +138,12 @@ package
 					
 					doWon();
 				} else {
-					paddle.y += 0.1;
+					if (paddle) {
+						paddle.y += 0.1;
+					} else {
+						paddleLeft.x -= 0.1;
+						paddleRight.x += 0.1;
+					}
 				}
 			}
 			
