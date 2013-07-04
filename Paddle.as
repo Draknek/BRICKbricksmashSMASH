@@ -11,6 +11,7 @@ package
 	public class Paddle extends Entity
 	{
 		public var vx:Number = 0;
+		public var vy:Number = 0;
 		
 		public static var globalPos:Number = 0;
 		
@@ -132,13 +133,13 @@ package
 			var vy:Number = -1.5 - Math.random()*0.5;
 			
 			if (sideways) {
-				vx *= dx;
+				vx = 1.5 * dx;
 				
 				if (Math.random() < 0.5) {
 					vy *= -1;
 				}
 				
-				world.add(new Ball((dx > 0) ? x + width : x - 3, y + height*0.5, vx, vy));
+				world.add(new Ball((dx > 0) ? x + width : x - 3, y + height*0.5, vx, vy, dx));
 			} else {
 				if (vx < -0.5) {
 					vx *= -1;
@@ -161,6 +162,10 @@ package
 			var level:Level = world as Level;
 			
 			var c:uint = (level.parent && ! G.hardMode) ? 0xFF000000 : 0xFFFFFFFF
+			
+			if (sideways) {
+				c = (dx > 0) ? 0xFF000000 : 0xFFFFFFFF;
+			}
 			
 			FP.rect.x = x;
 			FP.rect.y = y;

@@ -28,9 +28,11 @@ package
 		
 		public var color:uint;
 		
+		public var playerDX:int;
+		
 		public static var lostCount:int;
 		
-		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _block:Block = null)
+		public function Ball (_x:Number, _y:Number, _vx:Number, _vy:Number, _playerDX:int = 0, _block:Block = null)
 		{
 			x = oldX = _x;
 			y = oldY = _y;
@@ -45,6 +47,12 @@ package
 			}
 			
 			color = _block && ! G.hardMode ? 0xFF000000 : 0xFFFFFFFF;
+			
+			playerDX = _playerDX;
+			
+			if (playerDX) {
+				color = (playerDX > 0) ? 0xFF000000 : 0xFFFFFFFF;
+			}
 			
 			type = "ball";
 			
@@ -79,8 +87,32 @@ package
 			var bounced:Boolean = false;
 			
 			var paddle:Paddle = collide("paddle", x, y) as Paddle;
-			if (paddle && vy > 0) {
-				var offset:Number = x - (paddle.x + paddle.width*0.5);
+			
+			var offset:Number;
+			
+			if (paddle && paddle.dx && (paddle.dx > 0) != (vx > 0)) {
+				offset = y - (paddle.y + paddle.height*0.5);
+				offset /= paddle.height;
+				
+				vy = offset * Math.abs(vx) * 2 + FP.clamp(paddle.vy, -2*size, 2*size)*0.25;
+				vx = -vx;
+				vx += 0.02*size*paddle.dx;
+				
+				var minY:Number = 1.0;
+				
+				if (size > 1 && vy < minY && vy > -minY) {
+					vy = (vy < 0) ? -minY : minY;
+				}
+				
+				if (paddle.dx > 0) {
+					x = paddle.x + paddle.width + size;
+				} else {
+					x = paddle.x - size;
+				}
+				
+				bounced = true;
+			} else if (paddle && ! paddle.dx && vy > 0) {
+				offset = x - (paddle.x + paddle.width*0.5);
 				offset /= paddle.width;
 				
 				vx = offset * Math.abs(vy) * 2 + FP.clamp(paddle.vx, -2*size, 2*size)*0.25;
@@ -97,11 +129,11 @@ package
 				bounced = true;
 			}
 			
-			if (x < size && vx < 0) {
+			if (x < size && vx < 0 && playerDX != 1) {
 				vx *= -1;
 				x = size;
 				bounced = true;
-			} else if (x > w-size && vx > 0) {
+			} else if (x > w-size && vx > 0 && playerDX != -1) {
 				vx *= -1;
 				x = w-size;
 				bounced = true;
@@ -111,7 +143,21 @@ package
 				vy *= -1;
 				y = size;
 				bounced = true;
-			} else if (y > h+size && vy > 0) {
+			} else if (playerDX && y > h-size && vy > 0) {
+				vy *= -1;
+				y = h-size;
+				bounced = true;
+			}
+			
+			if (! playerDX && y > h+size && vy > 0) {
+				lostCount++;
+				world.remove(this);
+				return;
+			} else if (playerDX > 0 && x < -size && vx < 0) {
+				lostCount++;
+				world.remove(this);
+				return;
+			} else if (playerDX < 0 && x > w+size && vx > 0) {
 				lostCount++;
 				world.remove(this);
 				return;
@@ -201,9 +247,11 @@ package
 			var newBall:Ball = new Ball(
 				x + blockWeAreIn.x + blockWeAreIn.border,
 				y + blockWeAreIn.y + blockWeAreIn.border,
-				vx*4, vy*4
+				vx*4, vy*4, playerDX
 			);
-			newBall.color = 0xFF000000 | blockWeAreIn.color;
+			if (! playerDX) {
+				newBall.color = 0xFF000000 | blockWeAreIn.color;
+			}
 			blockWeAreIn.world.add(newBall);
 			world.remove(this);
 		}

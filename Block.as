@@ -90,7 +90,7 @@ package
 			newX -= x + border;
 			newY -= y + border;
 			
-			var newBall:Ball = new Ball(newX, newY, ball.vx*0.2, ball.vy*0.2, this);
+			var newBall:Ball = new Ball(newX, newY, ball.vx*0.2, ball.vy*0.2, ball.playerDX, this);
 			
 			subgame.add(newBall);
 			subgame.updateLists();
