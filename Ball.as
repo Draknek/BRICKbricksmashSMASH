@@ -131,11 +131,14 @@ package
 				bounced = true;
 			}
 			
-			if (x < size && vx < 0 && playerDX != 1) {
+			var bounceOnLeft:Boolean = (playerDX != 1);
+			var bounceOnRight:Boolean = (playerDX != -1);
+			
+			if (x < size && vx < 0 && bounceOnLeft) {
 				vx *= -1;
 				x = size;
 				bounced = true;
-			} else if (x > w-size && vx > 0 && playerDX != -1) {
+			} else if (x > w-size && vx > 0 && bounceOnRight) {
 				vx *= -1;
 				x = w-size;
 				bounced = true;
@@ -155,11 +158,11 @@ package
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX > 0 && x < -size && vx < 0) {
+			} else if (playerDX && x < -size && vx < 0) {
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX < 0 && x > w+size && vx > 0) {
+			} else if (playerDX && x > w+size && vx > 0) {
 				lostCount++;
 				world.remove(this);
 				return;
