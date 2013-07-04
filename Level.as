@@ -175,9 +175,20 @@ package
 			
 			scoreData.games++;
 			
-			if (t < scoreData.besttime) scoreData.besttime = t;
-			if (balls.length > scoreData.bestballsleft) scoreData.bestballsleft = balls.length;
-			if (Ball.lostCount < scoreData.bestballslost) scoreData.bestballslost = Ball.lostCount;
+			var isNewBestTime:Boolean = false;
+			var isNewMostBalls:Boolean = false;
+			
+			if (t < scoreData.besttime) {
+				scoreData.besttime = t;
+				isNewBestTime = true;
+			}
+			if (balls.length > scoreData.bestballsleft) {
+				scoreData.bestballsleft = balls.length;
+				isNewMostBalls = true;
+			}
+			if (Ball.lostCount < scoreData.bestballslost) {
+				scoreData.bestballslost = Ball.lostCount;
+			}
 			
 			scoreData.totaltime += t;
 			scoreData.totalballsleft += balls.length;
@@ -243,14 +254,18 @@ package
 				
 				var bestY:Number = text.y + text.height;
 				
-				text = new Text("Best: " + time, 0, 0, {size: 18});
+				var message:String;
+				
+				message = isNewBestTime ? "New best!" : "Best: " + time;
+				text = new Text(message, 0, 0, {size: 18});
 				text.x = textOffset;
 				text.y = bestY;
 				text.alpha = 0;
 				extraRender.addGraphic(text);
 				FP.tween(text, {alpha:1}, 30, {delay:tweenTime});
 				
-				text = new Text("Best: " + scoreData.bestballsleft, 0, 0, {size: 18});
+				message = isNewMostBalls ? "New best!" : "Best: " + scoreData.bestballsleft;
+				text = new Text(message, 0, 0, {size: 18});
 				text.x = FP.width - textOffset - text.width;
 				text.y = bestY;
 				text.alpha = 0;
