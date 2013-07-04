@@ -14,7 +14,11 @@ package
 		
 		public static var globalPos:Number = 0;
 		
-		public function Paddle (_level:Level)
+		public var sideways:Boolean;
+		
+		public var dx:int;
+		
+		public function Paddle (_level:Level, _dx:int = 0)
 		{
 			var wSize:Number = 0.25;
 			
@@ -28,6 +32,25 @@ package
 			
 			y = _level.bounds.height - height*2;
 			
+			if (_dx) {
+				dx = _dx;
+				sideways = true;
+				
+				height = _level.bounds.height * wSize;
+				width = height*0.1;
+				
+				width = Math.floor(width);
+				height = Math.round(height);
+				
+				var offset:int = _level.parent ? width : width*3;
+				
+				if (dx > 0) {
+					x = offset;
+				} else {
+					x = _level.bounds.width - width - offset;
+				}
+			}
+			
 			type = "paddle";
 			
 			active = false;
@@ -39,7 +62,9 @@ package
 		{
 			var level:Level = world as Level;
 			
-			if (G.mouseInput) {
+			if (sideways) {
+				y = FP.clamp(Input.mouseY / FP.height, 0, 1) * (level.bounds.height) - height*0.5;
+			} else if (G.mouseInput) {
 				x = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
 			} else {
 				x = FP.width*0.5 - width*0.5;
@@ -49,6 +74,17 @@ package
 		public override function update (): void
 		{
 			var level:Level = world as Level;
+			
+			if (sideways) {
+				var toY:Number;
+				toY = FP.clamp(Input.mouseY / FP.height, 0, 1) * (level.bounds.height) - height*0.5;
+				
+				vx = 0;
+				
+				y += (toY - y)*0.2;
+				
+				return;
+			}
 			
 			var toX:Number;
 			
@@ -88,6 +124,38 @@ package
 			}
 		}
 		
+		public function spawnBall ():void
+		{
+			var level:Level = world as Level;
+			
+			var vx:Number = 1.5 + Math.random()*0.5;
+			var vy:Number = -1.5 - Math.random()*0.5;
+			
+			if (sideways) {
+				vx *= dx;
+				
+				if (Math.random() < 0.5) {
+					vy *= -1;
+				}
+				
+				world.add(new Ball((dx > 0) ? x + width : x - 3, y + height*0.5, vx, vy));
+			} else {
+				if (vx < -0.5) {
+					vx *= -1;
+				} else if (vx < 0.5) {
+					if (x + width*0.5 < level.bounds.width*0.4) {
+						vx *= -1;
+					} else if (x + width*0.5 < level.bounds.width*0.6) {
+						if (Math.random() < 0.5) {
+							vx *= -1;
+						}
+					}
+				}
+				
+				world.add(new Ball(x + width*0.5, y - 3, vx, vy));
+			}
+		}
+		
 		public override function render (): void
 		{
 			var level:Level = world as Level;
@@ -102,8 +170,19 @@ package
 			FP.buffer.fillRect(FP.rect, c);
 			
 			if (! level.hasStarted) {
-				FP.rect.x = x + width*0.5 - 3;
-				FP.rect.y = y - 6;
+				if (sideways) {
+					if (dx < 0) {
+						FP.rect.x = x - 6;
+					} else {
+						FP.rect.x = x + width;
+					}
+					
+					FP.rect.y = y + height*0.5 - 3;
+				} else {
+					FP.rect.x = x + width*0.5 - 3;
+					FP.rect.y = y - 6;
+				}
+				
 				FP.rect.width = 6;
 				FP.rect.height = 6;
 				

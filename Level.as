@@ -18,6 +18,8 @@ package
 		public var parent:Block;
 		
 		public var paddle:Paddle;
+		public var paddleLeft:Paddle;
+		public var paddleRight:Paddle;
 		
 		public var hasStarted:Boolean;
 		
@@ -48,8 +50,12 @@ package
 			
 			colorTransform = new ColorTransform(1, 1, 1, parent ? 0.9 : 0.85);
 			
-			paddle = new Paddle(this);
-			add(paddle);
+			if (G.multiplayer) {
+				add(paddleLeft = new Paddle(this, 1));
+				add(paddleRight = new Paddle(this, -1));
+			} else {
+				add(paddle = new Paddle(this));
+			}
 			
 			var bw:int = parent ? 6 : 60;
 			var bh:int = parent ? 3 : 32;
@@ -102,7 +108,12 @@ package
 		{
 			t++;
 			
-			paddle.update();
+			if (paddle) {
+				paddle.update();
+			} else {
+				paddleLeft.update();
+				paddleRight.update();
+			}
 			
 			super.update();
 			
@@ -356,22 +367,12 @@ package
 		{
 			t = 0;
 			
-			var vx:Number = 1.5 + Math.random()*0.5;
-			var vy:Number = -1.5 - Math.random()*0.5;
-			
-			if (paddle.vx < -0.5) {
-				vx *= -1;
-			} else if (paddle.vx < 0.5) {
-				if (paddle.x + paddle.width*0.5 < bounds.width*0.4) {
-					vx *= -1;
-				} else if (paddle.x + paddle.width*0.5 < bounds.width*0.6) {
-					if (Math.random() < 0.5) {
-						vx *= -1;
-					}
-				}
+			if (paddle) {
+				paddle.spawnBall();
+			} else {
+				paddleLeft.spawnBall();
+				paddleRight.spawnBall();
 			}
-			
-			add(new Ball(paddle.x + paddle.width*0.5, paddle.y - 3, vx, vy));
 			
 			Audio.play("high", 0.5);
 		}
@@ -396,7 +397,13 @@ package
 			
 			if (! parent) {
 				FP.buffer.copyPixels(renderTarget, bounds, FP.zero);
-				paddle.render();
+				
+				if (paddle) {
+					paddle.render();
+				} else {
+					paddleLeft.render();
+					paddleRight.render();
+				}
 			}
 			
 			if (extraRender) extraRender.render();
