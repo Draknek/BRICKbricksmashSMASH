@@ -134,6 +134,10 @@ package
 			var bounceOnLeft:Boolean = (playerDX != 1);
 			var bounceOnRight:Boolean = (playerDX != -1);
 			
+			if (! level.parent && playerDX) {
+				bounceOnLeft = bounceOnRight = false;
+			}
+			
 			if (x < size && vx < 0 && bounceOnLeft) {
 				vx *= -1;
 				x = size;
@@ -158,11 +162,11 @@ package
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX && x < -size && vx < 0) {
+			} else if (playerDX > 0 && x < -size && vx < 0) {
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX && x > w+size && vx > 0) {
+			} else if (playerDX < 0 && x > w+size && vx > 0) {
 				lostCount++;
 				world.remove(this);
 				return;

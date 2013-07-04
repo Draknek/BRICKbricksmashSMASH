@@ -165,15 +165,63 @@ package
 			getType("block", blocks);
 			
 			if (G.multiplayer) {
-				var leftLost:Boolean = ! hasBallsOfType("ball_left", blocks);
-				var rightLost:Boolean = ! hasBallsOfType("ball_right", blocks);
+				var leftLost:Boolean;
+				var rightLost:Boolean;
+				
+				// Check if either side has scored
+				
+				var ball:Entity;
+				
+				var leftBalls:Array = [];
+				var rightBalls:Array = [];
+				getType("ball_left", leftBalls);
+				getType("ball_right", rightBalls);
+				
+				for each (ball in leftBalls) {
+					if (ball.x > bounds.width + 3) {
+						rightLost = true;
+						break;
+					}
+				}
+				
+				for each (ball in rightBalls) {
+					if (ball.x < -3) {
+						leftLost = true;
+						break;
+					}
+				}
+				
+				// Check if this is actually a tie
 				
 				if (leftLost) {
-					cullBallsOfType("ball_right", blocks);
-					rightLost = ! hasBallsOfType("ball_right", blocks);
+					for each (ball in leftBalls) {
+						if (ball.x >= bounds.width) {
+							rightLost = true;
+							break;
+						}
+					}
 				} else if (rightLost) {
-					cullBallsOfType("ball_left", blocks);
+					for each (ball in rightBalls) {
+						if (ball.x <= 0) {
+							leftLost = true;
+							break;
+						}
+					}
+				}
+				
+				if (! leftLost && ! rightLost) {
+					// Check if either side has lost all their balls
 					leftLost = ! hasBallsOfType("ball_left", blocks);
+					rightLost = ! hasBallsOfType("ball_right", blocks);
+					
+					// Check if this is actually a tie
+					if (leftLost) {
+						cullBallsOfType("ball_right", blocks);
+						rightLost = ! hasBallsOfType("ball_right", blocks);
+					} else if (rightLost) {
+						cullBallsOfType("ball_left", blocks);
+						leftLost = ! hasBallsOfType("ball_left", blocks);
+					}
 				}
 				
 				if (leftLost) {
