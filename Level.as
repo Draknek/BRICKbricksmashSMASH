@@ -165,27 +165,15 @@ package
 			getType("block", blocks);
 			
 			if (G.multiplayer) {
-				var leftLost:Boolean = (typeCount("ball_left") == 0);
-				var rightLost:Boolean = (typeCount("ball_right") == 0);
+				var leftLost:Boolean = ! hasBallsOfType("ball_left", blocks);
+				var rightLost:Boolean = ! hasBallsOfType("ball_right", blocks);
 				
 				if (leftLost) {
-					for each (b in blocks) {
-						if (! b.subgame) continue;
-						if (b.subgame.typeCount("ball_left") != 0) {
-							leftLost = false;
-							break;
-						}
-					}
-				}
-				
-				if (rightLost) {
-					for each (b in blocks) {
-						if (! b.subgame) continue;
-						if (b.subgame.typeCount("ball_right") != 0) {
-							rightLost = false;
-							break;
-						}
-					}
+					cullBallsOfType("ball_right", blocks);
+					rightLost = ! hasBallsOfType("ball_right", blocks);
+				} else if (rightLost) {
+					cullBallsOfType("ball_left", blocks);
+					leftLost = ! hasBallsOfType("ball_left", blocks);
 				}
 				
 				if (leftLost) {
@@ -228,6 +216,57 @@ package
 				}
 				
 				if (lost) doLost();
+			}
+		}
+		
+		public function hasBallsOfType (type:String, blocks:Array):Boolean
+		{
+			if (typeCount(type) > 0) {
+				return true;
+			}
+			
+			var b:Block;
+			
+			for each (b in blocks) {
+				if (! b.subgame) continue;
+				if (b.subgame.typeCount(type) > 0) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
+		
+		public function cullBallsOfType (type:String, blocks:Array):void
+		{
+			var balls:Array = [];
+			var ball:Entity;
+			
+			getType(type, balls);
+			
+			for each (ball in balls) {
+				if (ball.x <= 0 || ball.x >= bounds.width) {
+					remove(ball);
+				}
+			}
+			
+			updateLists();
+			
+			var b:Block;
+			
+			for each (b in blocks) {
+				if (! b.subgame) continue;
+				
+				balls.length = 0;
+				b.subgame.getType(type, balls);
+				
+				for each (ball in balls) {
+					if (ball.x <= 0 || ball.x >= b.subgame.bounds.width) {
+						b.subgame.remove(ball);
+					}
+				}
+				
+				b.subgame.updateLists();
 			}
 		}
 		
