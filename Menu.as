@@ -41,6 +41,8 @@ package
 				buttons.push(["NORMAL", playNormal]);
 				buttons.push(["HARD", playHard]);
 				buttons.push(["HARDER", playHarder]);
+			} else if (G.multiplayer) {
+				buttons.push(["VERSUS", startGame]);
 			} else {
 				buttons.push(["PLAY", playNormal]);
 			}
@@ -53,7 +55,7 @@ package
 			
 			var scoreData:Object;
 			
-			if (! G.chooseMode) {
+			if (! G.chooseMode && ! G.multiplayer) {
 				scoreData = G.so.data.modes[G.mode];
 			}
 			
