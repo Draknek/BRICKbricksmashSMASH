@@ -13,6 +13,8 @@ package
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
 		
+		public static var chooseMode:Boolean = false;
+		
 		public static var mode:String;
 		
 		private static const properties:Array = [

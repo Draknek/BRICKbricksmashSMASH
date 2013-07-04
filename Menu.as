@@ -35,11 +35,31 @@ package
 			
 			add(by);
 			
+			var buttons:Array = [];
+			
+			if (G.chooseMode) {
+				buttons.push(["NORMAL", playNormal]);
+				buttons.push(["HARD", playHard]);
+				buttons.push(["HARDER", playHarder]);
+			} else {
+				buttons.push(["PLAY", playNormal]);
+			}
+			
+			if (Preloader.hostedOn == "flashgamelicense.com") {
+				buttons.unshift(0);
+				buttons.push(0);
+				buttons.push(["MORE GAMES", gotoWebsite, 0.5]);
+			}
+			
+			var scoreData:Object;
+			
+			if (! G.chooseMode) {
+				scoreData = G.so.data.modes[G.mode];
+			}
+			
 			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
 			
-			var scoreData:Object = G.so.data.modes[G.mode];
-			
-			if (scoreData.games) {
+			if (scoreData && scoreData.games) {
 				var time:String = "";
 				
 				time += int(scoreData.besttime / (60*60));
@@ -56,7 +76,7 @@ package
 				best.y = FP.height - best.height - title.y*0.25;
 				
 				addGraphic(best);
-			} else if (scoreData.gameslost){
+			} else if (scoreData && scoreData.gameslost){
 				best.text += scoreData.bestblocksremoved + " / 16";
 				best.x = (FP.width - best.width)*0.5;
 				best.y = FP.height - best.height - title.y*0.25;
@@ -66,32 +86,14 @@ package
 				best.y = FP.height;
 			}
 			
+			addButtons(buttons, by.y + by.height, best.y);
+			
 			var startText:String = "PLAY";
 			if (G.hardMode) {
 				startText += " HARD";
 			}
 			if (G.oneBallPerWorld) {
 				startText += "+";
-			}
-			
-			var play:Button = new Button(startText, 50, startGame);
-			
-			play.x = (FP.width - play.width)*0.5;
-			play.y = by.y + by.height + (best.y - by.y - by.height - play.height)*0.5;
-			
-			add(play);
-			
-			if (Preloader.hostedOn == "flashgamelicense.com") {
-				var moreGames:Button = new Button("MORE GAMES", 25, gotoWebsite);
-				
-				var space:int = (best.y - by.y - by.height - play.height - moreGames.height)*3/7;
-				
-				play.y = by.y + by.height + space;
-				
-				moreGames.x = (FP.width - moreGames.width)*0.5;
-				moreGames.y = play.y + play.height + space;
-				
-				add(moreGames);
 			}
 			
 			mouseButton = new Button("Mouse", 12, useKeyboard);
@@ -122,6 +124,47 @@ package
 			add(muteButton);
 		}
 		
+		public function addButtons (list:Array, startY:int, endY:int):void
+		{
+			var textSize:int = 50 - (list.length - 1)*5;
+			
+			var space:int = endY - startY;
+			
+			var buttons:Array = [];
+			var button:Button;
+			
+			for each (var buttonData:* in list) {
+				if (! buttonData) {
+					buttons.push(null);
+					continue;
+				}
+				
+				var thisSize:Number = textSize;
+				if (buttonData[2]) thisSize *= buttonData[2];
+				
+				button = new Button(buttonData[0], thisSize, buttonData[1]);
+				button.x = (FP.width - button.width)*0.5;
+				add(button);
+				
+				buttons.push(button);
+				
+				space -= button.height;
+			}
+			
+			space /= (buttons.length + 1);
+			
+			var y:int = startY + space;
+			
+			for each (button in buttons) {
+				if (button) {
+					button.y = y;
+					y += button.height;
+				}
+				
+				y += space;
+			}
+		}
+		
 		public function useMouse ():void
 		{
 			add(mouseButton);
@@ -150,6 +193,30 @@ package
 			G.so.flush();
 			
 			Text(muteButton.image).text = G.so.data.mute ? "Muted" : "Mute";
+		}
+		
+		public function playNormal ():void
+		{
+			G.hardMode = false;
+			G.oneBallPerWorld = false;
+			G.resetMode();
+			startGame();
+		}
+		
+		public function playHard ():void
+		{
+			G.hardMode = true;
+			G.oneBallPerWorld = false;
+			G.resetMode();
+			startGame();
+		}
+		
+		public function playHarder ():void
+		{
+			G.hardMode = true;
+			G.oneBallPerWorld = true;
+			G.resetMode();
+			startGame();
 		}
 		
 		public function startGame ():void
