@@ -78,30 +78,6 @@ package
 			
 			var bounced:Boolean = false;
 			
-			if (level.parent && level.typeCount("block") == 0) {
-				if (x < 0) {
-					x = 0;
-					bounced = true;
-				} else if (x > w) {
-					x = w;
-					bounced = true;
-				}
-				
-				if (y < 0) {
-					y = 0;
-					bounced = true;
-				} else if (y > h) {
-					y = h;
-					bounced = true;
-				}
-				
-				if (bounced) {
-					moveToOuter();
-					
-					return;
-				}
-			}
-			
 			var paddle:Paddle = collide("paddle", x, y) as Paddle;
 			if (paddle && vy > 0) {
 				var offset:Number = x - (paddle.x + paddle.width*0.5);
