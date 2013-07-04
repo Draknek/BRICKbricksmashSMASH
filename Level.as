@@ -44,7 +44,7 @@ package
 			
 			bounds = new Rectangle(0, 0, w, h);
 			
-			renderTarget = new BitmapData(bounds.width, bounds.height, parent ? true : false, 0);
+			renderTarget = new BitmapData(bounds.width, bounds.height, (parent || G.multiplayer) ? true : false, 0);
 			
 			colorTransform = new ColorTransform(1, 1, 1, parent ? 0.9 : 0.85);
 			
@@ -63,6 +63,31 @@ package
 			
 			var startX:int = (w - bw*blocksWide - spaceX*(blocksWide+1))*0.5 + spaceX;
 			var startY:int = parent ? spaceY : bh*1.5;
+			
+			if (G.multiplayer) {
+				if (parent) {
+					bw = 3;
+					bh = 6;
+					
+					blocksWide = 2;
+					blocksHigh = 6;
+					
+					spaceY = (h - bh*blocksHigh)/(blocksHigh+1);
+					spaceX = spaceY;
+				} else {
+					blocksWide = 2;
+					blocksHigh = 5;
+					
+					bh = h / blocksHigh;
+					bw = bh*0.6;
+					
+					spaceY = 0;
+					spaceX = 0;
+				}
+					
+				startX = w*0.5 - bw - spaceX*0.5;
+				startY = (h - bh*blocksHigh - spaceY*(blocksHigh+1))*0.5 + spaceY;
+			}
 			
 			for (var i:int = 0; i < blocksWide*blocksHigh; i++) {
 				var block:Block = new Block(
@@ -353,6 +378,10 @@ package
 		
 		public override function render (): void
 		{
+			if (! parent && G.multiplayer) {
+				FP.buffer.fillRect(FP.bounds, 0x808080);
+			}
+			
 			var oldBuffer:BitmapData = FP.buffer;
 			
 			FP.buffer = renderTarget;

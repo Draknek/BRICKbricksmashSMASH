@@ -227,7 +227,7 @@ package
 				y + blockWeAreIn.y + blockWeAreIn.border,
 				vx*4, vy*4
 			);
-			newBall.color = blockWeAreIn.color;
+			newBall.color = 0xFF000000 | blockWeAreIn.color;
 			blockWeAreIn.world.add(newBall);
 			world.remove(this);
 		}

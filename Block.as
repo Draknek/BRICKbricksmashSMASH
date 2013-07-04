@@ -41,7 +41,7 @@ package
 			
 			if (_hasSubgame) {
 				if (G.colors && ! G.hardMode) {
-					color = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
+					color = getTargetColor();
 				} else {
 					color = 0xFFFFFF;
 				}
@@ -76,7 +76,7 @@ package
 					colorTween = new ColorTween(null, Tween.PERSIST);
 					addTween(colorTween);
 				}
-				colorTween.tween(60, color, 0xFFFFFF & FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8));
+				colorTween.tween(60, color, getTargetColor());
 				fadingOut = false;
 			}
 			
@@ -135,6 +135,19 @@ package
 			}
 		}
 		
+		public function getTargetColor ():uint
+		{
+			var c:uint;
+			
+			if (G.multiplayer) {
+				c = FP.getColorHSV(y / FP.height, ix ? 0.8 : 0.5, 0.8);
+			} else {
+				c = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
+			}
+			
+			return 0xFFFFFF & c;
+		}
+		
 		public override function render (): void
 		{
 			var level:Level = world as Level;
@@ -160,7 +173,7 @@ package
 			FP.point.x = x + (width - subgame.bounds.width)*0.5;
 			FP.point.y = y + (height - subgame.bounds.height)*0.5;
 			
-			FP.buffer.copyPixels(subgame.renderTarget, subgame.bounds, FP.point);
+			FP.buffer.copyPixels(subgame.renderTarget, subgame.bounds, FP.point, null, null, true);
 		}
 	}
 }

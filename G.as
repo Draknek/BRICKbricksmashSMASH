@@ -12,6 +12,7 @@ package
 		public static var colors:Boolean = true;
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
+		public static var multiplayer:Boolean = true;
 		
 		public static var chooseMode:Boolean = false;
 		
