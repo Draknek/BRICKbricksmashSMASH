@@ -54,8 +54,6 @@ package
 				color = (playerDX > 0) ? 0xFF000000 : 0xFFFFFFFF;
 			}
 			
-			type = "ball";
-			
 			setHitbox(size*2, size*2, size, size);
 		}
 		
@@ -66,7 +64,7 @@ package
 			if (! level) return;
 			
 			if (level.won) {
-				var angle:Number = level.t*0.01 + Math.PI*2*id/level.typeCount("ball");
+				var angle:Number = level.t*0.01 + Math.PI*2*id/level.classCount(Ball);
 				x = FP.width*0.5 - Math.cos(angle)*FP.height*0.35;
 				y = FP.height*0.5 - Math.sin(angle)*FP.height*0.35;
 				

@@ -187,7 +187,7 @@ package
 			
 			var balls:Array = [];
 			
-			getType("ball", balls);
+			getClass(Ball, balls);
 			
 			var i:int = 0;
 			var b:Ball;

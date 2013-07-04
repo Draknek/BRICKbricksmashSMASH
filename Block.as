@@ -82,7 +82,7 @@ package
 			
 			if (subgame.typeCount("block") == 0) return;
 			
-			if (G.oneBallPerWorld && subgame.typeCount("ball") != 0) return;
+			if (G.oneBallPerWorld && subgame.classCount(Ball) != 0) return;
 			
 			var newX:Number = ball.x;
 			var newY:Number = ball.y;
@@ -117,7 +117,7 @@ package
 				
 				if (subgame.typeCount("block") == 0) {
 					var balls:Array = [];
-					subgame.getType("ball", balls);
+					subgame.getClass(Ball, balls);
 					
 					for each (var ball:Ball in balls) {
 						ball.moveToOuter();
@@ -128,7 +128,7 @@ package
 					Audio.play("high");
 				}
 				
-				if (G.hardMode && ! fadingOut && subgame.typeCount("ball") == 0) {
+				if (G.hardMode && ! fadingOut && subgame.classCount(Ball) == 0) {
 					colorTween.tween(120, color, 0xFFFFFF);
 					fadingOut = true;
 				}
