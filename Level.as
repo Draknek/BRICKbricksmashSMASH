@@ -170,7 +170,10 @@ package
 				
 				// Check if either side has scored
 				
-				var ball:Entity;
+				var leftPaddleEdge:Number = paddleLeft.x;
+				var rightPaddleEdge:Number = paddleRight.x + paddleRight.width;
+				
+				var ball:Ball;
 				
 				var leftBalls:Array = [];
 				var rightBalls:Array = [];
@@ -178,14 +181,14 @@ package
 				getType("ball_right", rightBalls);
 				
 				for each (ball in leftBalls) {
-					if (ball.x > bounds.width + 3) {
+					if (ball.x > bounds.width + ball.size) {
 						rightLost = true;
 						break;
 					}
 				}
 				
 				for each (ball in rightBalls) {
-					if (ball.x < -3) {
+					if (ball.x < -ball.size) {
 						leftLost = true;
 						break;
 					}
@@ -195,14 +198,14 @@ package
 				
 				if (leftLost) {
 					for each (ball in leftBalls) {
-						if (ball.x >= bounds.width) {
+						if (ball.x > rightPaddleEdge + ball.size) {
 							rightLost = true;
 							break;
 						}
 					}
 				} else if (rightLost) {
 					for each (ball in rightBalls) {
-						if (ball.x <= 0) {
+						if (ball.x < leftPaddleEdge - ball.size) {
 							leftLost = true;
 							break;
 						}
@@ -332,12 +335,15 @@ package
 		public function cullBallsOfType (type:String, blocks:Array):void
 		{
 			var balls:Array = [];
-			var ball:Entity;
+			var ball:Ball;
+			
+			var leftPaddleEdge:Number = paddleLeft.x;
+			var rightPaddleEdge:Number = paddleRight.x + paddleRight.width;
 			
 			getType(type, balls);
 			
 			for each (ball in balls) {
-				if (ball.x <= 0 || ball.x >= bounds.width) {
+				if (ball.x < leftPaddleEdge - ball.size || ball.x > rightPaddleEdge + ball.size) {
 					remove(ball);
 				}
 			}
@@ -352,8 +358,11 @@ package
 				balls.length = 0;
 				b.subgame.getType(type, balls);
 				
+				leftPaddleEdge = b.subgame.paddleLeft.x;
+				rightPaddleEdge = b.subgame.paddleRight.x + b.subgame.paddleRight.width;
+				
 				for each (ball in balls) {
-					if (ball.x <= 0 || ball.x >= b.subgame.bounds.width) {
+					if (ball.x < leftPaddleEdge - ball.size || ball.x > rightPaddleEdge + ball.size) {
 						b.subgame.remove(ball);
 					}
 				}
