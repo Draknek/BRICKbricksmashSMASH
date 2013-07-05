@@ -72,8 +72,8 @@ package
 			
 			if (G.multiplayer) {
 				if (parent) {
-					bw = 3;
-					bh = 6;
+					bh = Math.round(parent.height*0.1);
+					bw = Math.floor(bh*0.5);
 					
 					blocksWide = 2;
 					blocksHigh = 6;
