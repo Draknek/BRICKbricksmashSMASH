@@ -24,8 +24,9 @@ package
 		
 		public var fadingOut:Boolean;
 		
-		public function Block (_x:Number, _y:Number, _w:Number, _h:Number, _ix:int, _iy:int, _hasSubgame:Boolean)
+		public function Block (_x:Number, _y:Number, _w:Number, _h:Number, _ix:int, _iy:int, _parent:Level)
 		{
+			var hasSubgame:Boolean = _parent.parent ? false : true;
 			x = int(_x);
 			y = int(_y);
 			
@@ -39,19 +40,21 @@ package
 			ix = _ix;
 			iy = _iy;
 			
-			if (_hasSubgame) {
+			if (hasSubgame) {
 				if (G.colors && ! G.hardMode) {
 					color = getTargetColor();
 				} else {
 					color = 0xFFFFFF;
 				}
+			} else if (G.multiplayer) {
+				color = _parent.parent.ix ? 0xFFFFFF : 0x0;
 			} else {
 				color = G.hardMode ? 0xFFFFFF : 0x0;
 			}
-				
+			
 			color = color & 0xFFFFFF;
 			
-			if (_hasSubgame && ! G.hardMode) {
+			if (hasSubgame && ! G.hardMode) {
 				subgame = new Level(this);
 				subgame.updateLists();
 			}

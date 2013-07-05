@@ -99,7 +99,7 @@ package
 				var block:Block = new Block(
 					int(i%blocksWide)*(spaceX+bw) + startX,
 					int(i/blocksWide)*(spaceY+bh) + startY,
-					bw, bh, i%blocksWide, i/blocksWide, parent ? false : true);
+					bw, bh, i%blocksWide, i/blocksWide, this);
 				add(block);
 			}
 		}
