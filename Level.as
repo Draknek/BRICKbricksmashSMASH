@@ -575,7 +575,7 @@ package
 			
 			FP.buffer = renderTarget;
 			
-			if (! lost) renderTarget.colorTransform(bounds, colorTransform);
+			if (! lost || ! G.multiplayer) renderTarget.colorTransform(bounds, colorTransform);
 			
 			Draw.setTarget(renderTarget, FP.zero);
 			
