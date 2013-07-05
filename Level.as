@@ -81,14 +81,14 @@ package
 					spaceY = (h - bh*blocksHigh)/(blocksHigh+1);
 					spaceX = spaceY;
 				} else {
-					blocksWide = 2;
-					blocksHigh = 5;
+					blocksWide = G.versusBlocksWide;
+					blocksHigh = G.versusBlocksHigh;
 					
 					bh = h / blocksHigh;
 					bw = bh*0.6;
 					
 					spaceY = 0;
-					spaceX = 0;
+					spaceX = G.versusEmptyColumn ? bw*1.5 : 0;
 				}
 					
 				startX = w*0.5 - bw - spaceX*0.5;
