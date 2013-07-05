@@ -209,18 +209,23 @@ package
 					}
 				}
 				
-				if (! leftLost && ! rightLost && ! G.changeColor) {
-					// Check if either side has lost all their balls
-					leftLost = ! hasBallsOfType("ball_left", blocks);
-					rightLost = ! hasBallsOfType("ball_right", blocks);
-					
-					// Check if this is actually a tie
-					if (leftLost) {
-						cullBallsOfType("ball_right", blocks);
-						rightLost = ! hasBallsOfType("ball_right", blocks);
-					} else if (rightLost) {
-						cullBallsOfType("ball_left", blocks);
+				if (! leftLost && ! rightLost) {
+					if (G.changeColor) {
+						// Check if both sides have lost all their balls
+						leftLost = rightLost = ! hasAnyBalls(blocks);
+					} else {
+						// Check if either side has lost all their balls
 						leftLost = ! hasBallsOfType("ball_left", blocks);
+						rightLost = ! hasBallsOfType("ball_right", blocks);
+						
+						// Check if this is actually a tie
+						if (leftLost) {
+							cullBallsOfType("ball_right", blocks);
+							rightLost = ! hasBallsOfType("ball_right", blocks);
+						} else if (rightLost) {
+							cullBallsOfType("ball_left", blocks);
+							leftLost = ! hasBallsOfType("ball_left", blocks);
+						}
 					}
 				}
 				
@@ -281,18 +286,29 @@ package
 					
 					extraRender.updateLists();
 				}
-			} else if (classCount(Ball) == 0) {
+			} else if (! hasAnyBalls(blocks)) {
 				lost = true;
 				
-				for each (b in blocks) {
-					if (b.subgame && b.subgame.classCount(Ball) != 0) {
-						lost = false;
-						break;
-					}
-				}
-				
-				if (lost) doLost();
+				doLost();
 			}
+		}
+		
+		public function hasAnyBalls (blocks:Array):Boolean
+		{
+			if (classCount(Ball) > 0) {
+				return true;
+			}
+			
+			var b:Block;
+			
+			for each (b in blocks) {
+				if (! b.subgame) continue;
+				if (b.subgame.classCount(Ball) > 0) {
+					return true;
+				}
+			}
+			
+			return false;
 		}
 		
 		public function hasBallsOfType (type:String, blocks:Array):Boolean
