@@ -158,8 +158,8 @@ package
 			
 			addMultiplayerOption(
 				"Color change",
-				{name: "off", changeColor: false},
-				{name: "on", changeColor: true}
+				{name: "off", ChangeColor: false},
+				{name: "on", ChangeColor: true}
 			);
 			
 			var y:int = FP.height - title.y;
