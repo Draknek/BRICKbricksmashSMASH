@@ -177,6 +177,11 @@ package
 				
 				var leftBalls:Array = [];
 				var rightBalls:Array = [];
+				
+				if (G.versusOwnBallsKill) {
+					rightBalls = leftBalls;
+				}
+				
 				getType("ball_left", leftBalls);
 				getType("ball_right", rightBalls);
 				

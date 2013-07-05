@@ -162,6 +162,12 @@ package
 				{name: "on", ChangeColor: true}
 			);
 			
+			addMultiplayerOption(
+				"Killed by",
+				{name: "opponent's balls", OwnBallsKill: false},
+				{name: "all balls", OwnBallsKill: true}
+			);
+			
 			var y:int = FP.height - title.y;
 			
 			var i:int;

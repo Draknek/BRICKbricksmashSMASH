@@ -15,6 +15,7 @@ package
 		
 		public static var multiplayer:Boolean = true;
 		public static var versusChangeColor:Boolean = false;
+		public static var versusOwnBallsKill:Boolean = false;
 		public static var versusBlocksWide:int = 2;
 		public static var versusBlocksHigh:int = 5;
 		public static var versusEmptyColumn:Boolean = false;

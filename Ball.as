@@ -164,15 +164,23 @@ package
 				bounced = true;
 			}
 			
+			var removeIfFallOffLeft:Boolean = playerDX > 0;
+			var removeIfFallOffRight:Boolean = playerDX < 0;
+			
+			if (! level.parent && playerDX && G.versusOwnBallsKill) {
+				removeIfFallOffLeft = false;
+				removeIfFallOffRight = false;
+			}
+			
 			if (! playerDX && y > h+size && vy > 0) {
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX > 0 && x < -size && vx < 0) {
+			} else if (removeIfFallOffLeft && x < -size && vx < 0) {
 				lostCount++;
 				world.remove(this);
 				return;
-			} else if (playerDX < 0 && x > w+size && vx > 0) {
+			} else if (removeIfFallOffRight && x > w+size && vx > 0) {
 				lostCount++;
 				world.remove(this);
 				return;
