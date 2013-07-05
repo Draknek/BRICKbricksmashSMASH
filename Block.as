@@ -143,7 +143,7 @@ package
 			var c:uint;
 			
 			if (G.multiplayer) {
-				c = FP.getColorHSV(y / FP.height, ix ? 0.8 : 0.5, 0.8);
+				c = FP.getColorHSV(y / FP.height, 0.75, 0.8);
 			} else {
 				c = FP.getColorHSV(x / FP.width, iy ? 0.8 : 0.5, 0.8);
 			}
