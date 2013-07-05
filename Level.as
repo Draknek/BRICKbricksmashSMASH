@@ -568,7 +568,7 @@ package
 		public override function render (): void
 		{
 			if (! parent && G.multiplayer) {
-				FP.buffer.fillRect(FP.bounds, 0x808080);
+				FP.buffer.fillRect(FP.bounds, 0x708090);
 			}
 			
 			var oldBuffer:BitmapData = FP.buffer;
