@@ -113,6 +113,11 @@ package
 			add(muteButton);
 		}
 		
+		public override function end ():void
+		{
+			removeAll();
+		}
+		
 		public function addControlOptions ():void
 		{
 			mouseButton = new Button("Mouse", 12, useKeyboard);
@@ -131,51 +136,67 @@ package
 			}
 		}
 		
-		public var multiplayerOptions:Array = [];
+		public static var multiplayerOptions:Array;
+		public static var activeMenu:Menu;
 		
 		public function addMultiplayerOptions ():void
 		{
+			activeMenu = this;
+			
 			title.y *= 0.25;
 			
 			remove(by);
 			
 			by.y = title.y + title.height - by.height;
 			
-			addMultiplayerOption(
-				"Bricks wide",
-				{name: "2", BlocksWide: 2, EmptyColumn: false},
-				{name: "1", BlocksWide: 1, EmptyColumn: false},
-				{name: "2 with gap", BlocksWide: 2, EmptyColumn: true}
-			);
+			var i:int;
+			var option:*;
+			var button:Button;
 			
-			addMultiplayerOption(
-				"Bricks high",
-				{name: "5", BlocksHigh: 5},
-				{name: "6", BlocksHigh: 6},
-				{name: "3", BlocksHigh: 3},
-				{name: "4", BlocksHigh: 4}
-			);
-			
-			addMultiplayerOption(
-				"Color changing",
-				{name: "never", ChangeColor: 0},
-				{name: "in main game", ChangeColor: 1},
-				{name: "in all games", ChangeColor: 2}
-			);
-			
-			addMultiplayerOption(
-				"Killed by",
-				{name: "opponent's balls", OwnBallsKill: false},
-				{name: "all balls", OwnBallsKill: true}
-			);
+			if (! multiplayerOptions) {
+				multiplayerOptions = [];
+				
+				addMultiplayerOption(
+					"Bricks wide",
+					{name: "2", BlocksWide: 2, EmptyColumn: false},
+					{name: "1", BlocksWide: 1, EmptyColumn: false},
+					{name: "2 with gap", BlocksWide: 2, EmptyColumn: true}
+				);
+				
+				addMultiplayerOption(
+					"Bricks high",
+					{name: "5", BlocksHigh: 5},
+					{name: "6", BlocksHigh: 6},
+					{name: "3", BlocksHigh: 3},
+					{name: "4", BlocksHigh: 4}
+				);
+				
+				addMultiplayerOption(
+					"Killed by",
+					{name: "opponent's balls", OwnBallsKill: false},
+					{name: "all balls", OwnBallsKill: true}
+				);
+				
+				addMultiplayerOption(
+					"Color changing",
+					{name: "never", ChangeColor: 0},
+					{name: "in main game", ChangeColor: 1},
+					{name: "in all games", ChangeColor: 2}
+				);
+			} else {
+				for (i = 0; i < multiplayerOptions.length; i++) {
+					option = multiplayerOptions[i];
+					button = option.buttons[option.selected];
+					
+					add(button);
+				}
+			}
 			
 			var y:int = FP.height - title.y;
 			
-			var i:int;
-			
 			for (i = multiplayerOptions.length - 1; i >= 0; i--) {
-				var option:* = multiplayerOptions[i];
-				for each (var button:Button in option.buttons) {
+				option = multiplayerOptions[i];
+				for each (button in option.buttons) {
 					button.x = title.y;
 					button.y = y - button.height;
 				}
@@ -223,18 +244,19 @@ package
 				var buttons:Array = optionData.buttons;
 				var selectedID:int = optionData.selected;
 				
-				remove(buttons[choiceID]);
+				activeMenu.remove(buttons[choiceID]);
 				
 				var nextChoiceID:int = (choiceID+1)%buttons.length;
 				
-				add(buttons[nextChoiceID]);
+				activeMenu.add(buttons[nextChoiceID]);
+				
+				optionData.selected = nextChoiceID;
 				
 				var params:Object = optionData.params[nextChoiceID];
 				
 				for (var param:String in params) {
 					if (param == "name") continue;
 					G["versus" + param] = params[param];
-					FP.log("set " + param + " to " + params[param]);
 				}
 			}
 		}
