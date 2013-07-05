@@ -224,6 +224,9 @@ package
 					}
 				}
 				
+				var leftText:Text;
+				var rightText:Text;
+				
 				if (leftLost) {
 					paddleLeft.lost = true;
 					lost = true;
@@ -233,6 +236,8 @@ package
 							b.subgame.paddleLeft.lost = true;
 						}
 					}
+					
+					leftText = new Text(rightLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0xFFFFFF});
 				}
 				
 				if (rightLost) {
@@ -244,14 +249,37 @@ package
 							b.subgame.paddleRight.lost = true;
 						}
 					}
+					
+					rightText = new Text(leftLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0x000000});
 				}
 				
 				if (lost) {
+					extraRender = new World;
+					
 					for each (b in blocks) {
 						if (b.subgame) {
 							b.subgame.lost = true;
 						}
 					}
+					
+					if (! leftText) {
+						leftText = new Text("WIN", 0, 0, {size: 50, color: 0x000000});
+					}
+					
+					if (! rightText) {
+						rightText = new Text("WIN", 0, 0, {size: 50, color: 0xFFFFFF});
+					}
+					
+					leftText.centerOO();
+					rightText.centerOO();
+					
+					leftText.angle = -90;
+					rightText.angle = 90;
+					
+					extraRender.addGraphic(leftText, 0, FP.width * 0.25, FP.height*0.5)
+					extraRender.addGraphic(rightText, 0, FP.width * 0.75, FP.height*0.5)
+					
+					extraRender.updateLists();
 				}
 			} else if (classCount(Ball) == 0) {
 				lost = true;
