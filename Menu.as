@@ -15,9 +15,13 @@ package
 		public var keyboardButton:Button;
 		public var muteButton:Button;
 		
+		public var title:Text;
+		public var by:Button;
+		public var best:Text;
+		
 		public function Menu ()
 		{
-			var title:Text = new Text("", 0, 0, {size: 40});
+			title = new Text("", 0, 0, {size: 40});
 			
 			title.setStyle("small", {size: 12});
 			
@@ -28,7 +32,7 @@ package
 			
 			addGraphic(title);
 			
-			var by:Button = new Button("By Alan Hazelden", 18, gotoWebsite);
+			by = new Button("By Alan Hazelden", 18, gotoWebsite);
 			
 			by.x = (FP.width - by.width)*0.5;
 			by.y = title.y + title.height + title.y*0.25;
@@ -59,7 +63,7 @@ package
 				scoreData = G.so.data.modes[G.mode];
 			}
 			
-			var best:Text = new Text("Best:   ", 0, 0, {size: 18});
+			best = new Text("Best:   ", 0, 0, {size: 18});
 			
 			if (scoreData && scoreData.games) {
 				var time:String = "";
@@ -88,32 +92,13 @@ package
 				best.y = FP.height;
 			}
 			
+			if (G.multiplayer) {
+				addMultiplayerOptions();
+			} else {
+				addControlOptions();
+			}
+			
 			addButtons(buttons, by.y + by.height, best.y);
-			
-			var startText:String = "PLAY";
-			if (G.hardMode) {
-				startText += " HARD";
-			}
-			if (G.oneBallPerWorld) {
-				startText += "+";
-			}
-			
-			if (! G.multiplayer) {
-				mouseButton = new Button("Mouse", 12, useKeyboard);
-				keyboardButton = new Button("Keyboard", 12, useMouse);
-				
-				keyboardButton.x = title.y*0.25;
-				keyboardButton.y = FP.height - keyboardButton.height - title.y*0.25;
-				
-				mouseButton.x = keyboardButton.x;
-				mouseButton.y = keyboardButton.y;
-				
-				if (G.so.data.control == "mouse") {
-					useMouse();
-				} else {
-					useKeyboard();
-				}
-			}
 			
 			muteButton = new Button("Muted", 12, toggleMute);
 			
@@ -126,6 +111,125 @@ package
 			muteButton.y = FP.height - muteButton.height - title.y*0.25;
 			
 			add(muteButton);
+		}
+		
+		public function addControlOptions ():void
+		{
+			mouseButton = new Button("Mouse", 12, useKeyboard);
+			keyboardButton = new Button("Keyboard", 12, useMouse);
+			
+			keyboardButton.x = title.y*0.25;
+			keyboardButton.y = FP.height - keyboardButton.height - title.y*0.25;
+			
+			mouseButton.x = keyboardButton.x;
+			mouseButton.y = keyboardButton.y;
+			
+			if (G.so.data.control == "mouse") {
+				useMouse();
+			} else {
+				useKeyboard();
+			}
+		}
+		
+		public var multiplayerOptions:Array = [];
+		
+		public function addMultiplayerOptions ():void
+		{
+			title.y *= 0.25;
+			
+			remove(by);
+			
+			by.y = title.y + title.height - by.height;
+			
+			addMultiplayerOption(
+				"Bricks wide",
+				{name: "2", BlocksWide: 2, EmptyColumn: false},
+				{name: "1", BlocksWide: 1, EmptyColumn: false},
+				{name: "2 with gap", BlocksWide: 2, EmptyColumn: true}
+			);
+			
+			addMultiplayerOption(
+				"Bricks high",
+				{name: "5", BlocksHigh: 5},
+				{name: "6", BlocksHigh: 6},
+				{name: "3", BlocksHigh: 3},
+				{name: "4", BlocksHigh: 4}
+			);
+			
+			addMultiplayerOption(
+				"Color change",
+				{name: "off", changeColor: false},
+				{name: "on", changeColor: true}
+			);
+			
+			var y:int = FP.height - title.y;
+			
+			var i:int;
+			
+			for (i = multiplayerOptions.length - 1; i >= 0; i--) {
+				var option:* = multiplayerOptions[i];
+				for each (var button:Button in option.buttons) {
+					button.x = title.y;
+					button.y = y - button.height;
+				}
+				
+				y -= button.height + 2;
+			}
+			
+			best.y = button.y;
+		}
+		
+		public function addMultiplayerOption (name:String, ...choices):void
+		{
+			var optionID:int = multiplayerOptions.length;
+			
+			var buttons:Array = [];
+			
+			var button:Button;
+			
+			var i:int;
+			
+			for (i = 0; i < choices.length; i++) {
+				var choice:* = choices[i];
+				
+				button = new Button(name + ": " + choice.name, 12, makeCallback(optionID, i));
+				
+				buttons.push(button);
+			}
+			
+			var optionData:* = {
+				buttons: buttons,
+				params: choices
+			};
+			
+			multiplayerOptions.push(optionData);
+			
+			button.callback();
+		}
+		
+		public function makeCallback (optionID:int, choiceID:int):Function
+		{
+			return function ():void
+			{
+				var optionData:Object = multiplayerOptions[optionID];
+				
+				var buttons:Array = optionData.buttons;
+				var selectedID:int = optionData.selected;
+				
+				remove(buttons[choiceID]);
+				
+				var nextChoiceID:int = (choiceID+1)%buttons.length;
+				
+				add(buttons[nextChoiceID]);
+				
+				var params:Object = optionData.params[nextChoiceID];
+				
+				for (var param:String in params) {
+					if (param == "name") continue;
+					G["versus" + param] = params[param];
+					FP.log("set " + param + " to " + params[param]);
+				}
+			}
 		}
 		
 		public function addButtons (list:Array, startY:int, endY:int):void
