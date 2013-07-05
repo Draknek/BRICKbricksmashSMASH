@@ -157,9 +157,10 @@ package
 			);
 			
 			addMultiplayerOption(
-				"Color change",
-				{name: "off", ChangeColor: false},
-				{name: "on", ChangeColor: true}
+				"Color changing",
+				{name: "never", ChangeColor: 0},
+				{name: "in main game", ChangeColor: 1},
+				{name: "in all games", ChangeColor: 2}
 			);
 			
 			addMultiplayerOption(

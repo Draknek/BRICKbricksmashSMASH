@@ -112,7 +112,9 @@ package
 					x = paddle.x - size;
 				}
 				
-				if (! level.parent && G.versusChangeColor) {
+				var changeColor:Boolean = (G.versusChangeColor == 2 || (G.versusChangeColor == 1 && ! level.parent));
+				
+				if (changeColor) {
 					playerDX = paddle.dx;
 					color = (playerDX > 0) ? 0xFF000000 : 0xFFFFFFFF;
 					type = (playerDX > 0) ? "ball_left" : "ball_right";
