@@ -82,9 +82,11 @@ package
 		
 		public override function update (): void
 		{
+			var isStunned:Boolean;
+			
 			if (stun) {
 				stun--;
-				return;
+				isStunned = true;
 			}
 			
 			if (lost) return;
@@ -101,6 +103,8 @@ package
 					} else {
 						inputY = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
 					}
+					
+					if (isStunned) inputY = 0;
 					
 					vy *= 0.8;
 					
