@@ -23,6 +23,8 @@ package
 		
 		public var lost:Boolean;
 		
+		public var stun:int;
+		
 		public function Paddle (_level:Level, _dx:int = 0)
 		{
 			var wSize:Number = 0.25;
@@ -80,6 +82,11 @@ package
 		
 		public override function update (): void
 		{
+			if (stun) {
+				stun--;
+				return;
+			}
+			
 			if (lost) return;
 			
 			var level:Level = world as Level;
@@ -219,6 +226,13 @@ package
 			FP.rect.y = y;
 			FP.rect.width = width;
 			FP.rect.height = height;
+			
+			if (stun) {
+				var s:Number = stun / G.versusOwnBallsStun;
+				var shake:int = s * 2 + 1;
+				FP.rect.x += FP.rand(shake*2+1) - shake;
+				FP.rect.y += FP.rand(shake*2+1) - shake;
+			}
 			
 			FP.buffer.fillRect(FP.rect, c);
 			

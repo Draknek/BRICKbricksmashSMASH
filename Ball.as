@@ -179,10 +179,16 @@ package
 				world.remove(this);
 				return;
 			} else if (removeIfFallOffLeft && x < -size && vx < 0) {
+				if (! level.parent && G.versusOwnBallsStun) {
+					level.paddleLeft.stun = G.versusOwnBallsStun;
+				}
 				lostCount++;
 				world.remove(this);
 				return;
 			} else if (removeIfFallOffRight && x > w+size && vx > 0) {
+				if (! level.parent && G.versusOwnBallsStun) {
+					level.paddleRight.stun = G.versusOwnBallsStun;
+				}
 				lostCount++;
 				world.remove(this);
 				return;
