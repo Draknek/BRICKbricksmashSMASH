@@ -47,7 +47,11 @@ package
 					color = 0xFFFFFF;
 				}
 			} else if (G.multiplayer) {
-				color = _parent.parent.ix ? 0xFFFFFF : 0x0;
+				if (G.versusBlocksWide == 2) {
+					color = _parent.parent.ix ? 0xFFFFFF : 0x0;
+				} else {
+					color = ix ? 0xFFFFFF : 0x0;
+				}
 			} else {
 				color = G.hardMode ? 0xFFFFFF : 0x0;
 			}
