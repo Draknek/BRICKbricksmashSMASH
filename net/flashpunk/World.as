@@ -2,6 +2,7 @@
 {
 	import flash.geom.Point;
 	import flash.utils.Dictionary;
+	import flash.events.TouchEvent;
 
 	/**
 	 * Updated by Engine, main game container that holds all currently active Entities.
@@ -43,6 +44,21 @@
 			
 		}
 		
+		public function onTouchBegin(event:TouchEvent):void
+		{
+			
+		}
+		
+		public function onTouchMove(event:TouchEvent):void
+		{
+			
+		}
+		
+		public function onTouchEnd(event:TouchEvent):void
+		{
+			
+		}
+
 		/**
 		 * Performed by the game loop, updates all contained Entities.
 		 * If you override this to give your World update code, remember

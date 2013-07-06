@@ -41,9 +41,21 @@ package
 				Input.mouseCursor = "auto";
 			}
 			
+			if (G.touchscreen) {
+				if (! Input.mouseDown && ! Input.mouseReleased) {
+					over = false;
+				}
+			}
+			
 			image.color = over ? 0x000000 : 0xFFFFFF;
 			
-			if (over && Input.mousePressed && callback != null) {
+			var pressed:Boolean = Input.mousePressed;
+			
+			if (G.touchscreen) {
+				pressed = Input.mouseReleased;
+			}
+			
+			if (over && pressed && callback != null) {
 				callback();
 				Audio.play("high", 0.25);
 			}

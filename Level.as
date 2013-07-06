@@ -6,6 +6,7 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.display.*;
+	import flash.events.*;
 	import flash.geom.*;
 	
 	public class Level extends World
@@ -171,11 +172,15 @@ package
 			}
 			
 			if (! hasStarted) {
-				if ((G.mouseInput && ! G.multiplayer) ? Input.mousePressed : (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER))) {
+				if (Input.mousePressed && G.mouseInput && ! G.multiplayer) {
 					respawn();
-					hasStarted = true;
-				} else {
 					return;
+				}
+				if (! G.mouseInput || G.multiplayer) {
+					if (Input.pressed(Key.SPACE) || Input.pressed(Key.ENTER)) {
+						respawn();
+						return;
+					}
 				}
 			}
 		}
@@ -613,6 +618,8 @@ package
 		
 		public function respawn ():void
 		{
+			hasStarted = true;
+			
 			t = 0;
 			
 			if (paddle) {
@@ -665,6 +672,36 @@ package
 				FP.buffer.colorTransform(FP.bounds, Main.tintTransform);
 				
 				Main.tint -= 0.1;
+			}
+		}
+		
+		public override function onTouchBegin(event:TouchEvent):void
+		{
+			if (paddle) {
+			
+			} else {
+				paddleLeft.onTouchBegin(event);
+				paddleRight.onTouchBegin(event);
+			}
+		}
+		
+		public override function onTouchMove(event:TouchEvent):void
+		{
+			if (paddle) {
+			
+			} else {
+				paddleLeft.onTouchMove(event);
+				paddleRight.onTouchMove(event);
+			}
+		}
+		
+		public override function onTouchEnd(event:TouchEvent):void
+		{
+			if (paddle) {
+			
+			} else {
+				paddleLeft.onTouchEnd(event);
+				paddleRight.onTouchEnd(event);
 			}
 		}
 	}

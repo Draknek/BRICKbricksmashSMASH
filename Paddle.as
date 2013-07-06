@@ -6,6 +6,7 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.display.*;
+	import flash.events.*;
 	import flash.geom.*;
 	
 	public class Paddle extends Entity
@@ -24,6 +25,10 @@ package
 		public var lost:Boolean;
 		
 		public var stun:int;
+		
+		public var touchID:int;
+		public var hasTouchID:Boolean;
+		public var touchY:Number = 0.5;
 		
 		public function Paddle (_level:Level, _dx:int = 0)
 		{
@@ -67,12 +72,53 @@ package
 			if (! _level.parent) visible = false;
 		}
 		
+		public function onTouchBegin(event:TouchEvent):void
+		{
+			if (! sideways) {
+				return;
+			}
+			
+			if (hasTouchID) {
+				return;
+			}
+			
+			if ((event.stageX < FP.stage.stageWidth*0.5) != (dx > 0)) {
+				return;
+			}
+			
+			hasTouchID = true;
+			
+			touchID = event.touchPointID;
+			
+			touchY = event.stageY / FP.stage.stageHeight;
+		}
+		
+		public function onTouchMove(event:TouchEvent):void
+		{
+			if (! hasTouchID || event.touchPointID != touchID) {
+				return;
+			}
+			
+			touchY = event.stageY / FP.stage.stageHeight;
+		}
+		
+		public function onTouchEnd(event:TouchEvent):void
+		{
+			if (! hasTouchID || event.touchPointID != touchID) {
+				return;
+			}
+			
+			hasTouchID = false;
+			touchY = event.stageY / FP.stage.stageHeight;
+			touchID = 0;
+		}
+		
 		public override function added ():void
 		{
 			var level:Level = world as Level;
 			
 			if (sideways) {
-				y = FP.height*0.5 - height*0.5;
+				y = level.bounds.height*0.5 - height*0.5;
 			} else if (G.mouseInput) {
 				x = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
 			} else {
@@ -82,11 +128,13 @@ package
 		
 		public override function update (): void
 		{
-			var isStunned:Boolean;
-			
 			if (stun) {
 				stun--;
-				isStunned = true;
+				
+				vx *= 0.8;
+				vy *= 0.8;
+				
+				return;
 			}
 			
 			if (lost) return;
@@ -94,92 +142,139 @@ package
 			var level:Level = world as Level;
 			
 			if (sideways) {
-				var toY:Number;
-				if (! level.parent) {
-					var inputY:int;
-					
-					if (dx > 0) {
-						inputY = int(Input.check(Key.S)) - int(Input.check(Key.W));
-					} else {
-						inputY = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
-					}
-					
-					if (isStunned) inputY = 0;
-					
-					vy *= 0.8;
-					
-					vy += inputY*1.5;
+				if (G.touchscreen) {
+					update_2P_Touch();
 				} else {
-					toY = (dx > 0) ? globalPosLeft : globalPosRight;
-					toY *= (level.bounds.height - height);
-					
-					vy = toY - y;
+					update_2P_Keyboard();
 				}
-				
-				y += vy;
-				
-				if (! level.parent) {
-					if (y <= 0) {
-						if (dx > 0) {
-							globalPosLeft = 0;
-						} else {
-							globalPosRight = 0;
-						}
-						vy = 0;
-						y = 0;
-					} else if (y >= level.bounds.height - height) {
-						if (dx > 0) {
-							globalPosLeft = 1;
-						} else {
-							globalPosRight = 1;
-						}
-						vy = 0;
-						y = level.bounds.height - height;
-					} else {
-						if (dx > 0) {
-							globalPosLeft = y / (level.bounds.height - height);
-						} else {
-							globalPosRight = y / (level.bounds.height - height);
-						}
-					}
-				}
-				return;
-			}
-			
-			var toX:Number;
-			
-			if (G.mouseInput) {
-				toX = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
-				
-				vx = (toX - x)*0.2;
-				
 			} else {
-				if (! level.parent) {
-					var inputX:int = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
-					
-					vx *= 0.8;
-					
-					vx += inputX*1.5;
+				if (G.mouseInput) {
+					update_1P_Mouse();
+				} else if (level.parent) {
+					update_1P_Keyboard_SubGame();
 				} else {
-					toX = globalPos * (level.bounds.width - width);
-					
-					vx = toX - x;
+					update_1P_Keyboard_MainGame();
 				}
 			}
+		}
+		
+		public function update_1P_Mouse ():void
+		{
+			var level:Level = world as Level;
+			
+			var toX:Number = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
+			
+			vx = (toX - x)*0.2;
+			
+			x += vx;
+		}
+		
+		public function update_1P_Keyboard_MainGame ():void
+		{
+			var level:Level = world as Level;
+			
+			var inputX:int = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
+			
+			vx *= 0.8;
+			
+			vx += inputX*1.5;
 			
 			x += vx;
 			
-			if (! G.mouseInput && ! level.parent) {
-				if (x <= 0) {
-					globalPos = 0;
-					vx = 0;
-					x = 0;
-				} else if (x >= level.bounds.width - width) {
-					globalPos = 1;
-					vx = 0;
-					x = level.bounds.width - width;
+			if (x <= 0) {
+				globalPos = 0;
+				vx = 0;
+				x = 0;
+			} else if (x >= level.bounds.width - width) {
+				globalPos = 1;
+				vx = 0;
+				x = level.bounds.width - width;
+			} else {
+				globalPos = x / (level.bounds.width - width);
+			}
+		}
+		
+		public function update_1P_Keyboard_SubGame ():void
+		{
+			var level:Level = world as Level;
+			
+			var toX:Number = globalPos * (level.bounds.width - width);
+			
+			vx = toX - x;
+			
+			x += vx;
+		}
+		
+		public function update_2P_Touch ():void
+		{
+			var level:Level = world as Level;
+			
+			if (! level.parent) {
+				if (dx > 0) {
+					globalPosLeft = touchY;
 				} else {
-					globalPos = x / (level.bounds.width - width);
+					globalPosRight = touchY;
+				}
+			}
+					
+			var toY:Number = (dx > 0) ? globalPosLeft : globalPosRight;
+			
+			toY = FP.clamp(toY, 0, 1) * (level.bounds.height) - height*0.5;
+			
+			vy = (toY - y)*0.2;
+			
+			y += vy;
+		}
+		
+		public function update_2P_Keyboard ():void
+		{
+			var level:Level = world as Level;
+			
+			var toY:Number;
+			if (! level.parent) {
+				var inputY:int;
+				
+				if (dx > 0) {
+					inputY = int(Input.check(Key.S)) - int(Input.check(Key.W));
+				} else {
+					inputY = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
+				}
+				
+				vy *= 0.8;
+				
+				vy += inputY*1.5;
+			} else {
+				toY = (dx > 0) ? globalPosLeft : globalPosRight;
+				toY *= (level.bounds.height - height);
+				
+				vy = toY - y;
+			}
+			
+			y += vy;
+			
+			if (! level.parent) {
+				if (y <= 0) {
+					if (dx > 0) {
+						globalPosLeft = 0;
+					} else {
+						globalPosRight = 0;
+					}
+					vy = 0;
+					y = 0;
+				} else if (y >= level.bounds.height - height) {
+					if (dx > 0) {
+						globalPosLeft = 1;
+					} else {
+						globalPosRight = 1;
+					}
+					vy = 0;
+					y = level.bounds.height - height;
+				} else {
+					if (dx > 0) {
+						globalPosLeft = y / (level.bounds.height - height);
+					} else {
+						globalPosRight = y / (level.bounds.height - height);
+					}
 				}
 			}
 		}
