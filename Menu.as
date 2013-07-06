@@ -186,18 +186,17 @@ package
 				
 				addMultiplayerOption(
 					"Bricks high",
-					{name: "5", BlocksHigh: 5},
-					{name: "2", BlocksHigh: 2},
 					{name: "3", BlocksHigh: 3},
-					{name: "4", BlocksHigh: 4}
+					{name: "4", BlocksHigh: 4},
+					{name: "5", BlocksHigh: 5},
+					{name: "2", BlocksHigh: 2}
 				);
 				
 				addMultiplayerOption(
 					"Gaps",
 					{name: "none", GapBetweenBlocks: false, GapAtEdges: false},
 					{name: "between bricks", GapBetweenBlocks: true, GapAtEdges: false},
-					{name: "at edges", GapBetweenBlocks: false, GapAtEdges: true},
-					{name: "between bricks and at edges", GapBetweenBlocks: true, GapAtEdges: true}
+					{name: "at edges", GapBetweenBlocks: false, GapAtEdges: true}
 				);
 				
 				addMultiplayerOption(
