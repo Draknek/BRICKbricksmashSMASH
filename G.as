@@ -11,14 +11,14 @@ package
 		
 		public static var mouseInput:Boolean = true;
 		
-		public static var touchscreen:Boolean = true;
+		public static var touchscreen:Boolean = false;
 		
 		public static var invertSubGame:Boolean = true;
 		public static var colors:Boolean = true;
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
 		
-		public static var multiplayer:Boolean = false;
+		public static var multiplayer:Boolean = true;
 		public static var versusChangeColor:int = 0; // 0 = never, 1 = in main game, 2 = in all games
 		public static var versusOwnBallsKill:Boolean = false;
 		public static var versusOwnBallsStun:int = 60;
@@ -60,8 +60,6 @@ package
 				platform = "blackberry";
 				touchscreen = true;
 			}
-			
-			touchscreen = true;
 			
 			if (touchscreen) {
 				rootMenu = true;
