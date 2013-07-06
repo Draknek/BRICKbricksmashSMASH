@@ -378,7 +378,7 @@ package
 			FP.world = new Menu;
 		}
 		
-		public function gotoRootMenu ():void
+		public static function gotoRootMenu ():void
 		{
 			G.rootMenu = true;
 			G.multiplayer = false;

@@ -8,6 +8,7 @@ package
 	import flash.geom.*;
 	import flash.events.*;
 	import flash.ui.*;
+	import flash.utils.*;
 	
 	public class Main extends Engine
 	{
@@ -44,6 +45,15 @@ package
 				FP.stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
 				FP.stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
 			}
+			
+			if (G.platform == "android") {
+				try {
+					var NativeApplication:Class = getDefinitionByName("flash.desktop.NativeApplication") as Class;
+					
+					NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, androidKeyListener);
+				}
+				catch (e:Error) {}
+			}
 		}
 		
 		public function onResize (e:Event):void
@@ -64,7 +74,33 @@ package
 			//FP.console.enable();
 		}
 		
-		public var touchMoveID:int;
+		private static function androidKeyListener(e:KeyboardEvent):void
+		{
+			try {
+			const BACK:uint   = ("BACK" in Keyboard)   ? Keyboard["BACK"]   : 0;
+			const MENU:uint   = ("MENU" in Keyboard)   ? Keyboard["MENU"]   : 0;
+			const SEARCH:uint = ("SEARCH" in Keyboard) ? Keyboard["SEARCH"] : 0;
+			
+			if(e.keyCode == BACK) {
+				if (FP.world is Menu) {
+					if (G.rootMenu) {
+						return;
+					} else {
+						Menu.gotoRootMenu();
+					}
+				} else {
+					FP.world = new Menu;
+				}
+			} else if(e.keyCode == SEARCH) {
+				
+			} else {
+				return;
+			}
+			
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			} catch (e:Error) {}
+		}
 		
 		public function onTouchBegin(event:TouchEvent):void
 		{
