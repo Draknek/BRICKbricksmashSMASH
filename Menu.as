@@ -166,7 +166,6 @@ package
 				addMultiplayerOption(
 					"Bricks high",
 					{name: "5", BlocksHigh: 5},
-					{name: "6", BlocksHigh: 6},
 					{name: "2", BlocksHigh: 2},
 					{name: "3", BlocksHigh: 3},
 					{name: "4", BlocksHigh: 4}
