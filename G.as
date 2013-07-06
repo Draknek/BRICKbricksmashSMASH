@@ -1,19 +1,24 @@
 package
 {
 	import flash.net.SharedObject;
+	import flash.system.Capabilities;
 	
 	public class G
 	{
 		public static const so:SharedObject = SharedObject.getLocal("brickbricksmashsmash", "/");
 		
+		public static var rootMenu:Boolean = false;
+		
 		public static var mouseInput:Boolean = true;
+		
+		public static var touchscreen:Boolean = true;
 		
 		public static var invertSubGame:Boolean = true;
 		public static var colors:Boolean = true;
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
 		
-		public static var multiplayer:Boolean = true;
+		public static var multiplayer:Boolean = false;
 		public static var versusChangeColor:int = 0; // 0 = never, 1 = in main game, 2 = in all games
 		public static var versusOwnBallsKill:Boolean = false;
 		public static var versusOwnBallsStun:int = 60;
@@ -26,6 +31,8 @@ package
 		public static var chooseMode:Boolean = false;
 		
 		public static var mode:String;
+		
+		public static var platform:String;
 		
 		private static const properties:Array = [
 			"games",
@@ -41,7 +48,26 @@ package
 			
 		public static function init ():void
 		{
-			if (! so.data.control) {
+			// Platform detection
+			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
+				platform = "ios";
+				touchscreen = true;
+			}
+			else if (Capabilities.manufacturer.toLowerCase().indexOf("android") >= 0) {
+				platform = "android";
+				touchscreen = true;
+			} else if (Capabilities.os.indexOf("QNX") >= 0) {
+				platform = "blackberry";
+				touchscreen = true;
+			}
+			
+			touchscreen = true;
+			
+			if (touchscreen) {
+				rootMenu = true;
+			}
+			
+			if (! touchscreen && ! so.data.control) {
 				so.data.control = "mouse";
 			}
 			

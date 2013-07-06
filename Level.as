@@ -120,6 +120,13 @@ package
 			}
 		}
 		
+		public override function begin (): void
+		{
+			if (G.touchscreen && ! G.multiplayer) {
+				FP.engine.y = 0;
+			}
+		}
+		
 		public override function update (): void
 		{
 			t++;
@@ -528,11 +535,25 @@ package
 			}
 			
 			extraRender.updateLists();
+			
+			if (G.touchscreen) {
+				var menu:Button = new Button("MENU", 20, gotoMenu);
+				
+				menu.x = menu.height*0.25;
+				menu.y = FP.height - menu.height*1.25;
+				
+				add(menu);
+			}
 		}
 		
 		public function newGame ():void
 		{
 			FP.world = new Level;
+		}
+		
+		public function gotoMenu ():void
+		{
+			FP.world = new Menu;
 		}
 		
 		public function doLost ():void
@@ -543,6 +564,15 @@ package
 			restart.y = FP.height*0.65 - restart.height*0.5;
 			
 			add(restart);
+			
+			if (G.touchscreen) {
+				var menu:Button = new Button("MENU", 20, gotoMenu);
+				
+				menu.x = menu.height*0.25;
+				menu.y = FP.height*0.65 - menu.height*0.5;
+				
+				add(menu);
+			}
 			
 			var scoreData:Object = G.so.data.modes[G.mode];
 			

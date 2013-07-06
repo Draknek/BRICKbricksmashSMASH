@@ -41,7 +41,10 @@ package
 			
 			var buttons:Array = [];
 			
-			if (G.chooseMode) {
+			if (G.rootMenu) {
+				buttons.push(["1P", goto1PMenu]);
+				buttons.push(["2P", goto2PMenu]);
+			} else if (G.chooseMode) {
 				buttons.push(["NORMAL", playNormal]);
 				buttons.push(["HARD", playHard]);
 				buttons.push(["HARDER", playHarder]);
@@ -49,6 +52,10 @@ package
 				buttons.push(["VERSUS", startGame]);
 			} else {
 				buttons.push(["PLAY", playNormal]);
+			}
+			
+			if (G.touchscreen && ! G.rootMenu) {
+				buttons.push(["BACK", gotoRootMenu, 0.5]);
 			}
 			
 			if (Preloader.hostedOn == "flashgamelicense.com") {
@@ -59,7 +66,7 @@ package
 			
 			var scoreData:Object;
 			
-			if (! G.chooseMode && ! G.multiplayer) {
+			if (! G.chooseMode && ! G.multiplayer && ! G.rootMenu) {
 				scoreData = G.so.data.modes[G.mode];
 			}
 			
@@ -94,23 +101,22 @@ package
 			
 			if (G.multiplayer) {
 				addMultiplayerOptions();
-			} else {
+			} else if (! G.touchscreen) {
 				addControlOptions();
 			}
 			
 			addButtons(buttons, by.y + by.height, best.y);
 			
-			muteButton = new Button("Muted", 12, toggleMute);
-			
-			Text(muteButton.image).align = "center";
-			if (! G.so.data.mute) {
-				Text(muteButton.image).text = "Mute";
+			if (! G.touchscreen) {
+				addMuteOptions();
 			}
-			
-			muteButton.x = FP.width - muteButton.width - title.y*0.25;
-			muteButton.y = FP.height - muteButton.height - title.y*0.25;
-			
-			add(muteButton);
+		}
+		
+		public override function begin ():void
+		{
+			if (G.touchscreen) {
+				FP.engine.y = (FP.stage.stageHeight - FP.height*FP.screen.scale)*0.5;
+			}
 		}
 		
 		public override function end ():void
@@ -134,6 +140,21 @@ package
 			} else {
 				useKeyboard();
 			}
+		}
+		
+		public function addMuteOptions ():void
+		{
+			muteButton = new Button("Muted", 12, toggleMute);
+			
+			Text(muteButton.image).align = "center";
+			if (! G.so.data.mute) {
+				Text(muteButton.image).text = "Mute";
+			}
+			
+			muteButton.x = FP.width - muteButton.width - title.y*0.25;
+			muteButton.y = FP.height - muteButton.height - title.y*0.25;
+			
+			add(muteButton);
 		}
 		
 		public static var multiplayerOptions:Array;
@@ -341,6 +362,27 @@ package
 			G.so.flush();
 			
 			Text(muteButton.image).text = G.so.data.mute ? "Muted" : "Mute";
+		}
+		
+		public function goto1PMenu ():void
+		{
+			G.rootMenu = false;
+			G.multiplayer = false;
+			FP.world = new Menu;
+		}
+		
+		public function goto2PMenu ():void
+		{
+			G.rootMenu = false;
+			G.multiplayer = true;
+			FP.world = new Menu;
+		}
+		
+		public function gotoRootMenu ():void
+		{
+			G.rootMenu = true;
+			G.multiplayer = false;
+			FP.world = new Menu;
 		}
 		
 		public function playNormal ():void
