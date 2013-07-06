@@ -84,14 +84,30 @@ package
 					blocksWide = G.versusBlocksWide;
 					blocksHigh = G.versusBlocksHigh;
 					
-					bh = h / blocksHigh;
+					if (G.versusGapBetweenBlocks) {
+						if (G.versusGapAtEdges) {
+							bh = Math.round(h / (blocksHigh*1.5 + 1));
+							spaceY = (h - bh*blocksHigh)/(blocksHigh+1);
+						} else {
+							bh = Math.round(h / (blocksHigh*1.5));
+							spaceY = (h - bh*blocksHigh)/(blocksHigh-1);
+						}
+					} else {
+						if (G.versusGapAtEdges) {
+							bh = h / (blocksHigh + 1);
+						} else {
+							bh = h / blocksHigh;
+						}
+						
+						spaceY = 0;
+					}
+					
 					bw = bh*0.6;
 					
-					spaceY = 0;
 					spaceX = G.versusEmptyColumn ? bw*1.5 : 0;
 				}
 					
-				startX = w*0.5 - bw - spaceX*0.5;
+				startX = w*0.5 - bw*blocksWide*0.5 - spaceX*0.5;
 				startY = (h - bh*blocksHigh - spaceY*(blocksHigh+1))*0.5 + spaceY;
 			}
 			

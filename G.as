@@ -20,6 +20,8 @@ package
 		public static var versusBlocksWide:int = 2;
 		public static var versusBlocksHigh:int = 5;
 		public static var versusEmptyColumn:Boolean = false;
+		public static var versusGapBetweenBlocks:Boolean = false;
+		public static var versusGapAtEdges:Boolean = false;
 		
 		public static var chooseMode:Boolean = false;
 		

@@ -160,15 +160,24 @@ package
 					"Bricks wide",
 					{name: "2", BlocksWide: 2, EmptyColumn: false},
 					{name: "1", BlocksWide: 1, EmptyColumn: false},
-					{name: "2 with gap", BlocksWide: 2, EmptyColumn: true}
+					{name: "2, separated", BlocksWide: 2, EmptyColumn: true}
 				);
 				
 				addMultiplayerOption(
 					"Bricks high",
 					{name: "5", BlocksHigh: 5},
 					{name: "6", BlocksHigh: 6},
+					{name: "2", BlocksHigh: 2},
 					{name: "3", BlocksHigh: 3},
 					{name: "4", BlocksHigh: 4}
+				);
+				
+				addMultiplayerOption(
+					"Gaps",
+					{name: "none", GapBetweenBlocks: false, GapAtEdges: false},
+					{name: "between bricks", GapBetweenBlocks: true, GapAtEdges: false},
+					{name: "at edges", GapBetweenBlocks: false, GapAtEdges: true},
+					{name: "between bricks and at edges", GapBetweenBlocks: true, GapAtEdges: true}
 				);
 				
 				addMultiplayerOption(
