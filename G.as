@@ -24,6 +24,8 @@ package
 		public static var versusOwnBallsStun:int = 60;
 		public static var versusBlocksWide:int = 2;
 		public static var versusBlocksHigh:int = 5;
+		public static var versusSubgameBlocksWide:int = 2;
+		public static var versusSubgameBlocksHigh:int = 5;
 		public static var versusEmptyColumn:Boolean = false;
 		public static var versusGapBetweenBlocks:Boolean = false;
 		public static var versusGapAtEdges:Boolean = false;

@@ -76,8 +76,8 @@ package
 					bh = Math.round(parent.height*0.1);
 					bw = Math.floor(bh*0.5);
 					
-					blocksWide = 2;
-					blocksHigh = 6;
+					blocksWide = G.versusSubgameBlocksWide;
+					blocksHigh = G.versusSubgameBlocksHigh;
 					
 					spaceY = (h - bh*blocksHigh)/(blocksHigh+1);
 					spaceX = spaceY;

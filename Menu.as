@@ -200,6 +200,14 @@ package
 				);
 				
 				addMultiplayerOption(
+					"Subgame brick layout",
+					{name: "2x5", SubgameBlocksHigh: 5},
+					{name: "2x6", SubgameBlocksHigh: 6},
+					{name: "2x3", SubgameBlocksHigh: 3},
+					{name: "2x4", SubgameBlocksHigh: 4}
+				);
+				
+				addMultiplayerOption(
 					"Losing own ball",
 					{name: "ignored", OwnBallsKill: false, OwnBallsStun: false},
 					{name: "stuns for 0.25s", OwnBallsKill: false, OwnBallsStun: 15},
