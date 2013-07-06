@@ -30,6 +30,8 @@ package
 		public var hasTouchID:Boolean;
 		public var touchY:Number = 0.5;
 		
+		public var ready:Number = 0;
+		
 		public function Paddle (_level:Level, _dx:int = 0)
 		{
 			var wSize:Number = 0.25;
@@ -143,6 +145,13 @@ package
 			
 			if (sideways) {
 				if (G.touchscreen) {
+					if (hasTouchID) {
+						ready += 1/30;
+						if (ready > 1) ready = 1;
+					} else {
+						ready -= 0.1;
+						if (ready < 0) ready = 0;
+					}
 					update_2P_Touch();
 				} else {
 					update_2P_Keyboard();
@@ -338,9 +347,9 @@ package
 			if (! level.hasStarted) {
 				if (sideways) {
 					if (dx < 0) {
-						FP.rect.x = x - 6;
+						FP.rect.x = x - 6*ready;
 					} else {
-						FP.rect.x = x + width;
+						FP.rect.x = x + width - 6 + 6*ready;
 					}
 					
 					FP.rect.y = y + height*0.5 - 3;

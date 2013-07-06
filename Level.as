@@ -182,6 +182,12 @@ package
 						return;
 					}
 				}
+				if (G.multiplayer && G.touchscreen) {
+					if (paddleLeft.ready >= 1 && paddleRight.ready >= 1) {
+						respawn();
+						return;
+					}
+				}
 			}
 		}
 		
