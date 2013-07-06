@@ -65,6 +65,7 @@ package
 			
 			if (touchscreen) {
 				rootMenu = true;
+				multiplayer = false;
 			}
 			
 			if (! touchscreen && ! so.data.control) {
