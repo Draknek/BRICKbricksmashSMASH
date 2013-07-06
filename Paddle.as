@@ -37,6 +37,10 @@ package
 			var wSize:Number = 0.25;
 			
 			if (G.hardMode && _level.parent) wSize = 0.4;
+			if (G.multiplayer) {
+				if (_level.parent && G.versusLargeSubgamePaddle) wSize = 0.4;
+				if (! _level.parent && G.versusLargeMainPaddle) wSize = 0.4;
+			}
 			
 			width = _level.bounds.width * wSize;
 			height = width*0.1;

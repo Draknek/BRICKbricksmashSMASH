@@ -207,6 +207,13 @@ package
 				);
 				
 				addMultiplayerOption(
+					"Paddle size",
+					{name: "normal", LargeMainPaddle: false, LargeSubgamePaddle: false},
+					{name: "large in subgames", LargeMainPaddle: false, LargeSubgamePaddle: true},
+					{name: "large", LargeMainPaddle: true, LargeSubgamePaddle: true}
+				);
+				
+				addMultiplayerOption(
 					"Losing own ball",
 					{name: "ignored", OwnBallsKill: false, OwnBallsStun: false},
 					{name: "stuns for 0.25s", OwnBallsKill: false, OwnBallsStun: 15},

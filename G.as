@@ -29,6 +29,8 @@ package
 		public static var versusEmptyColumn:Boolean = false;
 		public static var versusGapBetweenBlocks:Boolean = false;
 		public static var versusGapAtEdges:Boolean = false;
+		public static var versusLargeMainPaddle:Boolean = false;
+		public static var versusLargeSubgamePaddle:Boolean = false;
 		
 		public static var chooseMode:Boolean = false;
 		
