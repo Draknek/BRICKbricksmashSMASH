@@ -41,7 +41,7 @@ package
 			vy = _vy;
 			
 			if (_block) {
-				size = 0.5;
+				size = Math.round(_block.height*0.02)*0.5;
 			} else {
 				size = 3;
 			}
@@ -258,12 +258,14 @@ package
 				}
 			}
 			
-			if (bounced && size >= 1) {
+			if (bounced) {
 				bounceX = x;
 				bounceY = y;
 				showBounce = true;
 				
-				Audio.play("low");
+				if (! level.parent) {
+					Audio.play("low");
+				}
 			}
 			
 			if (bounced) {
