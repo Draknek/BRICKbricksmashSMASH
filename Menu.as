@@ -227,7 +227,6 @@ package
 					{name: "ignored", OwnBallsKill: false, OwnBallsStun: false},
 					{name: "stuns for 0.25s", OwnBallsKill: false, OwnBallsStun: 15},
 					{name: "stuns for 0.5s", OwnBallsKill: false, OwnBallsStun: 30},
-					{name: "stuns for 0.75s", OwnBallsKill: false, OwnBallsStun: 45},
 					{name: "game over", OwnBallsKill: true, OwnBallsStun: false}
 				);
 				
