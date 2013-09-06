@@ -9,6 +9,7 @@ package
 	import flash.events.*;
 	import flash.ui.*;
 	import flash.utils.*;
+	import flash.display.*;
 	
 	public class Main extends Engine
 	{
@@ -54,6 +55,19 @@ package
 				}
 				catch (e:Error) {}
 			}
+		}
+		
+		public override function setStageProperties():void
+		{
+			super.setStageProperties();
+			
+			if (G.touchscreen) {
+				try {
+					stage.displayState = StageDisplayState['FULL_SCREEN_INTERACTIVE'];
+				} catch (e:Error) {}
+			}
+			
+			onResize(null);
 		}
 		
 		public function onResize (e:Event):void
