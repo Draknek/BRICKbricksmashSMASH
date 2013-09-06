@@ -139,6 +139,32 @@ package
 				bounced = true;
 			}
 			
+			if (playerDX) {
+				if (vx < 0) {
+					paddle = level.paddleLeft;
+					
+					if (paddle.shields && x - size < paddle.shieldX) {
+						vx *= -1;
+						x = paddle.shieldX + size;
+						bounced = true;
+						
+						paddle.shieldX -= paddle.shieldSpacing;
+						paddle.shields--;
+					}
+				} else {
+					paddle = level.paddleRight;
+					
+					if (paddle.shields && x + size > paddle.shieldX) {
+						vx *= -1;
+						x = paddle.shieldX - size;
+						bounced = true;
+						
+						paddle.shieldX += paddle.shieldSpacing;
+						paddle.shields--;
+					}
+				}
+			}
+			
 			var bounceOnLeft:Boolean = (playerDX != 1);
 			var bounceOnRight:Boolean = (playerDX != -1);
 			

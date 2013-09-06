@@ -214,6 +214,15 @@ package
 				);
 				
 				addMultiplayerOption(
+					"Lives",
+					{name: "0", ShieldCount: 0},
+					{name: "1", ShieldCount: 1},
+					{name: "2", ShieldCount: 2},
+					{name: "3", ShieldCount: 3},
+					{name: "4", ShieldCount: 4}
+				);
+				
+				addMultiplayerOption(
 					"Losing own ball",
 					{name: "ignored", OwnBallsKill: false, OwnBallsStun: false},
 					{name: "stuns for 0.25s", OwnBallsKill: false, OwnBallsStun: 15},

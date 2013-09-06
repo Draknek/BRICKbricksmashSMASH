@@ -35,6 +35,10 @@ package
 		
 		public var ready:Number = 0;
 		
+		public var shields:int;
+		public var shieldSpacing:int;
+		public var shieldX:int;
+		
 		public function Paddle (_level:Level, _dx:int = 0)
 		{
 			var wSize:Number = 0.25;
@@ -79,6 +83,37 @@ package
 			active = false;
 			
 			if (! _level.parent) visible = false;
+			
+			if (sideways && ! _level.parent) {
+				initShields();
+			}
+		}
+		
+		public function initShields ():void
+		{
+			if (! G.versusShieldCount) {
+				return;
+			}
+			
+			shields = G.versusShieldCount;
+			
+			var w:int = Math.ceil(width*0.3);
+			
+			if (dx < 0) {
+				shieldSpacing = FP.width - x - width;
+			} else {
+				shieldSpacing = x;
+			}
+			
+			shieldSpacing -= shields*w;
+			
+			shieldSpacing /= (shields + 1);
+			
+			shieldSpacing += w;
+			
+			shieldX = (dx < 0) ? FP.width : 0;
+			
+			shieldX += dx * shieldSpacing * shields;
 		}
 		
 		public function onTouchBegin(event:TouchEvent):void
@@ -389,6 +424,10 @@ package
 			
 			FP.buffer.fillRect(FP.rect, c);
 			
+			if (sideways && shields) {
+				renderShields();
+			}
+			
 			if (! level.hasStarted) {
 				if (sideways) {
 					if (dx < 0) {
@@ -405,6 +444,25 @@ package
 				
 				FP.rect.width = 6;
 				FP.rect.height = 6;
+				
+				FP.buffer.fillRect(FP.rect, c);
+			}
+		}
+		
+		public function renderShields ():void
+		{
+			var c:uint = (dx > 0) ? 0xFF000000 : 0xFFFFFFFF;
+			
+			var w:int = Math.ceil(width*0.3);
+			
+			FP.rect.y = 0;
+			FP.rect.width = w;
+			FP.rect.height = FP.height;
+			
+			for (var i:int = 0; i < shields; i++) {
+				FP.rect.x = shieldX - dx*shieldSpacing*i;
+				
+				if (dx > 0) FP.rect.x -= w;
 				
 				FP.buffer.fillRect(FP.rect, c);
 			}

@@ -34,6 +34,7 @@ package
 		public static var versusGapAtEdges:Boolean = false;
 		public static var versusLargeMainPaddle:Boolean = false;
 		public static var versusLargeSubgamePaddle:Boolean = false;
+		public static var versusShieldCount:int = 0;
 		
 		public static var chooseMode:Boolean = false;
 		
