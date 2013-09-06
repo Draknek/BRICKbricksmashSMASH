@@ -18,6 +18,9 @@ package
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
 		
+		public static var touchRelativeSpeed1P:Number = 2;
+		public static var touchRelativeSpeed2P:Number = 1.5;
+		
 		public static var multiplayer:Boolean = true;
 		public static var versusChangeColor:int = 0; // 0 = never, 1 = in main game, 2 = in all games
 		public static var versusOwnBallsKill:Boolean = false;

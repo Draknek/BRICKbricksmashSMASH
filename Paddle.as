@@ -14,9 +14,9 @@ package
 		public var vx:Number = 0;
 		public var vy:Number = 0;
 		
-		public static var globalPos:Number = 0;
-		public static var globalPosLeft:Number = 0;
-		public static var globalPosRight:Number = 0;
+		public static var globalPos:Number = 0.5;
+		public static var globalPosLeft:Number = 0.5;
+		public static var globalPosRight:Number = 0.5;
 		
 		public var sideways:Boolean;
 		
@@ -30,6 +30,8 @@ package
 		public var hasTouchID:Boolean;
 		public var touchX:Number = 0.5;
 		public var touchY:Number = 0.5;
+		public var touchDX:Number = 0;
+		public var touchDY:Number = 0;
 		
 		public var ready:Number = 0;
 		
@@ -95,6 +97,9 @@ package
 			
 			touchX = event.stageX / FP.stage.stageWidth;
 			touchY = event.stageY / FP.stage.stageHeight;
+			
+			touchDX = 0;
+			touchDY = 0;
 		}
 		
 		public function onTouchMove(event:TouchEvent):void
@@ -103,8 +108,14 @@ package
 				return;
 			}
 			
-			touchX = event.stageX / FP.stage.stageWidth;
-			touchY = event.stageY / FP.stage.stageHeight;
+			var nowX:Number = event.stageX / FP.stage.stageWidth;
+			var nowY:Number = event.stageY / FP.stage.stageHeight;
+			
+			touchDX += nowX - touchX;
+			touchDY += nowY - touchY;
+			
+			touchX = nowX;
+			touchY = nowY;
 		}
 		
 		public function onTouchEnd(event:TouchEvent):void
@@ -113,9 +124,16 @@ package
 				return;
 			}
 			
+			var nowX:Number = event.stageX / FP.stage.stageWidth;
+			var nowY:Number = event.stageY / FP.stage.stageHeight;
+			
+			touchDX += nowX - touchX;
+			touchDY += nowY - touchY;
+			
+			touchX = nowX;
+			touchY = nowY;
+			
 			hasTouchID = false;
-			touchX = event.stageX / FP.stage.stageWidth;
-			touchY = event.stageY / FP.stage.stageHeight;
 			touchID = 0;
 		}
 		
@@ -189,10 +207,12 @@ package
 			var level:Level = world as Level;
 			
 			if (! level.parent) {
-				globalPos = touchX;
+				globalPos += touchDX * G.touchRelativeSpeed1P;
+				globalPos = FP.clamp(globalPos, 0, 1);
+				touchDX = touchDY = 0;
 			}
 			
-			var toX:Number = FP.clamp(globalPos, 0, 1) * (level.bounds.width) - width*0.5;
+			var toX:Number = globalPos * (level.bounds.width) - width*0.5;
 			
 			vx = (toX - x)*0.2;
 			
@@ -241,15 +261,19 @@ package
 			
 			if (! level.parent) {
 				if (dx > 0) {
-					globalPosLeft = touchY;
+					globalPosLeft += touchDY * G.touchRelativeSpeed2P;
+					globalPosLeft = FP.clamp(globalPosLeft, 0, 1);
 				} else {
-					globalPosRight = touchY;
+					globalPosRight += touchDY * G.touchRelativeSpeed2P;
+					globalPosRight = FP.clamp(globalPosRight, 0, 1);
 				}
+				
+				touchDX = touchDY = 0;
 			}
 					
 			var toY:Number = (dx > 0) ? globalPosLeft : globalPosRight;
 			
-			toY = FP.clamp(toY, 0, 1) * (level.bounds.height) - height*0.5;
+			toY = toY * (level.bounds.height) - height*0.5;
 			
 			vy = (toY - y)*0.2;
 			
