@@ -28,6 +28,7 @@ package
 		
 		public var touchID:int;
 		public var hasTouchID:Boolean;
+		public var touchX:Number = 0.5;
 		public var touchY:Number = 0.5;
 		
 		public var ready:Number = 0;
@@ -80,15 +81,11 @@ package
 		
 		public function onTouchBegin(event:TouchEvent):void
 		{
-			if (! sideways) {
-				return;
-			}
-			
 			if (hasTouchID) {
 				return;
 			}
 			
-			if ((event.stageX < FP.stage.stageWidth*0.5) != (dx > 0)) {
+			if (sideways && (event.stageX < FP.stage.stageWidth*0.5) != (dx > 0)) {
 				return;
 			}
 			
@@ -96,6 +93,7 @@ package
 			
 			touchID = event.touchPointID;
 			
+			touchX = event.stageX / FP.stage.stageWidth;
 			touchY = event.stageY / FP.stage.stageHeight;
 		}
 		
@@ -105,6 +103,7 @@ package
 				return;
 			}
 			
+			touchX = event.stageX / FP.stage.stageWidth;
 			touchY = event.stageY / FP.stage.stageHeight;
 		}
 		
@@ -115,6 +114,7 @@ package
 			}
 			
 			hasTouchID = false;
+			touchX = event.stageX / FP.stage.stageWidth;
 			touchY = event.stageY / FP.stage.stageHeight;
 			touchID = 0;
 		}
@@ -161,7 +161,9 @@ package
 					update_2P_Keyboard();
 				}
 			} else {
-				if (G.mouseInput) {
+				if (G.touchscreen) {
+					update_1P_Touch();
+				} else if (G.mouseInput) {
 					update_1P_Mouse();
 				} else if (level.parent) {
 					update_1P_Keyboard_SubGame();
@@ -176,6 +178,21 @@ package
 			var level:Level = world as Level;
 			
 			var toX:Number = FP.clamp(Input.mouseX / FP.width, 0, 1) * (level.bounds.width) - width*0.5;
+			
+			vx = (toX - x)*0.2;
+			
+			x += vx;
+		}
+		
+		public function update_1P_Touch ():void
+		{
+			var level:Level = world as Level;
+			
+			if (! level.parent) {
+				globalPos = touchX;
+			}
+			
+			var toX:Number = FP.clamp(globalPos, 0, 1) * (level.bounds.width) - width*0.5;
 			
 			vx = (toX - x)*0.2;
 			

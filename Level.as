@@ -684,7 +684,7 @@ package
 		public override function onTouchBegin(event:TouchEvent):void
 		{
 			if (paddle) {
-			
+				paddle.onTouchBegin(event);
 			} else {
 				paddleLeft.onTouchBegin(event);
 				paddleRight.onTouchBegin(event);
@@ -694,7 +694,7 @@ package
 		public override function onTouchMove(event:TouchEvent):void
 		{
 			if (paddle) {
-			
+				paddle.onTouchMove(event);
 			} else {
 				paddleLeft.onTouchMove(event);
 				paddleRight.onTouchMove(event);
@@ -704,7 +704,7 @@ package
 		public override function onTouchEnd(event:TouchEvent):void
 		{
 			if (paddle) {
-			
+				paddle.onTouchEnd(event);
 			} else {
 				paddleLeft.onTouchEnd(event);
 				paddleRight.onTouchEnd(event);
