@@ -105,7 +105,15 @@ package
 					
 					bw = bh*0.6;
 					
-					spaceX = G.versusEmptyColumn ? bw*1.5 : 0;
+					spaceX = 0;
+					
+					if (G.versusEmptyColumn) {
+						spaceX = bw*1.5;
+						
+						if (G.versusGapAtEdges || G.versusGapBetweenBlocks) {
+							spaceX = bw;
+						}
+					}
 				}
 					
 				startX = w*0.5 - bw*blocksWide*0.5 - spaceX*0.5;
