@@ -98,7 +98,7 @@ package
 				
 				vy = offset * Math.abs(vx) * 2 + FP.clamp(paddle.vy, -2*size, 2*size)*0.25;
 				vx = -vx;
-				vx += 0.02*size*paddle.dx;
+				vx += 0.05*size*paddle.dx;
 				
 				var minY:Number = 1.0;
 				
