@@ -200,21 +200,23 @@ package
 				removeIfFallOffRight = false;
 			}
 			
+			var shouldRemove:Boolean = false;
+			
 			if (! playerDX && y > h+size && vy > 0) {
-				lostCount++;
-				world.remove(this);
-				return;
+				shouldRemove = true;
 			} else if (removeIfFallOffLeft && x < -size && vx < 0) {
 				if (! level.parent && G.versusOwnBallsStun) {
 					level.paddleLeft.stun = G.versusOwnBallsStun;
 				}
-				lostCount++;
-				world.remove(this);
-				return;
+				shouldRemove = true;
 			} else if (removeIfFallOffRight && x > w+size && vx > 0) {
 				if (! level.parent && G.versusOwnBallsStun) {
 					level.paddleRight.stun = G.versusOwnBallsStun;
 				}
+				shouldRemove = true;
+			}
+			
+			if (shouldRemove) {
 				lostCount++;
 				world.remove(this);
 				return;
