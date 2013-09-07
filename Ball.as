@@ -308,7 +308,7 @@ package
 			var newBall:Ball = new Ball(
 				x + blockWeAreIn.x + blockWeAreIn.border,
 				y + blockWeAreIn.y + blockWeAreIn.border,
-				vx*4, vy*4, playerDX
+				vx*4, vy*4, blockWeAreIn.owner ? blockWeAreIn.owner : playerDX
 			);
 			if (! playerDX) {
 				newBall.color = 0xFF000000 | blockWeAreIn.color;
@@ -319,6 +319,15 @@ package
 		
 		public override function render (): void
 		{
+			if (G.versusClaimBlocks) {
+				var level:Level = world as Level;
+				var blockWeAreIn:Block = level.parent;
+				
+				if (level.parent) {
+					color = (blockWeAreIn.owner < 0) ? 0xFF000000 : 0xFFFFFFFF;
+				}
+			}
+			
 			if (showBounce) {
 				showBounce = false;
 				

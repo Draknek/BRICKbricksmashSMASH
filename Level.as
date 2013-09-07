@@ -369,10 +369,19 @@ package
 			
 			var b:Block;
 			
-			for each (b in blocks) {
-				if (! b.subgame) continue;
-				if (b.subgame.typeCount(type) > 0) {
-					return true;
+			if (G.versusClaimBlocks) {
+				for each (b in blocks) {
+					var ownerID:int = (type == "ball_left") ? 1 : -1;
+					if (b.owner == ownerID && b.subgame) {
+						return (b.subgame.classCount(Ball) > 0);
+					}
+				}
+			} else {
+				for each (b in blocks) {
+					if (! b.subgame) continue;
+					if (b.subgame.typeCount(type) > 0) {
+						return true;
+					}
 				}
 			}
 			

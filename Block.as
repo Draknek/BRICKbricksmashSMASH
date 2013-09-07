@@ -24,6 +24,8 @@ package
 		
 		public var fadingOut:Boolean;
 		
+		public var owner:int = 0;
+		
 		public function Block (_x:Number, _y:Number, _w:Number, _h:Number, _ix:int, _iy:int, _parent:Level)
 		{
 			var hasSubgame:Boolean = _parent.parent ? false : true;
@@ -71,6 +73,11 @@ package
 			if (level.parent) {
 				world.remove(this);
 				return;
+			}
+			
+			if (ball.playerDX && G.versusClaimBlocks) {
+				owner = ball.playerDX;
+				color = (owner > 0) ? 0x000000 : 0xFFFFFF;
 			}
 			
 			if (! subgame) {
@@ -158,6 +165,12 @@ package
 		public override function render (): void
 		{
 			var level:Level = world as Level;
+			
+			if (G.versusClaimBlocks && level.parent) {
+				if (level.parent.owner) {
+					color = (level.parent.owner < 0) ? 0x000000 : 0xFFFFFF;
+				}
+			}
 			
 			FP.rect.x = x;
 			FP.rect.y = y;

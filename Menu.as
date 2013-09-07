@@ -236,6 +236,12 @@ package
 					{name: "in main game", ChangeColor: 1},
 					{name: "in all games", ChangeColor: 2}
 				);
+				
+				addMultiplayerOption(
+					"Block claiming",
+					{name: "off", ClaimBlocks: false},
+					{name: "on", ClaimBlocks: true}
+				);
 			} else {
 				for (i = 0; i < multiplayerOptions.length; i++) {
 					option = multiplayerOptions[i];

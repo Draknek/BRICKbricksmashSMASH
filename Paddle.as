@@ -408,6 +408,10 @@ package
 			
 			if (sideways) {
 				c = (dx > 0) ? 0xFF000000 : 0xFFFFFFFF;
+				
+				if (level.parent && level.parent.owner) {
+					c = (level.parent.owner < 0) ? 0xFF000000 : 0xFFFFFFFF;
+				}
 			}
 			
 			FP.rect.x = x;
