@@ -20,6 +20,8 @@ package
 		
 		public static var tintTransform:ColorTransform = new ColorTransform();
 		
+		public static var fpsIndicator:Bitmap;
+		
 		public function Main ()
 		{
 			G.init();
@@ -36,6 +38,8 @@ package
 		public override function init (): void
 		{
 			super.init();
+			
+			toggleFPSCounter();
 			
 			FP.stage.addEventListener(Event.RESIZE, onResize);
 			
@@ -142,6 +146,42 @@ package
 			
 			super.update();
 		}
+		
+		public override function render ():void
+		{
+			super.render();
+			
+			if (fpsIndicator) {
+				var c:uint = 0;
+				
+				if (FPS.fps < 30) {
+					c = 0xFF0000;
+				} else if (FPS.fps < 50) {
+					c = 0xFFFF00;
+				} else {
+					c = 0x00FF00;
+				}
+				
+				Main.fpsIndicator.bitmapData.setPixel(0, 0, c);
+			}
+		}
+		
+		public static function toggleFPSCounter ():void
+		{
+			FPS.init(FP.stage);
+			
+			if (Main.fpsIndicator) {
+				Main.fpsIndicator.visible = ! Main.fpsIndicator.visible;
+			} else {
+				Main.fpsIndicator = new Bitmap;
+				Main.fpsIndicator.bitmapData = new BitmapData(1, 1, false, 0x0);
+				Main.fpsIndicator.scaleX = Main.fpsIndicator.scaleY = 10;
+				
+				Main.fpsIndicator.x = FP.width - Main.fpsIndicator.width;
+				FP.engine.addChild(Main.fpsIndicator);
+			}
+		}
+		
 	}
 }
 
