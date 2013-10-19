@@ -177,8 +177,7 @@ package
 				Main.fpsIndicator.bitmapData = new BitmapData(1, 1, false, 0x0);
 				Main.fpsIndicator.scaleX = Main.fpsIndicator.scaleY = 10;
 				
-				Main.fpsIndicator.x = FP.width - Main.fpsIndicator.width;
-				FP.engine.addChild(Main.fpsIndicator);
+				FP.stage.addChild(Main.fpsIndicator);
 			}
 		}
 		
