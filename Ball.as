@@ -143,7 +143,7 @@ package
 				if (vx < 0) {
 					paddle = level.paddleLeft;
 					
-					if (paddle.shields && x - size < paddle.shieldX) {
+					if (playerDX != paddle.dx && paddle.shields && x - size < paddle.shieldX) {
 						vx *= -1;
 						x = paddle.shieldX + size;
 						bounced = true;
@@ -154,7 +154,7 @@ package
 				} else {
 					paddle = level.paddleRight;
 					
-					if (paddle.shields && x + size > paddle.shieldX) {
+					if (playerDX != paddle.dx && paddle.shields && x + size > paddle.shieldX) {
 						vx *= -1;
 						x = paddle.shieldX - size;
 						bounced = true;
