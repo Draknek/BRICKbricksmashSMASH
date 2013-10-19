@@ -222,7 +222,7 @@ package
 					{name: "4", ShieldCount: 4}
 				);
 				
-				addMultiplayerOption(
+				/*addMultiplayerOption(
 					"Losing own ball",
 					{name: "ignored", OwnBallsKill: false, OwnBallsStun: false},
 					{name: "stuns for 0.25s", OwnBallsKill: false, OwnBallsStun: 15},
@@ -241,7 +241,7 @@ package
 					"Block claiming",
 					{name: "off", ClaimBlocks: false},
 					{name: "on", ClaimBlocks: true}
-				);
+				);*/
 			} else {
 				for (i = 0; i < multiplayerOptions.length; i++) {
 					option = multiplayerOptions[i];

@@ -24,7 +24,7 @@ package
 		public static var multiplayer:Boolean = true;
 		public static var versusChangeColor:int = 0; // 0 = never, 1 = in main game, 2 = in all games
 		public static var versusOwnBallsKill:Boolean = false;
-		public static var versusOwnBallsStun:int = 60;
+		public static var versusOwnBallsStun:int = 0;
 		public static var versusBlocksWide:int = 2;
 		public static var versusBlocksHigh:int = 5;
 		public static var versusSubgameBlocksWide:int = 2;
@@ -34,7 +34,7 @@ package
 		public static var versusGapAtEdges:Boolean = false;
 		public static var versusLargeMainPaddle:Boolean = false;
 		public static var versusLargeSubgamePaddle:Boolean = false;
-		public static var versusClaimBlocks:Boolean = true;
+		public static var versusClaimBlocks:Boolean = false;
 		public static var versusShieldCount:int = 0;
 		
 		public static var chooseMode:Boolean = false;
