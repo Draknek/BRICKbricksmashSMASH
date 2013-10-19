@@ -22,6 +22,8 @@ package
 		
 		public static var fpsIndicator:Bitmap;
 		
+		public static var whiteBG:Bitmap;
+		
 		public function Main ()
 		{
 			G.init();
@@ -44,6 +46,12 @@ package
 			FP.stage.addEventListener(Event.RESIZE, onResize);
 			
 			if (G.touchscreen) {
+				whiteBG = new Bitmap(new BitmapData(FP.stage.stageWidth, FP.stage.stageHeight, false, 0xFFFFFF));
+				
+				whiteBG.visible = false;
+				
+				FP.stage.addChildAt(whiteBG, 0);
+				
 				Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 				
 				FP.stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
@@ -142,6 +150,10 @@ package
 			if (Input.pressed(FP.console.toggleKey)) {
 				// Doesn't matter if it's called when already enabled
 				FP.console.enable();
+			}
+			
+			if (whiteBG) {
+				whiteBG.visible = (FP.world is Level && ! G.multiplayer);
 			}
 			
 			super.update();
