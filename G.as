@@ -18,7 +18,7 @@ package
 		public static var hardMode:Boolean = false;
 		public static var oneBallPerWorld:Boolean = false;
 		
-		public static var touchRelativeSpeed1P:Number = 2;
+		public static var touchRelativeSpeed1P:Number = 3.0;
 		public static var touchRelativeSpeed2P:Number = 1.5;
 		
 		public static var multiplayer:Boolean = true;
