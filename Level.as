@@ -270,6 +270,7 @@ package
 				for each (ball in leftBalls) {
 					if (ball.x > bounds.width + ball.size) {
 						rightLost = true;
+						rightReason = "black ball lost";
 						break;
 					}
 				}
@@ -277,6 +278,7 @@ package
 				for each (ball in rightBalls) {
 					if (ball.x < -ball.size) {
 						leftLost = true;
+						leftReason = "white ball lost";
 						break;
 					}
 				}
@@ -287,6 +289,7 @@ package
 					for each (ball in leftBalls) {
 						if (ball.x > rightPaddleEdge + ball.size) {
 							rightLost = true;
+							rightReason = "black ball lost";
 							break;
 						}
 					}
@@ -294,6 +297,7 @@ package
 					for each (ball in rightBalls) {
 						if (ball.x < leftPaddleEdge - ball.size) {
 							leftLost = true;
+							leftReason = "white ball lost";
 							break;
 						}
 					}
