@@ -22,6 +22,9 @@ package
 		public var paddleLeft:Paddle;
 		public var paddleRight:Paddle;
 		
+		public var readyLeft:Text;
+		public var readyRight:Text;
+		
 		public var hasStarted:Boolean;
 		
 		public var won:Boolean;
@@ -30,7 +33,7 @@ package
 		public var t:int = 0;
 		public var lerp:Number = 0;
 		
-		public var extraRender:World;
+		public var extraRender:World = new World;
 		
 		public function Level (_parent:Block = null)
 		{
@@ -127,6 +130,25 @@ package
 					bw, bh, i%blocksWide, i/blocksWide, this);
 				add(block);
 			}
+			
+			if (G.multiplayer && G.touchscreen) {
+				readyLeft = new Text("READY", 0, 0, {size: 30, color: 0x000000});
+				readyRight = new Text("READY", 0, 0, {size: 30, color: 0xFFFFFF});
+				
+				readyLeft.centerOO();
+				readyRight.centerOO();
+				
+				readyLeft.angle = -90;
+				readyRight.angle = 90;
+				
+				readyLeft.alpha = 0;
+				readyRight.alpha = 0;
+				
+				extraRender.addGraphic(readyLeft, 0, FP.width * 0.25, FP.height*0.5)
+				extraRender.addGraphic(readyRight, 0, FP.width * 0.75, FP.height*0.5)
+				
+				extraRender.updateLists();
+			}
 		}
 		
 		public override function begin (): void
@@ -194,6 +216,21 @@ package
 					if (paddleLeft.ready >= 1 && paddleRight.ready >= 1) {
 						respawn();
 						return;
+					}
+					
+					readyLeft.alpha += (int(paddleLeft.ready >= 1) - readyLeft.alpha)*0.25;
+					readyRight.alpha += (int(paddleRight.ready >= 1) - readyRight.alpha)*0.25;
+				}
+			} else {
+				if (readyLeft) {
+					readyLeft.alpha += (0 - readyLeft.alpha)*0.25;
+					readyRight.alpha += (0 - readyRight.alpha)*0.25;
+					
+					if (readyLeft.alpha <= 0.01 && readyRight.alpha <= 0.01) {
+						extraRender.removeAll();
+						extraRender.updateLists();
+						readyLeft = null;
+						readyRight = null;
 					}
 				}
 			}
@@ -309,8 +346,6 @@ package
 				}
 				
 				if (lost) {
-					extraRender = new World;
-					
 					for each (b in blocks) {
 						if (b.subgame) {
 							b.subgame.lost = true;
@@ -429,8 +464,6 @@ package
 		
 		public function doWon ():void
 		{
-			extraRender = new World;
-			
 			var tweenTime:int = 90;
 			
 			var balls:Array = [];
@@ -631,7 +664,6 @@ package
 				best.x = FP.width*0.5 - best.width*0.5;
 				best.y = restart.y + restart.height + (paddle.y - restart.y - restart.height)*0.5 - best.height*0.5;
 				
-				extraRender = new World;
 				extraRender.addGraphic(best);
 				extraRender.updateLists();
 			}
