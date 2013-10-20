@@ -247,6 +247,9 @@ package
 				var leftLost:Boolean;
 				var rightLost:Boolean;
 				
+				var leftReason:String;
+				var rightReason:String;
+				
 				// Check if either side has scored
 				
 				var leftPaddleEdge:Number = paddleLeft.x;
@@ -300,6 +303,8 @@ package
 					if (G.versusChangeColor) {
 						// Check if both sides have lost all their balls
 						leftLost = rightLost = ! hasAnyBalls(blocks);
+						
+						leftReason = rightReason = "lost all balls";
 					} else {
 						// Check if either side has lost all their balls
 						leftLost = ! hasBallsOfType("ball_left", blocks);
@@ -313,6 +318,9 @@ package
 							cullBallsOfType("ball_left", blocks);
 							leftLost = ! hasBallsOfType("ball_left", blocks);
 						}
+						
+						if (leftLost) leftReason = "lost all balls";
+						if (rightLost) rightReason = "lost all balls";
 					}
 				}
 				
@@ -330,6 +338,12 @@ package
 					}
 					
 					leftText = new Text(rightLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0xFFFFFF});
+					
+					if (leftReason) {
+						leftText.align = "center";
+						leftText.setStyle("reason", {size: 25});
+						leftText.richText = leftText.text + "\n<reason>" + leftReason + "</reason>";
+					}
 				}
 				
 				if (rightLost) {
@@ -343,6 +357,12 @@ package
 					}
 					
 					rightText = new Text(leftLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0x000000});
+					
+					if (rightReason) {
+						rightText.align = "center";
+						rightText.setStyle("reason", {size: 25});
+						rightText.richText = rightText.text + "\n<reason>" + rightReason + "</reason>";
+					}
 				}
 				
 				if (lost) {
