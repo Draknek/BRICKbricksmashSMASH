@@ -394,6 +394,25 @@ package
 					extraRender.addGraphic(rightText, 0, FP.width * 0.75, FP.height*0.5)
 					
 					extraRender.updateLists();
+					
+					var again:Button = new Button("AGAIN", 30, newGame);
+					
+					again.x = (FP.width - again.width)*0.5;
+					
+					again.layer = -100;
+					
+					add(again);
+					
+					var menu:Button = new Button("MENU", 30, gotoMenu);
+					
+					menu.x = (FP.width - menu.width)*0.5;
+					
+					menu.layer = -100;
+					
+					add(menu);
+					
+					again.y = (FP.height - again.height - menu.height)*0.33;
+					menu.y = FP.height - menu.height - (FP.height - again.height - menu.height)*0.33;
 				}
 			} else if (! hasAnyBalls(blocks)) {
 				lost = true;
