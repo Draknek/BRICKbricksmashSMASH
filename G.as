@@ -36,6 +36,7 @@ package
 		public static var versusLargeSubgamePaddle:Boolean = false;
 		public static var versusClaimBlocks:Boolean = false;
 		public static var versusShieldCount:int = 0;
+		public static var versusRespawnDelay:int = 3;
 		
 		public static var chooseMode:Boolean = false;
 		

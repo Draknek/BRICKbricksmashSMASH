@@ -179,8 +179,8 @@ package
 				
 				addMultiplayerOption(
 					"Bricks wide",
-					{name: "2", BlocksWide: 2, EmptyColumn: false},
 					{name: "1", BlocksWide: 1, EmptyColumn: false},
+					{name: "2", BlocksWide: 2, EmptyColumn: false},
 					{name: "2, separated", BlocksWide: 2, EmptyColumn: true}
 				);
 				
@@ -220,6 +220,14 @@ package
 					{name: "2", ShieldCount: 2},
 					{name: "3", ShieldCount: 3},
 					{name: "4", ShieldCount: 4}
+				);
+				
+				addMultiplayerOption(
+					"Losing all balls",
+					{name: "wait 3 seconds", RespawnDelay: 3},
+					{name: "wait 5 seconds", RespawnDelay: 5},
+					{name: "death", RespawnDelay: -1},
+					{name: "wait 1 second", RespawnDelay: 1}
 				);
 				
 				/*addMultiplayerOption(

@@ -25,6 +25,9 @@ package
 		public var readyLeft:Text;
 		public var readyRight:Text;
 		
+		public var leftRespawnTimer:int = -1;
+		public var rightRespawnTimer:int = -1;
+		
 		public var hasStarted:Boolean;
 		
 		public var won:Boolean;
@@ -314,6 +317,12 @@ package
 						leftLost = ! hasBallsOfType("ball_left", blocks);
 						rightLost = ! hasBallsOfType("ball_right", blocks);
 						
+						if (G.versusRespawnDelay >= 0) {
+							doRespawn(leftLost, rightLost);
+							
+							return;
+						}
+						
 						// Check if this is actually a tie
 						if (leftLost) {
 							cullBallsOfType("ball_right", blocks);
@@ -343,7 +352,7 @@ package
 					
 					leftText = new Text(rightLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0xFFFFFF});
 					
-					if (leftReason) {
+					if (leftReason && G.versusRespawnDelay < 0) {
 						leftText.align = "center";
 						leftText.setStyle("reason", {size: 25});
 						leftText.richText = leftText.text + "\n<reason>" + leftReason + "</reason>";
@@ -362,7 +371,7 @@ package
 					
 					rightText = new Text(leftLost ? "TIE" : "LOSE", 0, 0, {size: 50, color: 0x000000});
 					
-					if (rightReason) {
+					if (rightReason && G.versusRespawnDelay < 0) {
 						rightText.align = "center";
 						rightText.setStyle("reason", {size: 25});
 						rightText.richText = rightText.text + "\n<reason>" + rightReason + "</reason>";
@@ -502,6 +511,39 @@ package
 				}
 				
 				b.subgame.updateLists();
+			}
+		}
+		
+		public function doRespawn (left:Boolean, right:Boolean):void
+		{
+			if (left && leftRespawnTimer < 0) {
+				leftRespawnTimer = G.versusRespawnDelay * 60;
+			}
+			
+			if (right && rightRespawnTimer < 0) {
+				rightRespawnTimer = G.versusRespawnDelay * 60;
+			}
+			
+			if (left) {
+				leftRespawnTimer--;
+				
+				if (leftRespawnTimer <= 0) {
+					paddleLeft.spawnBall();
+					leftRespawnTimer = -1;
+				} else {
+					paddleLeft.ready = 1.0 - leftRespawnTimer / G.versusRespawnDelay / 60;
+				}
+			}
+			
+			if (right) {
+				rightRespawnTimer--;
+				
+				if (rightRespawnTimer <= 0) {
+					paddleRight.spawnBall();
+					rightRespawnTimer = -1;
+				} else {
+					paddleRight.ready = 1.0 - rightRespawnTimer / G.versusRespawnDelay / 60;
+				}
 			}
 		}
 		

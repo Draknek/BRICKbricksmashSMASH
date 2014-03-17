@@ -202,12 +202,14 @@ package
 			
 			if (sideways) {
 				if (G.touchscreen) {
-					if (hasTouchID) {
-						ready += 1/30;
-						if (ready > 1) ready = 1;
-					} else {
-						ready -= 0.1;
-						if (ready < 0) ready = 0;
+					if (! level.hasStarted) {
+						if (hasTouchID) {
+							ready += 1/30;
+							if (ready > 1) ready = 1;
+						} else {
+							ready -= 0.1;
+							if (ready < 0) ready = 0;
+						}
 					}
 					update_2P_Touch();
 				} else {
@@ -370,6 +372,8 @@ package
 		
 		public function spawnBall ():void
 		{
+			ready = 0;
+			
 			var level:Level = world as Level;
 			
 			var vx:Number = 1.5 + Math.random()*0.5;
@@ -432,7 +436,7 @@ package
 				renderShields();
 			}
 			
-			if (! level.hasStarted) {
+			if (ready > 0) {
 				if (sideways) {
 					if (dx < 0) {
 						FP.rect.x = x - 6*ready;
