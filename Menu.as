@@ -179,8 +179,8 @@ package
 				
 				addMultiplayerOption(
 					"Bricks wide",
-					{name: "1", BlocksWide: 1, EmptyColumn: false},
 					{name: "2", BlocksWide: 2, EmptyColumn: false},
+					{name: "1", BlocksWide: 1, EmptyColumn: false},
 					{name: "2, separated", BlocksWide: 2, EmptyColumn: true}
 				);
 				
@@ -208,8 +208,8 @@ package
 				
 				addMultiplayerOption(
 					"Paddle size",
-					{name: "normal", LargeMainPaddle: false, LargeSubgamePaddle: false},
 					{name: "large in subgames", LargeMainPaddle: false, LargeSubgamePaddle: true},
+					{name: "normal", LargeMainPaddle: false, LargeSubgamePaddle: false},
 					{name: "large", LargeMainPaddle: true, LargeSubgamePaddle: true}
 				);
 				
