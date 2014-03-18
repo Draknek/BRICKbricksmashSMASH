@@ -49,7 +49,7 @@ package
 				buttons.push(["HARD", playHard]);
 				buttons.push(["HARDER", playHarder]);
 			} else if (G.multiplayer) {
-				buttons.push(["VERSUS", startGame]);
+				buttons.push(["PLAY", startGame]);
 			} else {
 				buttons.push(["PLAY", playNormal]);
 			}
@@ -168,7 +168,14 @@ package
 			
 			remove(by);
 			
-			by.y = title.y + title.height - by.height;
+			var versusText:Text = new Text("[VERSUS]", 0, 0, {size: 20});
+			
+			versusText.x = title.x + title.width - versusText.width;
+			versusText.y = title.y + title.height - 10;
+			
+			addGraphic(versusText);
+			
+			by.y = versusText.y + versusText.height - by.height;
 			
 			var i:int;
 			var option:*;
