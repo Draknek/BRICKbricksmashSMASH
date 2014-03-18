@@ -288,17 +288,17 @@ package
 				
 				// Check if this is actually a tie
 				
-				if (leftLost) {
+				if (leftLost && paddleRight.shields == 0) {
 					for each (ball in leftBalls) {
-						if (ball.x > rightPaddleEdge + ball.size) {
+						if (ball.x > rightPaddleEdge + ball.size && ball.vx > 0) {
 							rightLost = true;
 							rightReason = "black ball lost";
 							break;
 						}
 					}
-				} else if (rightLost) {
+				} else if (rightLost && paddleLeft.shields == 0) {
 					for each (ball in rightBalls) {
-						if (ball.x < leftPaddleEdge - ball.size) {
+						if (ball.x < leftPaddleEdge - ball.size && ball.vx < 0) {
 							leftLost = true;
 							leftReason = "white ball lost";
 							break;
