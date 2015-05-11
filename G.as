@@ -21,7 +21,7 @@ package
 		public static var touchRelativeSpeed1P:Number = 3.0;
 		public static var touchRelativeSpeed2P:Number = 1.5;
 		
-		public static var multiplayer:Boolean = true;
+		public static var multiplayer:Boolean = false;
 		public static var versusChangeColor:int = 0; // 0 = never, 1 = in main game, 2 = in all games
 		public static var versusOwnBallsKill:Boolean = false;
 		public static var versusOwnBallsStun:int = 0;
@@ -43,6 +43,9 @@ package
 		public static var mode:String;
 		
 		public static var platform:String;
+		
+		public static var sliderPosition:Number = 0;
+		public static var sliderPositions:Array = [0, 0, 0, 0, 0];
 		
 		private static const properties:Array = [
 			"games",

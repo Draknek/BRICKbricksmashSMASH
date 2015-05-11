@@ -41,7 +41,7 @@ package
 			vy = _vy;
 			
 			if (_block) {
-				size = Math.round(_block.height*0.02)*0.5;
+				size = 1;// Math.round(_block.height * 0.02) * 0.5;
 			} else {
 				size = 3;
 			}

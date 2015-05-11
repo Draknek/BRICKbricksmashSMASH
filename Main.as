@@ -1,5 +1,6 @@
 package
 {
+	import flash.text.TextField;
 	import net.flashpunk.*;
 	import net.flashpunk.debug.*;
 	import net.flashpunk.graphics.*;
@@ -11,6 +12,7 @@ package
 	import flash.utils.*;
 	import flash.display.*;
 	
+	//[SWF(width = "480", height = "320", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
 		[Embed(source = 'fonts/orbitron-medium.ttf', embedAsCFF="false", fontFamily = 'orbitron')]
@@ -24,6 +26,8 @@ package
 		
 		public static var whiteBG:Bitmap;
 		
+		public static var errorMessage:TextField;
+		
 		public function Main ()
 		{
 			G.init();
@@ -32,9 +36,15 @@ package
 			
 			Text.font = 'orbitron';
 			
-			FP.world = new Menu();
-			
 			FP.screen.color = 0x0;
+			
+			errorMessage = new TextField();
+			errorMessage.text = "hi";
+			errorMessage.y = -20;
+			errorMessage.width = 400;
+			//addChild(errorMessage);
+			
+			SliderGamepad.init(this);
 		}
 		
 		public override function init (): void
@@ -44,6 +54,10 @@ package
 			toggleFPSCounter();
 			
 			FP.stage.addEventListener(Event.RESIZE, onResize);
+			
+			onResize();
+			
+			FP.world = new Menu();
 			
 			if (G.touchscreen) {
 				whiteBG = new Bitmap(new BitmapData(FP.stage.stageWidth, FP.stage.stageHeight, false, 0xFFFFFF));
@@ -82,20 +96,34 @@ package
 			onResize(null);
 		}
 		
-		public function onResize (e:Event):void
+		public function onResize (e:Event = null):void
 		{
 			var sw:int = FP.stage.stageWidth;
 			var sh:int = FP.stage.stageHeight;
 			
-			var w:int = FP.width;
-			var h:int = FP.height;
+			var w:int = 480;
+			var h:int = 320;
 			
-			var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
+			var scale:int = Math.round(sh/h);
+			
+			if (scale < 1) scale = 1;
+			
+			//var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
 			
 			FP.screen.scale = scale;
 			
-			this.x = (sw - w*scale)*0.5;
-			this.y = (sh - h*scale)*0.5;
+			w = Math.ceil(sw / scale);
+			h = Math.ceil(sh / scale);
+			
+			FP.resize(w, h);
+			
+			if (FP.world is Menu)
+			{
+				FP.world = new Menu();
+			}
+			
+			//this.x = (sw - w*scale)*0.5;
+			//this.y = (sh - h*scale)*0.5;
 			
 			//FP.console.enable();
 		}

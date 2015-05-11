@@ -64,18 +64,26 @@ package
 				add(paddle = new Paddle(this));
 			}
 			
-			var bw:int = parent ? 6 : 60;
-			var bh:int = parent ? 3 : 32;
-			
-			var blocksWide:int = parent ? 5 : 8;
+			var blocksWide:int = parent ? 6 : 8;
 			var blocksHigh:int = parent ? 2 : 2;
+			
+			var bw:int;
+			var bh:int;
+			
+			if (parent) {
+				bw = Math.floor(w / 10);
+				bh = Math.floor(h / 10);
+			} else {
+				bw = Math.floor(w / blocksWide);
+				bh = Math.ceil(bw * 0.52);
+			}
 			
 			var spaceX:int = (w - bw*blocksWide)/(blocksWide+1);
 			
 			var spaceY:int = parent ? spaceX : 0;
 			
 			var startX:int = (w - bw*blocksWide - spaceX*(blocksWide+1))*0.5 + spaceX;
-			var startY:int = parent ? spaceY : bh*1.5;
+			var startY:int = parent ? spaceY : bh;
 			
 			if (G.multiplayer) {
 				if (parent) {

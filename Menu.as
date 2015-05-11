@@ -28,7 +28,7 @@ package
 			title.richText = "BRICK<small>[bricksmash]</small>SMASH";
 			
 			title.x = (FP.width - title.width)*0.5;
-			title.y = title.x;
+			title.y = 40; // title.x;
 			
 			addGraphic(title);
 			

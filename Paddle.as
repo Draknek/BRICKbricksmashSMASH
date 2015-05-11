@@ -215,6 +215,8 @@ package
 				} else {
 					update_2P_Keyboard();
 				}
+			} else if (SliderGamepad.active) {
+				update_1P_Slider();
 			} else {
 				if (G.touchscreen) {
 					update_1P_Touch();
@@ -226,6 +228,25 @@ package
 					update_1P_Keyboard_MainGame();
 				}
 			}
+		}
+		
+		public function update_1P_Slider ():void
+		{
+			var level:Level = world as Level;
+			
+			var sliderPosition:Number;
+			
+			if (level.parent) {
+				sliderPosition = G.sliderPositions[(int)(level.parent.ix / 2)];
+			} else {
+				sliderPosition = G.sliderPosition;
+			}
+			
+			var toX:Number = FP.clamp(sliderPosition, 0, 1) * (level.bounds.width - width*0.9) - width*0.05;
+			
+			vx = (toX - x)*0.4;
+			
+			x += vx;
 		}
 		
 		public function update_1P_Mouse ():void
